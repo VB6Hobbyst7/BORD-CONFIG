@@ -1,0 +1,110 @@
+﻿Build1=Default,nl.pdeg.bordconfig
+File1=boards.db
+File2=config.bal
+File3=units.bal
+FileGroup1=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+Group=Default Group
+IconFile=
+Library1=core
+Library2=jsch
+Library3=runtimepermissions
+Library4=json
+Library5=sql
+Library6=xui
+Library7=xui views
+Library8=phone
+Library9=network
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~~\n~AddPermission(android.permission.INTERNET)~\n~
+Module1=Starter
+Module2=config
+Module3=classGetConfig
+Module4=classSetConfig
+Module5=units
+Module6=gnDb
+NumberOfFiles=3
+NumberOfLibraries=9
+NumberOfModules=6
+Version=9.5
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Bord config
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	Dim ftp As SFtp
+End Sub
+
+Sub Globals
+
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	'getConfig
+	StartActivity(config)
+	Activity.Finish
+End Sub
+
+Sub Activity_Resume
+
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+
+Sub getConfig
+	
+	ftp.Initialize("ftp", "pi", "0", "192.168.1.27", 22)
+	Try
+		ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
+	Catch
+		Log(LastException.Message)
+	End Try
+
+
+	Try
+		ftp.List("/home/pi/44")
+		wait for ftp_ListCompleted(ServerPath As String, Success As Boolean, Folders() As SFtpEntry, Files() As SFtpEntry)
+		If Success = False Then
+			Log(LastException)
+			
+		Else
+			For i = 0 To Files.Length - 1
+				Log(Files(i).Name)
+			Next
+			
+		End If
+	Catch ()
+		Log(LastException.Message)
+		ftp.Close
+	
+	End Try
+	ftp.DownloadFile("/home/pi/44/cnf.44", Starter.hostPath, "cnf.44")
+	ftp.Close
+	
+	StartActivity(config)
+	Activity.Finish
+	
+End Sub
+
+Sub ftp_ShowMessage (Message As String)
+	Msgbox(Message, "")
+End Sub
+
+Sub ftp_PromptYesNo (Message As String)
+	Log(Message)
+	
+	ftp.SetPromptResult(True)
+End Sub
