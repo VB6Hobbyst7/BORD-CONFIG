@@ -10,10 +10,10 @@ Version=9.5
 #End Region
 
 Sub Process_Globals
+	Private nw As ServerSocket
 End Sub
 
 Sub Globals
-	Private nw As ServerSocket
 	
 	Private edt_description As EditText
 	Private edt_ip As EditText
