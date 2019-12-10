@@ -38,7 +38,8 @@ Sub Activity_Create(FirstTime As Boolean)
 End Sub
 
 Sub Activity_Resume
-
+	clearConfig
+	getUnits
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
@@ -79,8 +80,12 @@ Sub cmb_units_SelectedIndexChanged (Index As Int)
 	clearConfig
 	Dim value As String = lstValue.get(cmb_units.SelectedIndex)
 	If value = "0" Then
+		btn_save.Enabled = False
+		btn_remove.Visible =False
 		Return
 	End If
+	
+	btn_remove.Visible = True
 	ProgressBar.Visible = True
 	Sleep(500)
 	retrieveConfig(value)
@@ -90,6 +95,7 @@ End Sub
 
 
 Sub retrieveConfig(ipNumber As String)
+	btn_save.Enabled = False
 	Dim msg, unit As String
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	unit = cmb_units.GetItem(cmb_units.SelectedIndex)
@@ -113,6 +119,7 @@ Sub retrieveConfig(ipNumber As String)
 	Else
 		getConfig
 		ftp.Close
+		btn_save.Enabled = True
 		msg =$"Configuratie van ${unit} geladen"$
 		Msgbox(msg, "Bord Config")
 	End If
@@ -140,5 +147,9 @@ Sub btn_add_Click
 End Sub
 
 Sub btn_remove_Click
-	
+	Msgbox2Async("Bord verwijderen?", "Bord Config", "JA", "", "NEE", Null, False)
+	Wait For Msgbox_Result (Result As Int)
+	If Result = DialogResponse.POSITIVE Then
+		'...
+	End If
 End Sub

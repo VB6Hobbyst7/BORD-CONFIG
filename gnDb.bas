@@ -17,6 +17,47 @@ Sub RetieveBoards As Cursor
 End Sub
 
 
+Sub addBord(description As String, ipNumber As String)
+	Dim curs As Cursor
+	
+	qry = "INSERT INTO unit (description, ip_number) VALUES(?,?)"
+	Starter.sql.ExecNonQuery2(qry, Array As String(description, ipNumber))
+		
+End Sub
+
+
+Sub bordNameExists(name As String) As Boolean
+	Dim curs As Cursor
+	Dim count As Int
+	
+	qry = "SELECT COUNT(*) as cnt FROM unit WHERE description = ? COLLATE NOCASE"
+	curs = Starter.sql.ExecQuery2(qry, Array As String(name))
+	curs.Position = 0
+	count = curs.GetInt("cnt")
+	curs.Close
+	
+	If count > 0 Then
+		Return True
+	End If
+	Return False
+End Sub
+
+Sub bordIpExists(ip As String) As Boolean
+	Dim curs As Cursor
+	Dim count As Int
+	
+	qry = "SELECT COUNT(*) cnt FROM unit WHERE ip_number = ? COLLATE NOCASE"
+	curs = Starter.sql.ExecQuery2(qry, Array As String(ip))
+	curs.Position = 0
+	count  = curs.GetInt("cnt")
+	curs.Close
+	
+	If count > 0 Then
+		Return True
+	End If
+	Return False
+	
+End Sub
 
 Sub GUID As String
 	Dim sb As StringBuilder

@@ -58,7 +58,7 @@ Sub pushConfig
 	Try
 		ftp.UploadFile(Starter.hostPath, "cnf.44", "/home/pi/44/cnf.44")
 		Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
-		Log($"UploadCompleted (${ServerPath}, ${Success})"$)
+		'Log($"UploadCompleted (${ServerPath}, ${Success})"$)
 		
 		If Success = False Then Log(LastException.Message)
 	Catch

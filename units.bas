@@ -35,7 +35,14 @@ Sub Activity_Resume
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
+	
+End Sub
 
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+	If KeyCode = KeyCodes.KEYCODE_BACK Then
+		Return False
+	End If
+	Return True
 End Sub
 
 
@@ -44,7 +51,11 @@ Sub btn_test_Click
 End Sub
 
 Sub btn_add_unit_Click
-	
+	If edt_description.Text = "" Then
+		Msgbox("Geef een omschrijving op", "Bord config")
+		Return
+	End If
+	addBord
 End Sub
 
 Sub pingBord
@@ -63,5 +74,20 @@ Sub pingBord
 		btn_add_unit.Enabled = True
 		Msgbox("Ip nummer bereikbaar", "Bord Config")
 	End If	
+	
+End Sub
+
+Sub addBord
+	If gnDb.bordNameExists(edt_description.Text) = True Then
+		Msgbox("Omschrijving bestaat reeds","Bord config")
+		Return
+	End If
+	
+	If gnDb.bordIpExists(edt_ip.Text) = True Then
+		Msgbox("Ip nummer bestaat reeds","Bord config")
+		Return
+	End If
+	
+	gnDb.addBord(edt_description.Text, edt_ip.Text)
 	
 End Sub
