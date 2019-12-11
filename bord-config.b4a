@@ -1,10 +1,14 @@
 ﻿Build1=Default,nl.pdeg.bordconfig
-File1=boards.db
-File2=config.bal
-File3=units.bal
+File1=Arial.ttf
+File2=boards.db
+File3=config.bal
+File4=configInput.bal
+File5=units.bal
 FileGroup1=Default Group
 FileGroup2=Default Group
 FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
 Group=Default Group
 IconFile=
 Library1=core
@@ -19,13 +23,14 @@ Library9=network
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~~\n~AddPermission(android.permission.INTERNET)~\n~
 Module1=config
 Module2=units
-Module3=Starter
-Module4=classGetConfig
-Module5=classSetConfig
-Module6=gnDb
-NumberOfFiles=3
+Module3=gnDb
+Module4=classSetConfig
+Module5=classGetConfig
+Module6=Starter
+Module7=classFunc
+NumberOfFiles=5
 NumberOfLibraries=9
-NumberOfModules=6
+NumberOfModules=7
 Version=9.5
 @EndOfDesignText@
 #Region  Project Attributes 

@@ -14,6 +14,7 @@ Sub Process_Globals
 	Dim clsPutJson As classSetConfig
 	Dim ftp As SFtp
 	Dim lstDisplay, lstValue As List
+	Dim clsFunc As classFunc
 End Sub
 
 Sub Globals
@@ -26,12 +27,23 @@ Sub Globals
 	Private ProgressBar As ProgressBar
 	Private btn_add As Button
 	Private btn_remove As Button
+	Private svInput As ScrollView
+	Private pnl_config As Panel
+	Private sw_use_yellow_number As B4XSwitch
+	Private sw_digital_numbers As B4XSwitch
+	Private sw_timeout As B4XSwitch
+	Private lbl_timeout_min As Label
+	Private lbl_timeout_plus As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("config")
+	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
+	
+	svInput.Panel.LoadLayout("configInput")
+	svInput.Panel.Height = 1000dip
 	getUnits
 	'getConfig
 	
@@ -48,11 +60,13 @@ End Sub
 
 
 Sub getConfig
-	clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
+	'clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
+	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number)
 End Sub
 
 Sub btn_save_Click
-	clsPutJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
+	'clsPutJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
+	clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number)
 End Sub
 
 Sub getUnits
@@ -77,7 +91,7 @@ End Sub
 
 Sub cmb_units_SelectedIndexChanged (Index As Int)
 	
-	clearConfig
+	enableView(False)
 	Dim value As String = lstValue.get(cmb_units.SelectedIndex)
 	If value = "0" Then
 		btn_save.Enabled = False
@@ -87,7 +101,7 @@ Sub cmb_units_SelectedIndexChanged (Index As Int)
 	
 	btn_remove.Visible = True
 	ProgressBar.Visible = True
-	Sleep(500)
+	'Sleep(500)
 	retrieveConfig(value)
 	ProgressBar.Visible = False
 	
@@ -104,7 +118,8 @@ Sub retrieveConfig(ipNumber As String)
 		ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	Catch
 		msg =$"$unit} niet bereikbaar"$
-		ToastMessageShow(msg, True)
+		
+		clsFunc.createCustomToast(msg)
 		Msgbox(msg, "Bord Config")
 		
 		ftp.Close
@@ -115,13 +130,15 @@ Sub retrieveConfig(ipNumber As String)
 	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
 		msg =$"Config bestand van ${unit} niet gevonden"$
-		Msgbox(msg, "Bord Config")
+		clsFunc.createCustomToast(msg)
 	Else
+		enableView(True)
 		getConfig
 		ftp.Close
 		btn_save.Enabled = True
 		msg =$"Configuratie van ${unit} geladen"$
-		Msgbox(msg, "Bord Config")
+		'Msgbox(msg, "Bord Config")
+		clsFunc.createCustomToast(msg)
 	End If
 	
 End Sub
@@ -136,10 +153,24 @@ Sub ftp_PromptYesNo (Message As String)
 	ftp.SetPromptResult(True)
 End Sub
 
-Sub clearConfig
-	chk_timeout_active.Checked = False
+Sub enableView(enable As Boolean)
+	sw_timeout.Enabled = enable
+	sw_timeout.Value = enable
+	sw_digital_numbers.Enabled = enable
+	sw_digital_numbers.Value = enable
+	sw_use_yellow_number.Enabled = enable
+	sw_use_yellow_number.Value = enable
+	edt_timeout.Enabled = enable
 	edt_timeout.Text = ""
-	chk_use_digital.Checked = False
+	lbl_timeout_min.Enabled = enable
+	lbl_timeout_plus.Enabled = enable
+End Sub
+
+Sub clearConfig
+	sw_timeout.Enabled = False
+	sw_digital_numbers.Enabled = False
+	sw_use_yellow_number.Enabled = False
+	edt_timeout.Text = ""
 End Sub
 
 Sub btn_add_Click
@@ -152,4 +183,23 @@ Sub btn_remove_Click
 	If Result = DialogResponse.POSITIVE Then
 		'...
 	End If
+End Sub
+
+
+
+Sub lbl_timeout_min_Click
+	Dim timeOut As Int = edt_timeout.Text
+	If timeOut = 0 Then 
+		Return
+	Else 
+		edt_timeout.Text = timeOut - 1	
+	End If
+	
+	
+	
+End Sub
+
+Sub lbl_timeout_plus_Click
+	Dim timeOut As Int = edt_timeout.Text
+	edt_timeout.Text = timeOut + 1
 End Sub

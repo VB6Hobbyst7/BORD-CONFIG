@@ -14,7 +14,7 @@ Public Sub Initialize
 	
 End Sub
 
-Sub parseConfig(chkActive As CheckBox, edtTimeOut As EditText, chkDigital As CheckBox)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch)
 	
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
 	
@@ -24,18 +24,30 @@ Sub parseConfig(chkActive As CheckBox, edtTimeOut As EditText, chkDigital As Che
 	Dim showPromote As Map = root.Get("showPromote")
 	Dim digitalFont As Map = root.Get("digitalFont")
 	Dim digitalActive As String = digitalFont.Get("active")
+	Dim fontColor As Map = root.Get("fontColor")
+	Dim colorYellow As String = fontColor.Get("colorYellow")
 	
-	If showPromote.Get("active") = 1 Then
-		chkActive.Checked = True
+	If showPromote.Get("active") = "1" Then
+		swTimeOut.Value = True
 	Else
-		chkActive.Checked = True
+		swTimeOut.Value = False
 	End If
-	edtTimeOut.Text =  showPromote.Get("timeOut")
+	If showPromote.Get("timeOut") = "" Then
+		edtTimeOut.Text = "0"
+	Else
+		edtTimeOut.Text =  showPromote.Get("timeOut")
+	End If
 	
 	If digitalActive = "1" Then
-		chkDigital.Checked = True
-		Else
-		chkDigital.Checked = False
+		swUseDigital.Value = True
+	Else
+		swUseDigital.Value = False
+	End If
+	
+	If colorYellow = "1" Then
+		swUseYellow.Value = True
+	Else
+		swUseYellow.Value = False
 	End If
 	
 	
