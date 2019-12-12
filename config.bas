@@ -18,7 +18,7 @@ Sub Process_Globals
 End Sub
 
 Sub Globals
-
+	Public msgMaxCharacter As Long = 40
 	Public chk_timeout_active As CheckBox
 	Public edt_timeout As EditText
 	Private chk_use_digital As CheckBox
@@ -34,6 +34,11 @@ Sub Globals
 	Private sw_timeout As B4XSwitch
 	Private lbl_timeout_min As Label
 	Private lbl_timeout_plus As Label
+	Private edt_regel_1 As EditText
+	Private edt_regel_2 As EditText
+	Private edt_regel_3 As EditText
+	Private edt_regel_4 As EditText
+	Private edt_regel_5 As EditText
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -66,7 +71,10 @@ End Sub
 
 Sub btn_save_Click
 	'clsPutJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
-	clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number)
+	Dim msgList As List
+	msgList.Initialize
+	msgList.AddAll(Array As String(edt_regel_1.text, edt_regel_2.text, edt_regel_3.text, edt_regel_4.text, edt_regel_5.text))
+	clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList)
 End Sub
 
 Sub getUnits
@@ -109,6 +117,12 @@ End Sub
 
 
 Sub retrieveConfig(ipNumber As String)
+	#if debug
+		btn_save.Enabled = True
+		getConfig
+		Return
+	#End If
+	
 	btn_save.Enabled = False
 	Dim msg, unit As String
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
@@ -194,12 +208,62 @@ Sub lbl_timeout_min_Click
 	Else 
 		edt_timeout.Text = timeOut - 1	
 	End If
-	
-	
-	
 End Sub
 
 Sub lbl_timeout_plus_Click
 	Dim timeOut As Int = edt_timeout.Text
 	edt_timeout.Text = timeOut + 1
 End Sub
+
+Sub edt_regel_1_TextChanged (Old As String, New As String)
+	If clsFunc.countChars(New, msgMaxCharacter) = False Then
+		edt_regel_1.Text = Old
+		cursEOL(edt_regel_1)
+	End If
+End Sub
+
+Sub edt_regel_5_TextChanged (Old As String, New As String)
+	If clsFunc.countChars(New, msgMaxCharacter) = False Then
+		edt_regel_5.Text = Old
+		cursEOL(edt_regel_5)
+	End If
+End Sub
+
+Sub edt_regel_4_TextChanged (Old As String, New As String)
+	If clsFunc.countChars(New, msgMaxCharacter) = False Then
+		edt_regel_4.Text = Old
+		cursEOL(edt_regel_4)
+	End If
+End Sub
+
+Sub edt_regel_3_TextChanged (Old As String, New As String)
+	If clsFunc.countChars(New, msgMaxCharacter) = False Then
+		edt_regel_3.Text = Old
+		cursEOL(edt_regel_3)
+	End If
+End Sub
+
+Sub edt_regel_2_TextChanged (Old As String, New As String)
+	If clsFunc.countChars(New, msgMaxCharacter) = False Then
+		edt_regel_2.Text = Old
+		cursEOL(edt_regel_2)
+	End If
+End Sub
+
+Sub cursEOL(v As EditText)
+	v.SelectionStart = 40
+End Sub
+
+
+Sub setMeassage(msg As List)
+	edt_regel_1.Text = msg.Get(0)
+	edt_regel_2.Text = msg.Get(1)
+	edt_regel_3.Text = msg.Get(2)
+	edt_regel_4.Text = msg.Get(3)
+	edt_regel_5.Text = msg.Get(4)
+	
+End Sub
+
+
+
+

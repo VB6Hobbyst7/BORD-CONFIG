@@ -17,7 +17,7 @@ Public Sub Initialize
 End Sub
 
 
-Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List)
 		
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
 	
@@ -27,7 +27,14 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	Dim showPromote As Map = root.Get("showPromote")
 	Dim digitalFont As Map = root.Get("digitalFont")
 	Dim fontColor As Map = root.Get("fontColor")
-	Dim colorYellow As String = fontColor.Get("colorYellow")
+'	Dim colorYellow As String = fontColor.Get("colorYellow")
+	
+	Dim message As Map = root.Get("message")
+'	Dim line_1 As String = message.Get("line_1")
+'	Dim line_2 As String = message.Get("line_2")
+'	Dim line_5 As String = message.Get("line_5")
+'	Dim line_3 As String = message.Get("line_3")
+'	Dim line_4 As String = message.Get("line_4")
 	
 	
 	If swTimeOut.Value = True Then
@@ -45,15 +52,24 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	
 	If swUseYellow.Value = True Then
 		fontColor.Put("colorYellow", "1")
-		Else
+	Else
 		fontColor.Put("colorYellow", "0")
 	End If
+	
+	message.Put("line_1", msg.Get(0))
+	message.Put("line_2", msg.Get(1))
+	message.Put("line_3", msg.Get(2))
+	message.Put("line_4", msg.Get(3))
+	message.Put("line_5", msg.Get(4))
 	
 	Dim JSONGenerator As JSONGenerator
 	JSONGenerator.Initialize(root)
 	
 	File.WriteString(Starter.hostPath, "cnf.44", JSONGenerator.ToPrettyString(2))
 	Sleep(50)
+	#if debug
+		Return
+	#End If
 	pushConfig
 End Sub
 	
