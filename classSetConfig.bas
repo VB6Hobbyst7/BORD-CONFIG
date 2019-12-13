@@ -9,6 +9,7 @@ Sub Class_Globals
 	Private cnf As String
 	Dim ftp As SFtp
 	Private clsfunc As classFunc
+	Public ipNumber As String
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -17,7 +18,7 @@ Public Sub Initialize
 End Sub
 
 
-Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List, swSponsor As B4XSwitch)
 		
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
 	
@@ -27,14 +28,8 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	Dim showPromote As Map = root.Get("showPromote")
 	Dim digitalFont As Map = root.Get("digitalFont")
 	Dim fontColor As Map = root.Get("fontColor")
-'	Dim colorYellow As String = fontColor.Get("colorYellow")
-	
 	Dim message As Map = root.Get("message")
-'	Dim line_1 As String = message.Get("line_1")
-'	Dim line_2 As String = message.Get("line_2")
-'	Dim line_5 As String = message.Get("line_5")
-'	Dim line_3 As String = message.Get("line_3")
-'	Dim line_4 As String = message.Get("line_4")
+	Dim sponsor As Map = root.Get("reclame")
 	
 	
 	If swTimeOut.Value = True Then
@@ -62,24 +57,31 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	message.Put("line_4", msg.Get(3))
 	message.Put("line_5", msg.Get(4))
 	
+	If swSponsor.Value = True Then
+		sponsor.Put("active", "1")
+	Else
+		sponsor.Put("active", "0")
+	End If
+	
 	Dim JSONGenerator As JSONGenerator
 	JSONGenerator.Initialize(root)
 	
 	File.WriteString(Starter.hostPath, "cnf.44", JSONGenerator.ToPrettyString(2))
 	Sleep(50)
 	#if debug
-		Return
+	Return
 	#End If
 	pushConfig
 End Sub
 	
 Sub pushConfig
-	ftp.Initialize("ftp", "pi", "0", "192.168.1.27", 22)
+	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	
 	ftp.UploadFile(Starter.hostPath, "cnf.44", "/home/pi/44/cnf.44")
 	Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
+		Log(LastException.Message)
 		clsfunc.createCustomToast("Configuratie niet verzonden")
 	Else
 		clsfunc.createCustomToast("Configuratie verzonden")
@@ -87,3 +89,8 @@ Sub pushConfig
 	
 	ftp.Close
 End Sub
+
+Sub ftp_PromptYesNo (Message As String)
+	ftp.SetPromptResult(True)
+End Sub
+

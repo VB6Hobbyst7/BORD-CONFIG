@@ -39,6 +39,7 @@ Sub Globals
 	Private edt_regel_3 As EditText
 	Private edt_regel_4 As EditText
 	Private edt_regel_5 As EditText
+	Private sw_toon_sponsor As B4XSwitch
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -66,7 +67,7 @@ End Sub
 
 Sub getConfig
 	'clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
-	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number)
+	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor)
 End Sub
 
 Sub btn_save_Click
@@ -74,7 +75,8 @@ Sub btn_save_Click
 	Dim msgList As List
 	msgList.Initialize
 	msgList.AddAll(Array As String(edt_regel_1.text, edt_regel_2.text, edt_regel_3.text, edt_regel_4.text, edt_regel_5.text))
-	clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList)
+	clsPutJson.ipNumber = lstValue.get(cmb_units.SelectedIndex)
+	clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor)
 End Sub
 
 Sub getUnits
@@ -113,15 +115,17 @@ Sub cmb_units_SelectedIndexChanged (Index As Int)
 	retrieveConfig(value)
 	ProgressBar.Visible = False
 	
+	
 End Sub
 
 
 Sub retrieveConfig(ipNumber As String)
-	#if debug
-		btn_save.Enabled = True
-		getConfig
-		Return
-	#End If
+'	#if debug
+'	btn_save.Enabled = True
+'	enableView(True)
+'	getConfig
+'	Return
+'	#End If
 	
 	btn_save.Enabled = False
 	Dim msg, unit As String
@@ -170,12 +174,19 @@ End Sub
 Sub enableView(enable As Boolean)
 	sw_timeout.Enabled = enable
 	sw_timeout.Value = enable
+	
 	sw_digital_numbers.Enabled = enable
 	sw_digital_numbers.Value = enable
+	
 	sw_use_yellow_number.Enabled = enable
 	sw_use_yellow_number.Value = enable
+	
+	sw_toon_sponsor.Enabled = enable
+	sw_toon_sponsor.Value = enable
+	
 	edt_timeout.Enabled = enable
 	edt_timeout.Text = ""
+	
 	lbl_timeout_min.Enabled = enable
 	lbl_timeout_plus.Enabled = enable
 End Sub
@@ -184,6 +195,7 @@ Sub clearConfig
 	sw_timeout.Enabled = False
 	sw_digital_numbers.Enabled = False
 	sw_use_yellow_number.Enabled = False
+	sw_toon_sponsor.Enabled = False
 	edt_timeout.Text = ""
 End Sub
 

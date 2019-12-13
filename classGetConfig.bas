@@ -14,7 +14,7 @@ Public Sub Initialize
 	
 End Sub
 
-Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, swSponsor As B4XSwitch)
 	Dim lstMsg As List
 		
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
@@ -33,6 +33,9 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	Dim line_5 As String = message.Get("line_5")
 	Dim line_3 As String = message.Get("line_3")
 	Dim line_4 As String = message.Get("line_4")
+	
+	Dim sponsor As Map = root.Get("reclame")
+	Dim sponsorActive As String = sponsor.Get("active")
 	
 	If showPromote.Get("active") = "1" Then
 		swTimeOut.Value = True
@@ -55,6 +58,12 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 		swUseYellow.Value = True
 	Else
 		swUseYellow.Value = False
+	End If
+	
+	If sponsorActive = "1" Then
+		swSponsor.Value = True
+	Else
+		swSponsor.Value = False
 	End If
 	
 	lstMsg.AddAll(Array As String(line_1, line_2, line_3, line_4, line_5))
