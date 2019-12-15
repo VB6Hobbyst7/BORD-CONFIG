@@ -11,8 +11,11 @@ Version=9.5
 
 Sub Process_Globals
 	Private rp As RuntimePermissions
-	Public hostPath As String
+	Public hostPath,  edtIpNumber, unitId As String
+	Public edtUnit As Boolean = False
 	Public sql As SQL
+	Public xStr As String = "qlndfwjeklfnw213123912iedmd$%Gk"
+	Public pw as String = "peter"
 
 End Sub
 

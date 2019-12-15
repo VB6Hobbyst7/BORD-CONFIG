@@ -13,11 +13,28 @@ Public Sub Initialize
 	
 End Sub
 
+Sub pingBord(ipNumber As String) As ResumableSub
+	Dim p As Phone
+	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
+	If Success Then
+		Log(ExitValue)
+		Log("Out: " & StdOut)
+		Log("Err: "&  StdErr)
+		If StdOut.IndexOf("Destination Host Unreachable") <> -1 Then
+			Return False
+		Else
+			Return True
+		End If
+	Else
+		Log("Error: " & LastException)
+		Return False
+	End If
+End Sub
 
-Sub createCustomToast(txt As String)
+Sub createCustomToast(txt As String, color As String)
 	Dim cs As CSBuilder
 	cs.Initialize.Typeface(Typeface.LoadFromAssets("Arial.ttf")).Color(Colors.White).Size(16).Append(txt).PopAll
-	ShowCustomToast(cs, False, Colors.Blue)
+	ShowCustomToast(cs, False, color)
 End Sub
 
 Sub ShowCustomToast(Text As Object, LongDuration As Boolean, BackgroundColor As Int)
@@ -39,7 +56,7 @@ End Sub
 
 Sub countChars(str As String, maxCount As Int) As Boolean
 	If str.Length > maxCount Then
-		createCustomToast($"Maximaal ${maxCount} tekens.."$)
+		createCustomToast($"Maximaal ${maxCount} tekens.."$, Colors.Blue)
 		Return False
 	End If
 	Return True

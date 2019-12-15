@@ -19,12 +19,18 @@ End Sub
 
 Sub addBord(description As String, ipNumber As String)
 	Dim curs As Cursor
+	Dim id As String = GUID
 	
-	qry = "INSERT INTO unit (description, ip_number) VALUES(?,?)"
-	Starter.sql.ExecNonQuery2(qry, Array As String(description, ipNumber))
+	qry = "INSERT INTO unit (unit_id,description, ip_number) VALUES(?,?,?)"
+	Starter.sql.ExecNonQuery2(qry, Array As String(id, description, ipNumber))
 		
 End Sub
 
+Sub updateBord(description As String, ipNumber As String)
+	qry = "UPDATE unit Set description = ?, ip_number = ? WHERE unit_id = ?"
+	Starter.sql.ExecNonQuery2(qry, Array As String(description, ipNumber, Starter.unitId))
+	
+End Sub
 
 Sub bordNameExists(name As String) As Boolean
 	Dim curs As Cursor
@@ -42,6 +48,26 @@ Sub bordNameExists(name As String) As Boolean
 	Return False
 End Sub
 
+
+Sub getUnit(ip As String) As List
+	Dim curs As Cursor
+	Dim lst As List
+	
+	lst.Initialize
+	qry = "SELECT * FROM unit WHERE ip_number = ? COLLATE NOCASE"
+	
+	curs = Starter.sql.ExecQuery2(qry, Array As String(ip))
+	curs.Position = 0
+	
+	lst.AddAll(Array As String(curs.GetString("description"), curs.GetString("ip_number"), curs.GetString("unit_id")))
+	
+	curs.Close
+	
+	Return lst
+	
+End Sub
+
+
 Sub bordIpExists(ip As String) As Boolean
 	Dim curs As Cursor
 	Dim count As Int
@@ -58,6 +84,13 @@ Sub bordIpExists(ip As String) As Boolean
 	Return False
 	
 End Sub
+
+Sub deleteBord(ip As String)
+	qry = "DELETE FROM unit WHERE ip_number = ?"
+	Starter.sql.ExecNonQuery2(qry, Array As String(ip))
+	
+End Sub
+
 
 Sub GUID As String
 	Dim sb As StringBuilder

@@ -82,9 +82,9 @@ Sub pushConfig
 	Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
 		Log(LastException.Message)
-		clsfunc.createCustomToast("Configuratie niet verzonden")
+		clsfunc.createCustomToast("Configuratie niet verzonden", Colors.Red)
 	Else
-		clsfunc.createCustomToast("Configuratie verzonden")
+		clsfunc.createCustomToast("Configuratie verzonden", Colors.Blue)
 	End If
 	
 	ftp.Close

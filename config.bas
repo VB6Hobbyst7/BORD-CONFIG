@@ -40,6 +40,7 @@ Sub Globals
 	Private edt_regel_4 As EditText
 	Private edt_regel_5 As EditText
 	Private sw_toon_sponsor As B4XSwitch
+	Private btn_edit As Button
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -57,6 +58,7 @@ End Sub
 
 Sub Activity_Resume
 	clearConfig
+	enableView(False)
 	getUnits
 End Sub
 
@@ -106,14 +108,16 @@ Sub cmb_units_SelectedIndexChanged (Index As Int)
 	If value = "0" Then
 		btn_save.Enabled = False
 		btn_remove.Visible =False
+		btn_edit.Visible = False
 		Return
 	End If
 	
 	btn_remove.Visible = True
-	ProgressBar.Visible = True
+	btn_edit.Visible = True
+'	ProgressBar.Visible = True
 	'Sleep(500)
 	retrieveConfig(value)
-	ProgressBar.Visible = False
+'	ProgressBar.Visible = False
 	
 	
 End Sub
@@ -126,18 +130,29 @@ Sub retrieveConfig(ipNumber As String)
 '	getConfig
 '	Return
 '	#End If
-	
-	btn_save.Enabled = False
 	Dim msg, unit As String
-	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	unit = cmb_units.GetItem(cmb_units.SelectedIndex)
+	
+	ProgressBar.Visible = True
+	'Sleep(300)
+	
+	wait For(clsFunc.pingBord(ipNumber)) Complete (result As Boolean)
+	If result = False Then
+		ProgressBar.Visible = False
+		clsFunc.createCustomToast($"${unit} niet bereikbaar"$, Colors.Red)
+	Return
+	End If
+	btn_save.Enabled = False
+	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
+	
 	
 	Try
 		ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	Catch
-		msg =$"$unit} niet bereikbaar"$
+		ProgressBar.Visible = False
+		msg =$"${unit} niet bereikbaar"$
 		
-		clsFunc.createCustomToast(msg)
+		clsFunc.createCustomToast(msg, Colors.Red)
 		Msgbox(msg, "Bord Config")
 		
 		ftp.Close
@@ -147,16 +162,19 @@ Sub retrieveConfig(ipNumber As String)
 	ftp.DownloadFile("/home/pi/44/cnf.44", Starter.hostPath, "cnf.44")
 	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
+		ProgressBar.Visible = False
 		msg =$"Config bestand van ${unit} niet gevonden"$
-		clsFunc.createCustomToast(msg)
+		clsFunc.createCustomToast(msg, Colors.Red)
 	Else
+		ProgressBar.Visible = False
 		enableView(True)
 		getConfig
 		ftp.Close
 		btn_save.Enabled = True
+		
 		msg =$"Configuratie van ${unit} geladen"$
 		'Msgbox(msg, "Bord Config")
-		clsFunc.createCustomToast(msg)
+		clsFunc.createCustomToast(msg, Colors.Blue)
 	End If
 	
 End Sub
@@ -204,10 +222,14 @@ Sub btn_add_Click
 End Sub
 
 Sub btn_remove_Click
+	Dim index As Int
+	index = cmb_units.SelectedIndex
 	Msgbox2Async("Bord verwijderen?", "Bord Config", "JA", "", "NEE", Null, False)
 	Wait For Msgbox_Result (Result As Int)
 	If Result = DialogResponse.POSITIVE Then
-		'...
+		gnDb.deleteBord(lstValue.get(index))
+		enableView(False)
+		getUnits
 	End If
 End Sub
 
@@ -277,5 +299,19 @@ Sub setMeassage(msg As List)
 End Sub
 
 
+
+Sub btn_edit_Click
+	Dim lst As List
+	
+	Starter.edtUnit = True	
+	Starter.edtIpNumber = lstValue.get(cmb_units.SelectedIndex)
+'	lst.Initialize
+'	
+'	lst = gnDb.getUnit(Starter.edtIpNumber)
+'	
+'	CallSub2(units, "setFieldsEdt", lst)
+	StartActivity(units)
+	
+End Sub
 
 
