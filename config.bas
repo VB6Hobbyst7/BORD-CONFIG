@@ -12,6 +12,7 @@ Version=9.5
 Sub Process_Globals
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
+	Dim clsUpdate As classGetLatestVersion
 	Dim ftp As SFtp
 	Dim lstDisplay, lstValue As List
 	Dim clsFunc As classFunc
@@ -22,7 +23,7 @@ Sub Globals
 	Public chk_timeout_active As CheckBox
 	Public edt_timeout As EditText
 	Private chk_use_digital As CheckBox
-	Private btn_save As Button
+	Private btn_saveA As Button
 	Private cmb_units As B4XComboBox
 	Private ProgressBar As ProgressBar
 	Private btn_add As Button
@@ -41,6 +42,9 @@ Sub Globals
 	Private edt_regel_5 As EditText
 	Private sw_toon_sponsor As B4XSwitch
 	Private btn_edit As Button
+	Private btn_update As Label
+	
+	Private btn_save As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -48,7 +52,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
-	
+	clsUpdate.Initialize
 	svInput.Panel.LoadLayout("configInput")
 	svInput.Panel.Height = 1000dip
 	getUnits
@@ -57,15 +61,18 @@ Sub Activity_Create(FirstTime As Boolean)
 End Sub
 
 Sub Activity_Resume
-	clearConfig
-	enableView(False)
-	getUnits
+	If Starter.bordUpdate = False Then
+		clearConfig
+		enableView(False)
+		getUnits
+	Else
+		Starter.bordUpdate = False
+	End If
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
 
 End Sub
-
 
 Sub getConfig
 	'clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
@@ -106,7 +113,9 @@ Sub cmb_units_SelectedIndexChanged (Index As Int)
 	enableView(False)
 	Dim value As String = lstValue.get(cmb_units.SelectedIndex)
 	If value = "0" Then
+		btn_update.SetVisibleAnimated(1000, False)
 		btn_save.Enabled = False
+		btn_save.Color = Colors.Gray
 		btn_remove.Visible =False
 		btn_edit.Visible = False
 		Return
@@ -143,6 +152,7 @@ Sub retrieveConfig(ipNumber As String)
 	Return
 	End If
 	btn_save.Enabled = False
+	btn_save.Color = Colors.Gray
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	
 	
@@ -160,6 +170,8 @@ Sub retrieveConfig(ipNumber As String)
 	End Try
 
 	ftp.DownloadFile("/home/pi/44/cnf.44", Starter.hostPath, "cnf.44")
+	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
+	
 	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
 		ProgressBar.Visible = False
@@ -171,13 +183,26 @@ Sub retrieveConfig(ipNumber As String)
 		getConfig
 		ftp.Close
 		btn_save.Enabled = True
+		btn_save.Color = Colors.Blue
 		
 		msg =$"Configuratie van ${unit} geladen"$
 		'Msgbox(msg, "Bord Config")
-		clsFunc.createCustomToast(msg, Colors.Blue)
+	'	clsFunc.createCustomToast(msg, Colors.Blue)
+		bordVersion
+		clsUpdate.retrieveVersion
 	End If
 	
 End Sub
+
+
+Sub bordVersion
+	
+	If File.Exists(Starter.hostPath, "ver.pdg") Then
+		Starter.bordVersion = File.ReadString(Starter.hostPath, "ver.pdg")	
+	End If
+	
+End Sub
+
 
 Sub ftp_ShowMessage (Message As String)
 	Msgbox(Message, "")
@@ -232,8 +257,6 @@ Sub btn_remove_Click
 		getUnits
 	End If
 End Sub
-
-
 
 Sub lbl_timeout_min_Click
 	Dim timeOut As Int = edt_timeout.Text
@@ -314,4 +337,10 @@ Sub btn_edit_Click
 	
 End Sub
 
+Sub updateAvailable
+	btn_update.SetVisibleAnimated(1000, True)
+End Sub
 
+Sub btn_update_Click
+	StartActivity(update_bord)
+End Sub

@@ -17,6 +17,13 @@ Sub RetieveBoards As Cursor
 End Sub
 
 
+Sub RetieveBoardsForUpdate As Cursor
+	qry = "SELECT * FROM unit ORDER BY description"
+	
+	Return Starter.sql.ExecQuery(qry)
+End Sub
+
+
 Sub addBord(description As String, ipNumber As String)
 	Dim curs As Cursor
 	Dim id As String = GUID

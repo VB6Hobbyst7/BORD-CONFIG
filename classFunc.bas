@@ -17,9 +17,9 @@ Sub pingBord(ipNumber As String) As ResumableSub
 	Dim p As Phone
 	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
 	If Success Then
-		Log(ExitValue)
-		Log("Out: " & StdOut)
-		Log("Err: "&  StdErr)
+	'	Log(ExitValue)
+	'	Log("Out: " & StdOut)
+	'	Log("Err: "&  StdErr)
 		If StdOut.IndexOf("Destination Host Unreachable") <> -1 Then
 			Return False
 		Else
