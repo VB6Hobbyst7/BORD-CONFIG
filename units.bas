@@ -101,7 +101,7 @@ End Sub
 
 Sub pingBord
 	ProgressBar.Visible = True
-	Sleep(2000)
+	Sleep(1000)
 	Dim p As Phone
 	Dim sb As StringBuilder
 	sb.Initialize

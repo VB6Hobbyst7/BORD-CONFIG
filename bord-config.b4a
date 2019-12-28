@@ -4,8 +4,9 @@ File2=boards.db
 File3=clv_bord.bal
 File4=config.bal
 File5=configInput.bal
-File6=units.bal
-File7=update.bal
+File6=Montserrat-Regular.ttf
+File7=units.bal
+File8=update.bal
 FileGroup1=Default Group
 FileGroup2=Default Group
 FileGroup3=Default Group
@@ -13,6 +14,7 @@ FileGroup4=Default Group
 FileGroup5=Default Group
 FileGroup6=Default Group
 FileGroup7=Default Group
+FileGroup8=Default Group
 Group=Default Group
 IconFile=
 Library1=core
@@ -20,6 +22,7 @@ Library10=javaobject
 Library11=b4xencryption
 Library12=net
 Library13=xcustomlistview
+Library14=accessibility
 Library2=jsch
 Library3=runtimepermissions
 Library4=json
@@ -39,8 +42,8 @@ Module6=Starter
 Module7=classGetLatestVersion
 Module8=classSetConfig
 Module9=gnDb
-NumberOfFiles=7
-NumberOfLibraries=13
+NumberOfFiles=8
+NumberOfLibraries=14
 NumberOfModules=10
 Version=9.5
 @EndOfDesignText@
@@ -52,7 +55,7 @@ Version=9.5
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: False
 #End Region
-
+ #IgnoreWarnings: 10, 20
 #Region  Activity Attributes 
 	#FullScreen: False
 	#IncludeTitle: True

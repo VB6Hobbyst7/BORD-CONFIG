@@ -8,7 +8,7 @@ Version=9.5
 	#FullScreen: True
 	#IncludeTitle: False
 #End Region
-
+#IgnoreWarnings: 10, 20
 Sub Process_Globals
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
@@ -16,6 +16,7 @@ Sub Process_Globals
 	Dim ftp As SFtp
 	Dim lstDisplay, lstValue As List
 	Dim clsFunc As classFunc
+	Dim access As Accessiblity
 End Sub
 
 Sub Globals
@@ -45,10 +46,22 @@ Sub Globals
 	Private btn_update As Label
 	
 	Private btn_save As Label
+	Private lbl_digital As Label
+	Private lbl_yellow As Label
+	Private lbl_sponsor As Label
+	Private lbl_timeout As Label
+	Private lbl_to_minutes As Label
+	Private lbl_text_header As Label
+	Private lbl_text_footer As Label
+	Private sw_game_time As B4XSwitch
+	Private chk_alle_borden As CheckBox
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("config")
+
+	setFontSize
+	
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
@@ -57,6 +70,41 @@ Sub Activity_Create(FirstTime As Boolean)
 	svInput.Panel.Height = 1000dip
 	getUnits
 	'getConfig
+	
+End Sub
+
+Sub setFontSize
+	lbl_yellow.Initialize("")
+	lbl_digital.Initialize("")
+	lbl_sponsor.Initialize("")
+	lbl_timeout.Initialize("")
+	lbl_to_minutes.Initialize("")
+	lbl_text_header.Initialize("")
+	lbl_text_footer.Initialize("")
+	
+	edt_regel_1.Initialize(Me)
+	edt_regel_2.Initialize(Me)
+	edt_regel_3.Initialize(Me)
+	edt_regel_4.Initialize(Me)
+	edt_regel_5.Initialize(Me)
+	
+	
+	
+	ResetUserFontScaleLabel(lbl_digital)
+	ResetUserFontScaleLabel(lbl_yellow)
+	ResetUserFontScaleLabel(lbl_sponsor)
+	ResetUserFontScaleLabel(lbl_timeout)
+	ResetUserFontScaleLabel(lbl_to_minutes)
+	ResetUserFontScaleLabel(lbl_text_header)
+	ResetUserFontScaleLabel(lbl_text_footer)
+	
+	ResetUserFontScaleEdit(edt_timeout)
+	ResetUserFontScaleEdit(edt_regel_1)
+	ResetUserFontScaleEdit(edt_regel_2)
+	ResetUserFontScaleEdit(edt_regel_3)
+	ResetUserFontScaleEdit(edt_regel_4)
+	ResetUserFontScaleEdit(edt_regel_5)
+	
 	
 End Sub
 
@@ -76,16 +124,47 @@ End Sub
 
 Sub getConfig
 	'clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
-	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor)
+	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time)
 End Sub
 
 Sub btn_save_Click
+	PerformHapticFeedback(btn_save)
 	'clsPutJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
 	Dim msgList As List
 	msgList.Initialize
 	msgList.AddAll(Array As String(edt_regel_1.text, edt_regel_2.text, edt_regel_3.text, edt_regel_4.text, edt_regel_5.text))
-	clsPutJson.ipNumber = lstValue.get(cmb_units.SelectedIndex)
-	clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor)
+	
+	If chk_alle_borden.Checked = False Then
+		clsPutJson.ipNumber = lstValue.get(cmb_units.SelectedIndex)
+		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time)
+		userMessage
+	Else
+		For i = 1 To lstValue.Size - 1
+			Sleep(500)
+			clsPutJson.bordNaam = lstDisplay.Get(i)
+			clsPutJson.ipNumber = lstValue.get(i)
+			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time)
+			Wait For (userMessage) Complete (result As Boolean)
+		Next
+	End If
+End Sub
+
+Sub userMessage As ResumableSub
+	
+	If clsPutJson.updateResult = 2 Then
+		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
+		Wait For Msgbox_Result (oke As Int)
+		If oke = DialogResponse.POSITIVE Then
+			Return True
+		End If
+	Else if clsPutJson.updateResult = 1 Then
+		Msgbox2Async("Configuratie verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
+		Wait For Msgbox_Result (oke As Int)
+		If oke = DialogResponse.POSITIVE Then
+			Return True
+		End If
+	End If
+	Return True
 End Sub
 
 Sub getUnits
@@ -103,8 +182,11 @@ Sub getUnits
 		lstDisplay.Add(curs.GetString("description"))
 		lstValue.Add(curs.GetString("ip_number"))
 	Next
-	
 	cmb_units.SetItems(lstDisplay)
+	
+	
+	chk_alle_borden.Enabled = lstValue.Size > 2
+	
 	
 End Sub
 
@@ -227,6 +309,9 @@ Sub enableView(enable As Boolean)
 	sw_toon_sponsor.Enabled = enable
 	sw_toon_sponsor.Value = enable
 	
+	sw_game_time.Enabled = enable
+	sw_game_time.Value = enable
+	
 	edt_timeout.Enabled = enable
 	edt_timeout.Text = ""
 	
@@ -338,9 +423,42 @@ Sub btn_edit_Click
 End Sub
 
 Sub updateAvailable
-	btn_update.SetVisibleAnimated(1000, True)
+	btn_update.SetVisibleAnimated(1000, False)
 End Sub
 
 Sub btn_update_Click
 	StartActivity(update_bord)
 End Sub
+
+Sub ResetUserFontScaleLabel(lbl As Label)
+	Dim fscale As Double
+	fscale = access.GetUserFontScale
+
+	lbl.TextSize = NumberFormat2(lbl.TextSize / fscale,1,0,0,False)
+
+End Sub
+
+Sub ResetUserFontScaleEdit(v As B4XView)
+	Dim fscale As Double
+	fscale = access.GetUserFontScale
+	chk_alle_borden.TextSize = 17
+	chk_alle_borden.TextSize = NumberFormat2(chk_alle_borden.TextSize / fscale,1,0,0,False)
+	
+	If v Is EditText Then
+		v.TextSize = NumberFormat2(v.TextSize / fscale,1,0,0,False)
+'	btn_save.TextSize = NumberFormat2(btn_save.TextSize / fscale,1,0,0,False)
+	End If
+End Sub
+
+Private Sub PerformHapticFeedback (view As Object)
+   #if B4A
+	Dim jo As JavaObject = view
+	jo.RunMethod("performHapticFeedback", Array(1))
+   #Else if B4i
+   FeedbackGenerator.RunMethod("impactOccurred", Null) 'see the tetris example
+   #end if
+End Sub
+
+
+
+

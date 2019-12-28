@@ -9,7 +9,9 @@ Sub Class_Globals
 	Private cnf As String
 	Dim ftp As SFtp
 	Private clsfunc As classFunc
-	Public ipNumber As String
+	Public ipNumber, bordNaam As String
+	public updateResult as Int = 1
+	
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -18,7 +20,7 @@ Public Sub Initialize
 End Sub
 
 
-Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List, swSponsor As B4XSwitch)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List, swSponsor As B4XSwitch, swGameTime As B4XSwitch)
 		
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
 	
@@ -30,6 +32,7 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	Dim fontColor As Map = root.Get("fontColor")
 	Dim message As Map = root.Get("message")
 	Dim sponsor As Map = root.Get("reclame")
+	Dim gameTime As Map = root.Get("partijDuur")
 	
 	
 	If swTimeOut.Value = True Then
@@ -63,6 +66,12 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 		sponsor.Put("active", "0")
 	End If
 	
+	If swGameTime.Value = True Then
+		gameTime.Put("active", "1")
+		Else
+		gameTime.Put("active", "0")
+	End If
+	
 	Dim JSONGenerator As JSONGenerator
 	JSONGenerator.Initialize(root)
 	
@@ -82,12 +91,19 @@ Sub pushConfig
 	Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
 		Log(LastException.Message)
-		clsfunc.createCustomToast("Configuratie niet verzonden", Colors.Red)
+'		clsfunc.createCustomToast("Configuratie niet verzonden", Colors.Red)
+		updateResult = 1
 	Else
-		clsfunc.createCustomToast("Configuratie verzonden", Colors.Blue)
+		'clsfunc.createCustomToast("Configuratie verzonden", Colors.Blue)
+		updateResult = 2
+		
+		
 	End If
 	
 	ftp.Close
+	
+	
+	
 End Sub
 
 Sub ftp_PromptYesNo (Message As String)

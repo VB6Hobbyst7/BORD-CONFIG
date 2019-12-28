@@ -26,7 +26,7 @@ Sub pingBord(ipNumber As String) As ResumableSub
 			Return True
 		End If
 	Else
-		Log("Error: " & LastException)
+	'	Log("Error: " & LastException)
 		Return False
 	End If
 End Sub
