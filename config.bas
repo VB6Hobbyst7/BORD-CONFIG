@@ -13,6 +13,7 @@ Sub Process_Globals
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
 	Dim clsUpdate As classGetLatestVersion
+	Dim clsC As classCrypt
 	Dim ftp As SFtp
 	Dim lstDisplay, lstValue As List
 	Dim clsFunc As classFunc
@@ -61,7 +62,8 @@ Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("config")
 
 	setFontSize
-	
+'	clsC.Initialize
+'	clsC.test
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
