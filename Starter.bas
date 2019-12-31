@@ -11,8 +11,15 @@ Version=9.5
 
 Sub Process_Globals
 	Private rp As RuntimePermissions
-	Public hostPath As String
+	Public hostPath,  edtIpNumber, unitId, bordVersion, updateFile, upDateVersion As String
+	Public fileSize As Long
+	Public edtUnit As Boolean = False
+	Public bordUpdate As Boolean = False
 	Public sql As SQL
+	Public xStr As String = "qlndfwjeklfnw213123912iedmd$%Gk"
+	Public pw As String = "peter"
+	Public doy As String ="pdegrootafr", moy As String ="hkWpXtB1!"
+	Public pwSet as Boolean
 
 End Sub
 
