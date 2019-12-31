@@ -9,6 +9,7 @@ Version=9.5
 	#IncludeTitle: False
 #End Region
 #IgnoreWarnings: 10, 20
+#Extends: android.support.v7.app.AppCompatActivity
 Sub Process_Globals
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
@@ -18,6 +19,7 @@ Sub Process_Globals
 	Dim lstDisplay, lstValue As List
 	Dim clsFunc As classFunc
 	Dim access As Accessiblity
+	
 End Sub
 
 Sub Globals
@@ -56,21 +58,25 @@ Sub Globals
 	Private lbl_text_footer As Label
 	Private sw_game_time As B4XSwitch
 	Private chk_alle_borden As CheckBox
+	Private tsConfig As TabStrip
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
-	Activity.LoadLayout("config")
+	Activity.LoadLayout("configMain")
 
-	setFontSize
+'	setFontSize
 '	clsC.Initialize
 '	clsC.test
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
 	clsUpdate.Initialize
-	svInput.Panel.LoadLayout("configInput")
-	svInput.Panel.Height = 1000dip
-	getUnits
+'	svInput.Panel.LoadLayout("configInput")
+'	svInput.Panel.Height = 1000dip
+'	getUnits
+	
+	tsConfig.LoadLayout("conf_switch", "schakelaars")
+	tsConfig.LoadLayout("conf_screenSaver", "ScreenSaver")
 	'getConfig
 	
 End Sub
@@ -100,7 +106,7 @@ Sub setFontSize
 	ResetUserFontScaleLabel(lbl_text_header)
 	ResetUserFontScaleLabel(lbl_text_footer)
 	
-	ResetUserFontScaleEdit(edt_timeout)
+'	ResetUserFontScaleEdit(edt_timeout)
 	ResetUserFontScaleEdit(edt_regel_1)
 	ResetUserFontScaleEdit(edt_regel_2)
 	ResetUserFontScaleEdit(edt_regel_3)
@@ -319,6 +325,21 @@ Sub enableView(enable As Boolean)
 	
 	lbl_timeout_min.Enabled = enable
 	lbl_timeout_plus.Enabled = enable
+	
+	edt_regel_1.Text = ""
+	edt_regel_1.Enabled = enable
+	
+	edt_regel_2.Text = ""
+	edt_regel_2.Enabled = enable
+	
+	edt_regel_3.Text = ""
+	edt_regel_3.Enabled = enable
+	
+	edt_regel_4.Text = ""
+	edt_regel_4.Enabled = enable
+	
+	edt_regel_5.Text = ""
+	edt_regel_5.Enabled = enable
 End Sub
 
 Sub clearConfig
@@ -425,7 +446,7 @@ Sub btn_edit_Click
 End Sub
 
 Sub updateAvailable
-	btn_update.SetVisibleAnimated(1000, False)
+'	btn_update.SetVisibleAnimated(1000, False)
 End Sub
 
 Sub btn_update_Click
