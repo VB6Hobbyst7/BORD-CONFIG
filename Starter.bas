@@ -19,8 +19,9 @@ Sub Process_Globals
 	Public xStr As String = "qlndfwjeklfnw213123912iedmd$%Gk"
 	Public pw As String = "peter"
 	Public doy As String ="pdegrootafr", moy As String ="hkWpXtB1!"
-	Public pwSet as Boolean
-
+	Public pwSet As Boolean
+	Public selectedBordPanel As Int
+	Public selectedBordName, selectedBordIp as String
 End Sub
 
 Sub Service_Create

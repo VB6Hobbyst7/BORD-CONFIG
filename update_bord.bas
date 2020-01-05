@@ -154,6 +154,7 @@ Sub updateBorden
 		sftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	
 		sftp.UploadFile(Starter.hostPath, Starter.updateFile,"/home/pi/44/44.jar")
+	
 
 		Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 		If Success = False Then

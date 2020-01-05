@@ -9,6 +9,9 @@ Version=9.5
 	#IncludeTitle: False
 #End Region
 
+#IgnoreWarnings: 10, 11, 12 , 20
+#Extends: android.support.v7.app.AppCompatActivity
+
 Sub Process_Globals
 	Private nw As ServerSocket
 	Private clsAes As AESCryptUtilities
@@ -23,6 +26,7 @@ Sub Globals
 	Private btn_add_unit As Button
 	Private ProgressBar As ProgressBar
 	Private clsFunc As classFunc
+	Private btn_back As Button
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -148,4 +152,8 @@ Sub setFieldsEdt(lst As List)
 	edt_ip.Text = lst.Get(1)
 	
 	
+End Sub
+
+Sub btn_back_Click
+	Activity.Finish
 End Sub

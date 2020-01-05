@@ -10,7 +10,7 @@ Sub Class_Globals
 	Dim ftp As SFtp
 	Private clsfunc As classFunc
 	Public ipNumber, bordNaam As String
-	public updateResult as Int = 1
+	Public updateResult As Int = 1
 	
 End Sub
 
@@ -78,7 +78,7 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	File.WriteString(Starter.hostPath, "cnf.44", JSONGenerator.ToPrettyString(2))
 	Sleep(50)
 	#if debug
-	Return
+	'Return
 	#End If
 	pushConfig
 End Sub
@@ -86,17 +86,20 @@ End Sub
 Sub pushConfig
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
+	updateResult = 0
 	
 	ftp.UploadFile(Starter.hostPath, "cnf.44", "/home/pi/44/cnf.44")
 	Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
 		Log(LastException.Message)
+		ToastMessageShow($"Configuratie ${bordNaam} niet verzonden"$, False)		
 '		clsfunc.createCustomToast("Configuratie niet verzonden", Colors.Red)
 		updateResult = 1
 	Else
+		
 		'clsfunc.createCustomToast("Configuratie verzonden", Colors.Blue)
 		updateResult = 2
-		
+		ToastMessageShow($"Configuratie ${bordNaam} verzonden"$, False)		
 		
 	End If
 	

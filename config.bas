@@ -5,16 +5,17 @@ Type=Activity
 Version=9.5
 @EndOfDesignText@
 #Region  Activity Attributes 
-	#FullScreen: True
-	#IncludeTitle: False
+	#FullScreen: false
+	#IncludeTitle: true
 #End Region
-#IgnoreWarnings: 10, 20
+#IgnoreWarnings: 10, 11, 12 , 20
 #Extends: android.support.v7.app.AppCompatActivity
 Sub Process_Globals
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
 	Dim clsUpdate As classGetLatestVersion
 	Dim clsC As classCrypt
+	Dim clsClvBord As classClvBord
 	Dim ftp As SFtp
 	Dim lstDisplay, lstValue As List
 	Dim clsFunc As classFunc
@@ -23,7 +24,7 @@ Sub Process_Globals
 End Sub
 
 Sub Globals
-	Public msgMaxCharacter As Long = 40
+	Public msgMaxCharacter As Int = 40
 	Public chk_timeout_active As CheckBox
 	Public edt_timeout As EditText
 	Private chk_use_digital As CheckBox
@@ -32,7 +33,6 @@ Sub Globals
 	Private ProgressBar As ProgressBar
 	Private btn_add As Button
 	Private btn_remove As Button
-	Private svInput As ScrollView
 	Private pnl_config As Panel
 	Private sw_use_yellow_number As B4XSwitch
 	Private sw_digital_numbers As B4XSwitch
@@ -59,11 +59,26 @@ Sub Globals
 	Private sw_game_time As B4XSwitch
 	Private chk_alle_borden As CheckBox
 	Private tsConfig As TabStrip
+	Private svInput As ScrollView
+	Private toolbar As ACToolBarDark
+	Private clv_borden As CustomListView
+	Private btn_new_bord As Button
+	Private lbl_ip As Label
+	Private lbl_bord_name As Label
+	Private sw_update As B4XSwitch
+	Private lbl_alive As Label
+	Private lbl_delete_bord As Label
+	Private lbl_edit_bord As Label
+	
+	Private lbl_bord_config As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
-	Activity.LoadLayout("configMain")
-
+	
+'	Activity.LoadLayout("configMain")
+	Activity.LoadLayout("main_config")
+'	toolbar.InitMenuListener
+	setMenuColor
 '	setFontSize
 '	clsC.Initialize
 '	clsC.test
@@ -71,14 +86,95 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsJson.Initialize
 	clsPutJson.Initialize
 	clsUpdate.Initialize
-'	svInput.Panel.LoadLayout("configInput")
-'	svInput.Panel.Height = 1000dip
+	clsClvBord.Initialize
+	
+	svInput.Initialize(1500dip)
+'	svInput.Panel.LoadLayout("test")
 '	getUnits
 	
-	tsConfig.LoadLayout("conf_switch", "schakelaars")
-	tsConfig.LoadLayout("conf_screenSaver", "ScreenSaver")
+	tsConfig.LoadLayout("main_bord", "Borden")
+'	tsConfig.LoadLayout("conf_switch", "Instellingen")
+'	tsConfig.LoadLayout("confscreenSaver", "ScreenSaver")
+'	tsConfig.LoadLayout("conf_scrsav_sv", "ScreenSaver")
+'	tsConfig.LoadLayout("update", "Update")
+'	svInput.Panel.LoadLayout("confscreenSaver")
 	'getConfig
+'	edtFnext
+End Sub
+
+Sub Activity_Resume
+	If Starter.bordUpdate = False Then
+'		clearConfig
+	'	enableView(False)
+		If Starter.edtUnit = False Then
+			getUnits
+		End If
+		Starter.edtUnit = False
+	Else
+		Starter.bordUpdate = False
+	End If
+End Sub
+
+Sub Activity_CreateMenu(Menu As ACMenu)
+	Menu.Clear
+	Menu.Add(1, 1, "Bord Toevoegen", Null)
+	If lstDisplay.Size >= 2 Then
+		Menu.Add(2, 2, "Bord Bewerken", Null)
+		Menu.Add(3, 4, "Bord Verwijderen", Null)
+	End If
+End Sub
+
+Sub getUnits
+	Dim unitList As List
+	Dim viewWidth As Int = clv_borden.AsView.Width
+	clv_borden.Clear
 	
+	Dim curs As Cursor = gnDb.RetieveBoards
+	
+	If curs.RowCount = 0 Then
+		Return
+	End If
+	
+	For i = 0 To curs.RowCount - 1
+		curs.Position = i
+		clv_borden.Add(genUnitList(curs.GetString("description"), curs.GetString("ip_number"), viewWidth), "")
+	Next
+	clsClvBord.bordAlive(clv_borden)
+	curs.Close
+End Sub
+
+Sub genUnitList(name As String, ip As String, width As Int) As Panel
+	Dim p As Panel
+	p.Initialize(Me)
+	p.SetLayout(0dip, 0dip, width, 150dip)
+	p.LoadLayout("clv_bord")
+	
+	lbl_bord_name.Text = name
+	lbl_ip.Text = ip
+	
+	
+	
+	Return p
+End Sub
+
+Sub toolbar_MenuItemClick (Item As ACMenuItem)
+	Select  Item.Id
+		Case 1
+			StartActivity(units)
+		Case 2
+			btn_edit_Click
+		Case 3
+			btn_remove_Click
+	End Select
+	
+End Sub
+
+Sub edtFnext
+	editTextForceNext(edt_regel_1)
+	editTextForceNext(edt_regel_2)
+	editTextForceNext(edt_regel_3)
+	editTextForceNext(edt_regel_4)
+	editTextForceNext(edt_regel_5)
 End Sub
 
 Sub setFontSize
@@ -107,24 +203,16 @@ Sub setFontSize
 	ResetUserFontScaleLabel(lbl_text_footer)
 	
 '	ResetUserFontScaleEdit(edt_timeout)
-	ResetUserFontScaleEdit(edt_regel_1)
-	ResetUserFontScaleEdit(edt_regel_2)
-	ResetUserFontScaleEdit(edt_regel_3)
-	ResetUserFontScaleEdit(edt_regel_4)
-	ResetUserFontScaleEdit(edt_regel_5)
+'	ResetUserFontScaleEdit(edt_regel_1)
+'	ResetUserFontScaleEdit(edt_regel_2)
+'	ResetUserFontScaleEdit(edt_regel_3)
+'	ResetUserFontScaleEdit(edt_regel_4)
+'	ResetUserFontScaleEdit(edt_regel_5)
 	
 	
 End Sub
 
-Sub Activity_Resume
-	If Starter.bordUpdate = False Then
-		clearConfig
-		enableView(False)
-		getUnits
-	Else
-		Starter.bordUpdate = False
-	End If
-End Sub
+
 
 Sub Activity_Pause (UserClosed As Boolean)
 
@@ -133,6 +221,7 @@ End Sub
 Sub getConfig
 	'clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
 	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time)
+	edtFnext
 End Sub
 
 Sub btn_save_Click
@@ -175,7 +264,7 @@ Sub userMessage As ResumableSub
 	Return True
 End Sub
 
-Sub getUnits
+Sub getUnits1
 	'Dim lstDisplay, lstValue As List
 	Dim curs As Cursor = gnDb.RetieveBoards
 	
@@ -200,7 +289,7 @@ End Sub
 
 Sub cmb_units_SelectedIndexChanged (Index As Int)
 	
-	enableView(False)
+	'enableView(False)
 	Dim value As String = lstValue.get(cmb_units.SelectedIndex)
 	If value = "0" Then
 		btn_update.SetVisibleAnimated(1000, False)
@@ -269,7 +358,7 @@ Sub retrieveConfig(ipNumber As String)
 		clsFunc.createCustomToast(msg, Colors.Red)
 	Else
 		ProgressBar.Visible = False
-		enableView(True)
+		'enableView(True)
 		getConfig
 		ftp.Close
 		btn_save.Enabled = True
@@ -361,7 +450,7 @@ Sub btn_remove_Click
 	Wait For Msgbox_Result (Result As Int)
 	If Result = DialogResponse.POSITIVE Then
 		gnDb.deleteBord(lstValue.get(index))
-		enableView(False)
+	'	enableView(False)
 		getUnits
 	End If
 End Sub
@@ -387,17 +476,10 @@ Sub edt_regel_1_TextChanged (Old As String, New As String)
 	End If
 End Sub
 
-Sub edt_regel_5_TextChanged (Old As String, New As String)
+Sub edt_regel_2_TextChanged (Old As String, New As String)
 	If clsFunc.countChars(New, msgMaxCharacter) = False Then
-		edt_regel_5.Text = Old
-		cursEOL(edt_regel_5)
-	End If
-End Sub
-
-Sub edt_regel_4_TextChanged (Old As String, New As String)
-	If clsFunc.countChars(New, msgMaxCharacter) = False Then
-		edt_regel_4.Text = Old
-		cursEOL(edt_regel_4)
+		edt_regel_2.Text = Old
+		cursEOL(edt_regel_2)
 	End If
 End Sub
 
@@ -408,15 +490,29 @@ Sub edt_regel_3_TextChanged (Old As String, New As String)
 	End If
 End Sub
 
-Sub edt_regel_2_TextChanged (Old As String, New As String)
+Sub edt_regel_4_TextChanged (Old As String, New As String)
 	If clsFunc.countChars(New, msgMaxCharacter) = False Then
-		edt_regel_2.Text = Old
-		cursEOL(edt_regel_2)
+		edt_regel_4.Text = Old
+		cursEOL(edt_regel_4)
 	End If
 End Sub
 
+Sub edt_regel_5_TextChanged (Old As String, New As String)
+	If clsFunc.countChars(New, msgMaxCharacter) = False Then
+		edt_regel_5.Text = Old
+		cursEOL(edt_regel_5)
+	End If
+End Sub
+
+
+
 Sub cursEOL(v As EditText)
-	v.SelectionStart = 40
+	Dim str As String = v.Text
+	Dim strLen As Int = str.Length
+	
+	Log("TEXT LEN IS " & str.Length)
+	
+	v.SelectionStart = strLen  '40
 End Sub
 
 
@@ -483,5 +579,48 @@ Private Sub PerformHapticFeedback (view As Object)
 End Sub
 
 
+Sub editTextForceNext(v As EditText)
+	Dim r As Reflector
+	r.Target = v
+	r.RunMethod2("setImeOptions", 5, "java.lang.int")
+End Sub
+
+Sub setMenuColor
+Dim jo As JavaObject = toolbar
+Dim xl As XmlLayoutBuilder
+jo.RunMethod("setPopupTheme", Array(xl.GetResourceId("style", "ToolbarMenu")))
+End Sub
+'#If Java
+'
+'public boolean _onCreateOptionsMenu(android.view.Menu menu) {
+'    if (processBA.subExists("activity_createmenu")) {
+'        processBA.raiseEvent2(null, true, "activity_createmenu", false, new de.amberhome.objects.appcompat.ACMenuWrapper(menu));
+'        return true;
+'    }
+'    else
+'        return false;
+'}
+'#End If
+
+Sub btn_new_bord_Click
+	StartActivity(units)
+End Sub
+
+Sub clv_borden_ItemClick (Index As Int, Value As Object)
+'	clsClvBord.editItem(Index, Value, Sender)
+End Sub
+
+Sub lbl_delete_bord_Click
+	clsClvBord.deleteItem(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
+
+Sub lbl_edit_bord_Click
+	clsClvBord.editItem(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
 
 
+
+Sub lbl_bord_config_Click
+	
+	clsClvBord.configItem(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
