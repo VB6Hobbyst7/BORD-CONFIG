@@ -17,28 +17,58 @@ Sub bordAlive(clv As CustomListView)
 	Dim p As Panel
 	Dim itemCount As Int = clv.Size -1
 	Dim lbl As Label
+	Dim scrollOffset As Int = clv.AsView.ScrollViewOffsetY
+	
+	Starter.lstActiveBord.Initialize
 	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
+		For Each v As View In p.GetAllViewsRecursive
+			If v Is Label And v.Tag = "isAlive" Then
+				lbl = v
+				lbl.TextColor = Colors.Black
+			End If
+		Next
+	Next
+	
+	For i = 0 To itemCount
+		If i > 3 Then
+			clv.ScrollToItem(i)
+			
+		End If
+		p = clv.GetPanel(i)
 		
 		For Each v As View In p.GetAllViewsRecursive
+			If v Is Label And v.Tag = "name" Then
+				lbl = v
+				CallSub2(config, "PullDownSetTableName", lbl.Text)
+				
+			End If
+			
 			If v Is Label And v.Tag = "ip" Then
 				lbl = v
 				wait for (clsFunc.pingBord(lbl.Text)) Complete (result As Boolean)
-				  For Each v1 As View In p.GetAllViewsRecursive
+				For Each v1 As View In p.GetAllViewsRecursive
 					If v1 Is Label And v1.Tag = "isAlive" Then
 						lbl = v1
 					End If
 				Next
 				If result = True Then
 					lbl.TextColor = Colors.Green
-				Else	
+				Else
 					lbl.TextColor = Colors.Red
 				End If
 			End If
 			
 		Next
 	Next
+	Sleep(400)
+	For i = 0 To Starter.lstActiveBord.Size -1
+		Log("...." & Starter.lstActiveBord.Get(i))
+	Next
+	CallSub(config,"HidePullDown")
+	CallSub2(config, "PullDownSetTableName", "")
+	clv.ScrollToItem(0)
 	
 End Sub
 

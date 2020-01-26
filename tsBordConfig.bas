@@ -63,7 +63,21 @@ Sub Activity_Create(FirstTime As Boolean)
 	lbl_bord_naam.Text = Starter.selectedBordName
 	lbl_ip_nummer.Text = Starter.selectedBordIp
 	
-	retrieveConfig(Starter.selectedBordIp)
+	chk_alle_borden.Enabled = False
+	btn_save.Enabled = False
+	btn_save.Color = Colors.Red
+	btn_save.TextColor = Colors.White
+	For i = 0 To Starter.lstActiveBord.Size -1
+		If Starter.lstActiveBord.Get(i) = Starter.selectedBordIp Then
+			If Starter.lstActiveBord.Size > 1 Then
+				chk_alle_borden.Enabled = True
+			End If
+			btn_save.Enabled = True
+			btn_save.TextColor = Colors.Yellow
+			btn_save.Color = Colors.Blue
+			retrieveConfig(Starter.selectedBordIp)
+		End If
+	Next
 	
 	
 End Sub

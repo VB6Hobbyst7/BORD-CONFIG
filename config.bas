@@ -20,10 +20,12 @@ Sub Process_Globals
 	Dim lstDisplay, lstValue As List
 	Dim clsFunc As classFunc
 	Dim access As Accessiblity
-	
+	Dim bordPinged As Boolean = False
+	Private xui As XUI
 End Sub
 
 Sub Globals
+	Private Swipe As CLVSwipe
 	Public msgMaxCharacter As Int = 40
 	Public chk_timeout_active As CheckBox
 	Public edt_timeout As EditText
@@ -71,12 +73,18 @@ Sub Globals
 	Private lbl_edit_bord As Label
 	
 	Private lbl_bord_config As Label
+	Private lblPullToRefresh As B4XView
+	Private refreshIndicator As B4XLoadingIndicator
+	Private lblTafelNaam As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	
 '	Activity.LoadLayout("configMain")
 	Activity.LoadLayout("main_config")
+	
+	
+	
 '	toolbar.InitMenuListener
 	setMenuColor
 '	setFontSize
@@ -93,6 +101,17 @@ Sub Activity_Create(FirstTime As Boolean)
 '	getUnits
 	
 	tsConfig.LoadLayout("main_bord", "Borden")
+	'#######################################################################
+	Swipe.Initialize(clv_borden, Me, "Swipe")
+	Dim PullToRefreshPanel As B4XView = xui.CreatePanel("")
+	'PullToRefreshPanel.SetLayoutAnimated(0, 0, 0, 100%x, 70dip)
+	PullToRefreshPanel.SetLayoutAnimated(0, 0, 0, 100%x, 70dip)
+	PullToRefreshPanel.LoadLayout("PullToRefresh")
+	Swipe.PullToRefreshPanel = PullToRefreshPanel
+	'#######################################################################
+	
+	getUnits
+	
 '	tsConfig.LoadLayout("conf_switch", "Instellingen")
 '	tsConfig.LoadLayout("confscreenSaver", "ScreenSaver")
 '	tsConfig.LoadLayout("conf_scrsav_sv", "ScreenSaver")
@@ -107,12 +126,26 @@ Sub Activity_Resume
 '		clearConfig
 	'	enableView(False)
 		If Starter.edtUnit = False Then
-			getUnits
+			'getUnits
 		End If
 		Starter.edtUnit = False
 	Else
 		Starter.bordUpdate = False
 	End If
+End Sub
+
+Sub Swipe_RefreshRequested
+	'lblPullToRefresh.Text = "Borden zoeken..."
+	'refreshIndicator.Show
+	'example!!!
+	'Sleep(3000)
+	'CustomListView1.Clear
+	'CreateItems
+	
+	'Swipe.RefreshCompleted '<-- call to exit refresh mode
+	'lblPullToRefresh.Text = "Sleep om te vernieuwen"
+	'refreshIndicator.Hide
+	getUnits
 End Sub
 
 Sub Activity_CreateMenu(Menu As ACMenu)
@@ -125,6 +158,13 @@ Sub Activity_CreateMenu(Menu As ACMenu)
 End Sub
 
 Sub getUnits
+	btn_new_bord.SetVisibleAnimated(1000, False)
+	Swipe.ChangeYOffsetInit(245, False)
+	Swipe.PullToRefreshPanel.Visible = True
+	lblPullToRefresh.Text = "Borden zoeken..."
+	refreshIndicator.Show
+	'Swipe_RefreshRequested
+	'Swipe_RefreshRequested
 	Dim unitList As List
 	Dim viewWidth As Int = clv_borden.AsView.Width
 	clv_borden.Clear
@@ -139,8 +179,24 @@ Sub getUnits
 		curs.Position = i
 		clv_borden.Add(genUnitList(curs.GetString("description"), curs.GetString("ip_number"), viewWidth), "")
 	Next
-	clsClvBord.bordAlive(clv_borden)
+	If bordPinged = False Then
+		bordPinged = True
+		clsClvBord.bordAlive(clv_borden)
+	End If
 	curs.Close
+End Sub
+
+Sub HidePullDown
+	Swipe.RefreshCompleted '<-- call to exit refresh mode
+	lblPullToRefresh.Text = "Sleep om te vernieuwen"
+	refreshIndicator.Hide
+	bordPinged = False
+	btn_new_bord.SetVisibleAnimated(1000, True)
+	
+End Sub
+
+Sub PullDownSetTableName(name As String)
+	lblTafelNaam.Text = name
 End Sub
 
 Sub genUnitList(name As String, ip As String, width As Int) As Panel

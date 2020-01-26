@@ -21,7 +21,8 @@ Sub Process_Globals
 	Public doy As String ="pdegrootafr", moy As String ="hkWpXtB1!"
 	Public pwSet As Boolean
 	Public selectedBordPanel As Int
-	Public selectedBordName, selectedBordIp as String
+	Public selectedBordName, selectedBordIp As String
+	Public lstActiveBord as List
 End Sub
 
 Sub Service_Create

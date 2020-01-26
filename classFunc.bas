@@ -16,14 +16,20 @@ End Sub
 Sub pingBord(ipNumber As String) As ResumableSub
 	Dim p As Phone
 	
+
 	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
 	If Success Then
+		'Log("ERROR : " & ExitValue)
 		If StdOut.IndexOf("Destination Host Unreachable") <> -1 Then
+			'Log($"EIND TIJD : $DateTime{DateTime.now} ${CRLF} ${StdOut}"$)
 			Return False
 		Else
+			Log($"IP : ${ipNumber}"$)
+			Starter.lstActiveBord.Add(ipNumber)
 			Return True
 		End If
-	Else
+		Else
+	'Log($"---------EIND TIJD : $DateTime{DateTime.now}"$)
 		Return False
 	End If
 End Sub
