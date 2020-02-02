@@ -19,12 +19,14 @@ Sub pingBord(ipNumber As String) As ResumableSub
 
 	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
 	If Success Then
-		'Log("ERROR : " & ExitValue)
+		'	Log(ExitValue)
+	'	Log(StdOut)
 		If StdOut.IndexOf("Destination Host Unreachable") <> -1 Then
+		'Log("ERROR : " & StdOut)
 			'Log($"EIND TIJD : $DateTime{DateTime.now} ${CRLF} ${StdOut}"$)
 			Return False
 		Else
-			Log($"IP : ${ipNumber}"$)
+		'	Log($"IP : ${ipNumber}"$)
 			Starter.lstActiveBord.Add(ipNumber)
 			Return True
 		End If

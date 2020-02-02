@@ -67,18 +67,28 @@ Sub Activity_Create(FirstTime As Boolean)
 	btn_save.Enabled = False
 	btn_save.Color = Colors.Red
 	btn_save.TextColor = Colors.White
-	For i = 0 To Starter.lstActiveBord.Size -1
-		If Starter.lstActiveBord.Get(i) = Starter.selectedBordIp Then
-			If Starter.lstActiveBord.Size > 1 Then
-				chk_alle_borden.Enabled = True
-			End If
-			btn_save.Enabled = True
-			btn_save.TextColor = Colors.Yellow
-			btn_save.Color = Colors.Blue
-			retrieveConfig(Starter.selectedBordIp)
-		End If
-	Next
 	
+	Log(Starter.lstActiveBord.IndexOf(Starter.selectedBordIp))
+	
+'	For i = 0 To Starter.lstActiveBord.Size -1
+'		If Starter.lstActiveBord.Get(i) = Starter.selectedBordIp Then
+'			If Starter.lstActiveBord.Size > 1 Then
+'				chk_alle_borden.Enabled = True
+'			End If
+'			btn_save.Enabled = True
+'			btn_save.TextColor = Colors.Yellow
+'			btn_save.Color = Colors.Blue
+'			retrieveConfig(Starter.selectedBordIp)
+'		End If
+'	Next
+'	If Starter.lstActiveBord.IndexOf(Starter.selectedBordIp) > -1 Then
+'		btn_save.Enabled = True
+'		btn_save.TextColor = Colors.Yellow
+'		btn_save.Color = Colors.Blue
+'		retrieveConfig(Starter.selectedBordIp)
+'	End If
+
+	CheckBordActive
 	
 End Sub
 
@@ -229,7 +239,34 @@ Sub getAliveBorden As ResumableSub
 	Return False
 End Sub
 
+Private Sub CheckBordActive
+	If Starter.lstActiveBord.IndexOf(Starter.selectedBordIp) > -1 Then
+		btn_save.Enabled = True
+		btn_save.TextColor = Colors.Yellow
+		btn_save.Color = Colors.Blue
+		retrieveConfig(Starter.selectedBordIp)
+		EnableControls(True)
+	Else
+		EnableControls(False)
+	End If
+End Sub
 
+Private Sub EnableControls(enable As Boolean)
+	sw_digital_numbers.Enabled = enable
+	sw_use_yellow_number.Enabled = enable
+	sw_toon_sponsor.Enabled = enable
+	sw_game_time.Enabled = enable
+	sw_timeout.Enabled = enable
+	
+	chk_alle_borden.Enabled = enable
+	
+	edt_regel_1.Enabled = enable
+	edt_regel_2.Enabled = enable
+	edt_regel_3.Enabled = enable
+	edt_regel_4.Enabled = enable
+	edt_regel_5.Enabled = enable
+	
+End Sub
 
 Sub userMessage As ResumableSub
 	

@@ -22,7 +22,7 @@ Sub Process_Globals
 	Public pwSet As Boolean
 	Public selectedBordPanel As Int
 	Public selectedBordName, selectedBordIp As String
-	Public lstActiveBord as List
+	Public lstActiveBord As List
 End Sub
 
 Sub Service_Create

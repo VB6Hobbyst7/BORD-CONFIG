@@ -47,12 +47,14 @@ Sub bordAlive(clv As CustomListView)
 			
 			If v Is Label And v.Tag = "ip" Then
 				lbl = v
+		'		Log($"VOOR PING : $DateTime{DateTime.Now}"$)
 				wait for (clsFunc.pingBord(lbl.Text)) Complete (result As Boolean)
 				For Each v1 As View In p.GetAllViewsRecursive
 					If v1 Is Label And v1.Tag = "isAlive" Then
 						lbl = v1
 					End If
 				Next
+	'			Log($"NA PING : $DateTime{DateTime.Now} RESULT : ${result}"$)
 				If result = True Then
 					lbl.TextColor = Colors.Green
 				Else
