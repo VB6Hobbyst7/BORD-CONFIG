@@ -94,6 +94,8 @@ Version=9.5
 	#IncludeTitle: True
 #End Region
 
+#BridgeLogger: True
+
 Sub Process_Globals
 	Dim ftp As SFtp
 End Sub

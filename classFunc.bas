@@ -5,7 +5,7 @@ Type=Class
 Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
-	
+	Dim ftp As SFtp
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -13,25 +13,41 @@ Public Sub Initialize
 	
 End Sub
 
+
+Sub TryConnectFtp(ipNumber As String)
+	Log(ipNumber)
+	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
+	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
+	ftp.List("/")
+End Sub
+
+Sub FTP_ListCompleted (ServerPath As String, Success As Boolean, Folders() As FTPEntry, Files() As FTPEntry) as Boolean
+	Log(ServerPath)
+	If Success = False Then
+		Log(LastException)
+		Return False
+	ftp.Close
+	Else
+		Log("True")
+	ftp.Close
+	Return True
+	End If
+End Sub
+
+
 Sub pingBord(ipNumber As String) As ResumableSub
 	Dim p As Phone
 	
 
 	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
 	If Success Then
-		'	Log(ExitValue)
-	'	Log(StdOut)
 		If StdOut.IndexOf("Destination Host Unreachable") <> -1 Then
-		'Log("ERROR : " & StdOut)
-			'Log($"EIND TIJD : $DateTime{DateTime.now} ${CRLF} ${StdOut}"$)
 			Return False
 		Else
-		'	Log($"IP : ${ipNumber}"$)
 			Starter.lstActiveBord.Add(ipNumber)
 			Return True
 		End If
-		Else
-	'Log($"---------EIND TIJD : $DateTime{DateTime.now}"$)
+	Else
 		Return False
 	End If
 End Sub
