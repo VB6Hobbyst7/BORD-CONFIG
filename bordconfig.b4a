@@ -1,13 +1,18 @@
 ﻿Build1=Default,nl.pdeg.bordconfig
 File1=Arial.ttf
-File10=main.bal
-File11=Montserrat-Regular.ttf
-File12=units.bal
-File13=update.bal
+File10=confScreenSaver.bal
+File11=main.bal
+File12=main_bord.bal
+File13=main_config.bal
+File14=Montserrat-Regular.ttf
+File15=pulltorefresh.bal
+File16=tsBordConfig.bal
+File17=units.bal
+File18=update.bal
 File2=boards.db
 File3=bord.png
 File4=clv_bord.bal
-File5=conf_screenSaver.bal
+File5=conf_scrsav_sv.bal
 File6=conf_switch.bal
 File7=config.bal
 File8=configInput.bal
@@ -17,6 +22,11 @@ FileGroup10=Default Group
 FileGroup11=Default Group
 FileGroup12=Default Group
 FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup15=Default Group
+FileGroup16=Default Group
+FileGroup17=Default Group
+FileGroup18=Default Group
 FileGroup2=Default Group
 FileGroup3=Default Group
 FileGroup4=Default Group
@@ -35,6 +45,9 @@ Library13=xcustomlistview
 Library14=accessibility
 Library15=appcompat
 Library16=tabstripviewpager
+Library17=reflection
+Library18=xmllayoutbuilder
+Library19=viewsex
 Library2=jsch
 Library3=runtimepermissions
 Library4=json
@@ -43,21 +56,26 @@ Library6=xui
 Library7=xui views
 Library8=phone
 Library9=network
-ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~SetApplicationAttribute(android:icon, "@mipmap/ic_launcher")~\n~CreateResource(mipmap-anydpi-v26, ic_launcher.xml,~\n~<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">~\n~    <background android:drawable="@mipmap/background"/>~\n~    <foreground android:drawable="@mipmap/foreground"/>~\n~</adaptive-icon>~\n~)~\n~AddPermission(android.permission.INTERNET)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetActivityAttribute(config, android:windowSoftInputMode, adjustResize|stateHidden)~\n~~\n~SetApplicationAttribute(android:theme, "@style/MyAppTheme")~\n~CreateResource(values-v21, theme.xml,~\n~<resources>~\n~    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~        <item name="colorPrimary">#004ba0</item>~\n~        <item name="colorPrimaryDark">#004ba0</item>~\n~        <item name="colorAccent">#0098FF</item>~\n~        <item name="windowNoTitle">true</item>~\n~        <item name="windowActionBar">true</item>~\n~		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~    	<item name="android:statusBarColor">#004ba0</item>~\n~		<item name="android:navigationBarColor">#004ba0</item>~\n~		<item name="android:colorControlActivated">#1a237e</item>~\n~        <item name="android:colorControlNormal">#007CF5</item>~\n~	</style>~\n~	~\n~</resources>~\n~)
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~SetApplicationAttribute(android:icon, "@mipmap/ic_launcher")~\n~CreateResource(mipmap-anydpi-v26, ic_launcher.xml,~\n~<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">~\n~    <background android:drawable="@mipmap/background"/>~\n~    <foreground android:drawable="@mipmap/foreground"/>~\n~</adaptive-icon>~\n~)~\n~AddPermission(android.permission.INTERNET)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetActivityAttribute(config, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(conf_scrsav_sv, android:windowSoftInputMode, adjustResize|stateHidden)~\n~~\n~SetApplicationAttribute(android:theme, "@style/MyAppTheme")~\n~CreateResource(values-v21, theme.xml,~\n~<resources>~\n~    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~        <item name="colorPrimary">#004ba0</item>~\n~        <item name="colorPrimaryDark">#004ba0</item>~\n~        <item name="colorAccent">#0098FF</item>~\n~        <item name="windowNoTitle">true</item>~\n~        <item name="windowActionBar">true</item>~\n~		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~    	<item name="android:statusBarColor">#004ba0</item>~\n~		<item name="android:navigationBarColor">#004ba0</item>~\n~		<item name="android:colorControlActivated">#1a237e</item>~\n~        <item name="android:colorControlNormal">#007CF5</item>~\n~	</style>~\n~	~\n~	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~    	<item name="android:textColorPrimary">#fff</item>~\n~    	<item name="android:colorBackground">#004ba0</item>~\n~   </style>~\n~</resources>~\n~)
 Module1=config
-Module10=gnDb
-Module11=AESCryptUtilities
-Module2=units
-Module3=update_bord
-Module4=classFunc
-Module5=classGetConfig
-Module6=Starter
-Module7=classGetLatestVersion
-Module8=classSetConfig
-Module9=classCrypt
-NumberOfFiles=13
-NumberOfLibraries=16
-NumberOfModules=11
+Module10=update_bord
+Module11=classGetLatestVersion
+Module12=conf_scrsav_sv
+Module13=confScreenSaver
+Module14=classCrypt
+Module15=AESCryptUtilities
+Module16=CLVSwipe
+Module2=classFunc
+Module3=classClvBord
+Module4=Starter
+Module5=tsBordConfig
+Module6=units
+Module7=gnDb
+Module8=classGetConfig
+Module9=classSetConfig
+NumberOfFiles=18
+NumberOfLibraries=19
+NumberOfModules=16
 Version=9.5
 @EndOfDesignText@
 #Region  Project Attributes 
@@ -69,7 +87,7 @@ Version=9.5
 	#CanInstallToExternalStorage: False
 	#additionaljar: com.android.support:support-v4
 #End Region
- #IgnoreWarnings: 10, 20
+ #IgnoreWarnings: 10, 16, 20
  #Extends: android.support.v7.app.AppCompatActivity
 #Region  Activity Attributes 
 	#FullScreen: False
@@ -98,7 +116,11 @@ Sub Activity_Create(FirstTime As Boolean)
 	lbl_bord_info.Color = Colors.Transparent
 	lbl_laden.TextSize = 18
 	lbl_laden.Color = Colors.Transparent
+	
+	#if release
 	Sleep(4000)
+	#end if
+	
 	StartActivity(config)
 	Activity.Finish
 End Sub

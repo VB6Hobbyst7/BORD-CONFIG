@@ -75,6 +75,7 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	End If
 	
 	lstMsg.AddAll(Array As String(line_1, line_2, line_3, line_4, line_5))
-	CallSub2(config, "setMeassage", lstMsg)
+	
+	CallSub2(tsBordConfig, "setMeassage", lstMsg)
 	
 End Sub
