@@ -76,6 +76,7 @@ Sub Globals
 	Private lblPullToRefresh As B4XView
 	Private refreshIndicator As B4XLoadingIndicator
 	Private lblTafelNaam As Label
+	Private lbl_add_board As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -679,4 +680,8 @@ End Sub
 Sub lbl_bord_config_Click
 	
 	clsClvBord.configItem(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
+
+Sub lbl_add_board_Click
+	StartActivity(units)
 End Sub

@@ -14,25 +14,20 @@ Public Sub Initialize
 End Sub
 
 
-Sub TryConnectFtp(ipNumber As String)
-	Log(ipNumber)
+Sub TryConnectFtp(ipNumber As String) As ResumableSub
+'	Log(ipNumber)
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
-	ftp.List("/")
+	
+
+	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
+
+	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
+'	Log(ServerPath & "  "  & Success)
+	Return Success
 End Sub
 
-Sub FTP_ListCompleted (ServerPath As String, Success As Boolean, Folders() As FTPEntry, Files() As FTPEntry) as Boolean
-	Log(ServerPath)
-	If Success = False Then
-		Log(LastException)
-		Return False
-	ftp.Close
-	Else
-		Log("True")
-	ftp.Close
-	Return True
-	End If
-End Sub
+
 
 
 Sub pingBord(ipNumber As String) As ResumableSub
