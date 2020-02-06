@@ -77,20 +77,13 @@ Sub Globals
 	Private refreshIndicator As B4XLoadingIndicator
 	Private lblTafelNaam As Label
 	Private lbl_add_board As Label
+	
+	Private snap As CLVSnap
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
-	
-'	Activity.LoadLayout("configMain")
 	Activity.LoadLayout("main_config")
-	
-	
-	
-'	toolbar.InitMenuListener
 	setMenuColor
-'	setFontSize
-'	clsC.Initialize
-'	clsC.test
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
@@ -98,36 +91,22 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsClvBord.Initialize
 	
 	svInput.Initialize(1500dip)
-'	svInput.Panel.LoadLayout("test")
-'	getUnits
 	
 	tsConfig.LoadLayout("main_bord", "Borden")
 	'#######################################################################
 	Swipe.Initialize(clv_borden, Me, "Swipe")
 	Dim PullToRefreshPanel As B4XView = xui.CreatePanel("")
-	'PullToRefreshPanel.SetLayoutAnimated(0, 0, 0, 100%x, 70dip)
 	PullToRefreshPanel.SetLayoutAnimated(0, 0, 0, 100%x, 70dip)
 	PullToRefreshPanel.LoadLayout("PullToRefresh")
 	Swipe.PullToRefreshPanel = PullToRefreshPanel
 	'#######################################################################
 	
 	getUnits
-	
-'	tsConfig.LoadLayout("conf_switch", "Instellingen")
-'	tsConfig.LoadLayout("confscreenSaver", "ScreenSaver")
-'	tsConfig.LoadLayout("conf_scrsav_sv", "ScreenSaver")
-'	tsConfig.LoadLayout("update", "Update")
-'	svInput.Panel.LoadLayout("confscreenSaver")
-	'getConfig
-'	edtFnext
 End Sub
 
 Sub Activity_Resume
 	If Starter.bordUpdate = False Then
-'		clearConfig
-	'	enableView(False)
 		If Starter.edtUnit = False Then
-			'getUnits
 		End If
 		Starter.edtUnit = False
 	Else
@@ -136,17 +115,9 @@ Sub Activity_Resume
 End Sub
 
 Sub Swipe_RefreshRequested
-	'lblPullToRefresh.Text = "Borden zoeken..."
-	'refreshIndicator.Show
-	'example!!!
-	'Sleep(3000)
-	'CustomListView1.Clear
-	'CreateItems
-	
-	'Swipe.RefreshCompleted '<-- call to exit refresh mode
-	'lblPullToRefresh.Text = "Sleep om te vernieuwen"
-	'refreshIndicator.Hide
+	Starter.lstActiveBord.Clear
 	getUnits
+	Dim i As Int
 End Sub
 
 Sub Activity_CreateMenu(Menu As ACMenu)
@@ -164,8 +135,7 @@ Sub getUnits
 	Swipe.PullToRefreshPanel.Visible = True
 	lblPullToRefresh.Text = "Borden zoeken..."
 	refreshIndicator.Show
-	'Swipe_RefreshRequested
-	'Swipe_RefreshRequested
+
 	Dim unitList As List
 	Dim viewWidth As Int = clv_borden.AsView.Width
 	clv_borden.Clear
@@ -180,6 +150,7 @@ Sub getUnits
 		curs.Position = i
 		clv_borden.Add(genUnitList(curs.GetString("description"), curs.GetString("ip_number"), viewWidth), "")
 	Next
+	snap.Initialize(clv_borden)
 	If bordPinged = False Then
 		bordPinged = True
 		clsClvBord.bordAlive(clv_borden)
@@ -259,14 +230,6 @@ Sub setFontSize
 	ResetUserFontScaleLabel(lbl_text_header)
 	ResetUserFontScaleLabel(lbl_text_footer)
 	
-'	ResetUserFontScaleEdit(edt_timeout)
-'	ResetUserFontScaleEdit(edt_regel_1)
-'	ResetUserFontScaleEdit(edt_regel_2)
-'	ResetUserFontScaleEdit(edt_regel_3)
-'	ResetUserFontScaleEdit(edt_regel_4)
-'	ResetUserFontScaleEdit(edt_regel_5)
-	
-	
 End Sub
 
 
@@ -276,14 +239,12 @@ Sub Activity_Pause (UserClosed As Boolean)
 End Sub
 
 Sub getConfig
-	'clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
 	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time)
 	edtFnext
 End Sub
 
 Sub btn_save_Click
 	PerformHapticFeedback(btn_save)
-	'clsPutJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
 	Dim msgList As List
 	msgList.Initialize
 	msgList.AddAll(Array As String(edt_regel_1.text, edt_regel_2.text, edt_regel_3.text, edt_regel_4.text, edt_regel_5.text))
@@ -306,23 +267,12 @@ End Sub
 Sub userMessage As ResumableSub
 	
 	If clsPutJson.updateResult = 2 Then
-		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-		Wait For Msgbox_Result (oke As Int)
-		If oke = DialogResponse.POSITIVE Then
-			Return True
-		End If
 	Else if clsPutJson.updateResult = 1 Then
-		Msgbox2Async("Configuratie verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-		Wait For Msgbox_Result (oke As Int)
-		If oke = DialogResponse.POSITIVE Then
-			Return True
-		End If
 	End If
 	Return True
 End Sub
 
 Sub getUnits1
-	'Dim lstDisplay, lstValue As List
 	Dim curs As Cursor = gnDb.RetieveBoards
 	
 	lstDisplay.Initialize
@@ -339,14 +289,12 @@ Sub getUnits1
 	cmb_units.SetItems(lstDisplay)
 	
 	
-	chk_alle_borden.Enabled = lstValue.Size > 2
+	chk_alle_borden.Enabled = lstValue.Size >= 1
 	
 	
 End Sub
 
 Sub cmb_units_SelectedIndexChanged (Index As Int)
-	
-	'enableView(False)
 	Dim value As String = lstValue.get(cmb_units.SelectedIndex)
 	If value = "0" Then
 		btn_update.SetVisibleAnimated(1000, False)
@@ -359,27 +307,15 @@ Sub cmb_units_SelectedIndexChanged (Index As Int)
 	
 	btn_remove.Visible = True
 	btn_edit.Visible = True
-'	ProgressBar.Visible = True
-	'Sleep(500)
 	retrieveConfig(value)
-'	ProgressBar.Visible = False
-	
-	
 End Sub
 
 
 Sub retrieveConfig(ipNumber As String)
-'	#if debug
-'	btn_save.Enabled = True
-'	enableView(True)
-'	getConfig
-'	Return
-'	#End If
 	Dim msg, unit As String
 	unit = cmb_units.GetItem(cmb_units.SelectedIndex)
 	
 	ProgressBar.Visible = True
-	'Sleep(300)
 	
 	wait For(clsFunc.pingBord(ipNumber)) Complete (result As Boolean)
 	If result = False Then
@@ -422,8 +358,6 @@ Sub retrieveConfig(ipNumber As String)
 		btn_save.Color = Colors.Blue
 		
 		msg =$"Configuratie van ${unit} geladen"$
-		'Msgbox(msg, "Bord Config")
-	'	clsFunc.createCustomToast(msg, Colors.Blue)
 		bordVersion
 		clsUpdate.retrieveVersion
 	End If
@@ -507,7 +441,6 @@ Sub btn_remove_Click
 	Wait For Msgbox_Result (Result As Int)
 	If Result = DialogResponse.POSITIVE Then
 		gnDb.deleteBord(lstValue.get(index))
-	'	enableView(False)
 		getUnits
 	End If
 End Sub
@@ -589,11 +522,6 @@ Sub btn_edit_Click
 	
 	Starter.edtUnit = True	
 	Starter.edtIpNumber = lstValue.get(cmb_units.SelectedIndex)
-'	lst.Initialize
-'	
-'	lst = gnDb.getUnit(Starter.edtIpNumber)
-'	
-'	CallSub2(units, "setFieldsEdt", lst)
 	StartActivity(units)
 	
 End Sub
@@ -622,7 +550,6 @@ Sub ResetUserFontScaleEdit(v As B4XView)
 	
 	If v Is EditText Then
 		v.TextSize = NumberFormat2(v.TextSize / fscale,1,0,0,False)
-'	btn_save.TextSize = NumberFormat2(btn_save.TextSize / fscale,1,0,0,False)
 	End If
 End Sub
 
@@ -647,17 +574,6 @@ Dim jo As JavaObject = toolbar
 Dim xl As XmlLayoutBuilder
 jo.RunMethod("setPopupTheme", Array(xl.GetResourceId("style", "ToolbarMenu")))
 End Sub
-'#If Java
-'
-'public boolean _onCreateOptionsMenu(android.view.Menu menu) {
-'    if (processBA.subExists("activity_createmenu")) {
-'        processBA.raiseEvent2(null, true, "activity_createmenu", false, new de.amberhome.objects.appcompat.ACMenuWrapper(menu));
-'        return true;
-'    }
-'    else
-'        return false;
-'}
-'#End If
 
 Sub btn_new_bord_Click
 	StartActivity(units)
@@ -684,4 +600,8 @@ End Sub
 
 Sub lbl_add_board_Click
 	StartActivity(units)
+End Sub
+
+Sub clv_borden_ScrollChanged (Offset As Int)
+	snap.ScrollChanged(Offset)
 End Sub

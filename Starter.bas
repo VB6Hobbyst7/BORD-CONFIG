@@ -21,11 +21,12 @@ Sub Process_Globals
 	Public doy As String ="pdegrootafr", moy As String ="hkWpXtB1!"
 	Public pwSet As Boolean
 	Public selectedBordPanel As Int
-	Public selectedBordName, selectedBordIp As String
+	Public selectedBordName, selectedBordIp, deviceIp As String
 	Public lstActiveBord As List
 End Sub
 
 Sub Service_Create
+	GetDeviceIp
 	hostPath = rp.GetSafeDirDefaultExternal("host")
 	If File.Exists(hostPath, "boards.db") = False Then
 		File.Copy(File.DirAssets, "boards.db", hostPath, "boards.db")
@@ -48,4 +49,11 @@ End Sub
 
 Sub Service_Destroy
 
+End Sub
+
+Sub GetDeviceIp
+	Dim s As ServerSocket
+	s.Initialize(5555, Me)
+	deviceIp = s.GetMyIP
+'	Log(s.GetMyIp)
 End Sub

@@ -69,25 +69,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	btn_save.TextColor = Colors.White
 	
 	Log(Starter.lstActiveBord.IndexOf(Starter.selectedBordIp))
-	
-'	For i = 0 To Starter.lstActiveBord.Size -1
-'		If Starter.lstActiveBord.Get(i) = Starter.selectedBordIp Then
-'			If Starter.lstActiveBord.Size > 1 Then
-'				chk_alle_borden.Enabled = True
-'			End If
-'			btn_save.Enabled = True
-'			btn_save.TextColor = Colors.Yellow
-'			btn_save.Color = Colors.Blue
-'			retrieveConfig(Starter.selectedBordIp)
-'		End If
-'	Next
-'	If Starter.lstActiveBord.IndexOf(Starter.selectedBordIp) > -1 Then
-'		btn_save.Enabled = True
-'		btn_save.TextColor = Colors.Yellow
-'		btn_save.Color = Colors.Blue
-'		retrieveConfig(Starter.selectedBordIp)
-'	End If
-
+	chk_alle_borden.Enabled = Starter.lstActiveBord.Size > 1
 	CheckBordActive
 	
 End Sub
@@ -104,40 +86,24 @@ End Sub
 
 
 Sub getConfig
-	'clsJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
 	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time)
-	'edtFnext
 End Sub
 
 
 Sub retrieveConfig(ipNumber As String)
-'	#if debug
-'	btn_save.Enabled = True
-'	enableView(True)
-'	getConfig
-'	Return
-'	#End If
 	Dim msg, unit As String
 	unit = Starter.selectedBordName
 	
-	'ProgressBar.Visible = True
-	'Sleep(300)
-	
 	wait For(clsFunc.pingBord(ipNumber)) Complete (result As Boolean)
 	If result = False Then
-		'ProgressBar.Visible = False
 		clsFunc.createCustomToast($"${unit} niet bereikbaar"$, Colors.Red)
 		Return
 	End If
-	'btn_save.Enabled = False
-'	btn_save.Color = Colors.Gray
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
-	
 	
 	Try
 		ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	Catch
-	'	ProgressBar.Visible = False
 		msg =$"${unit} niet bereikbaar"$
 		
 		clsFunc.createCustomToast(msg, Colors.Red)
@@ -152,22 +118,13 @@ Sub retrieveConfig(ipNumber As String)
 	
 	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
-	'	ProgressBar.Visible = False
 		msg =$"Config bestand van ${unit} niet gevonden"$
 		clsFunc.createCustomToast(msg, Colors.Red)
 	Else
-	'	ProgressBar.Visible = False
-	'	enableView(True)
 		getConfig
 		ftp.Close
-		'btn_save.Enabled = True
-		'btn_save.Color = Colors.Blue
 		
 		msg =$"Configuratie van ${unit} geladen"$
-		'Msgbox(msg, "Bord Config")
-		'	clsFunc.createCustomToast(msg, Colors.Blue)
-	'	bordVersion
-		'clsUpdate.retrieveVersion
 	End If
 	
 End Sub
@@ -207,8 +164,6 @@ Sub btn_save_Click
 			clsPutJson.bordNaam = naam
 			clsPutJson.ipNumber = ip
 			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time)
-'			Log(clsPutJson.ipNumber)
-'			'Wait For (userMessage) Complete (result As Boolean)
 		Next
 
 	End If
@@ -258,7 +213,7 @@ Private Sub EnableControls(enable As Boolean)
 	sw_game_time.Enabled = enable
 	sw_timeout.Enabled = enable
 	
-	chk_alle_borden.Enabled = enable
+	chk_alle_borden.Enabled =  Starter.lstActiveBord.Size > 1
 	
 	edt_regel_1.Enabled = enable
 	edt_regel_2.Enabled = enable
@@ -269,7 +224,7 @@ Private Sub EnableControls(enable As Boolean)
 End Sub
 
 Sub userMessage As ResumableSub
-	
+	Return
 	If clsPutJson.updateResult = 2 Then
 		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
 		Wait For Msgbox_Result (oke As Int)

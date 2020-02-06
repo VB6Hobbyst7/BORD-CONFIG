@@ -1,4 +1,5 @@
-﻿Build1=Default,nl.pdeg.bordconfig
+﻿Build1=Marcel,nl.pdeg.bordconfig,Marcel
+Build2=Sale,nl.pdeg.bordconfig,Sale
 File1=Arial.ttf
 File10=confScreenSaver.bal
 File11=main.bal
@@ -36,7 +37,6 @@ FileGroup7=Default Group
 FileGroup8=Default Group
 FileGroup9=Default Group
 Group=Default Group
-IconFile=
 Library1=core
 Library10=javaobject
 Library11=b4xencryption
@@ -56,27 +56,28 @@ Library6=xui
 Library7=xui views
 Library8=phone
 Library9=network
-ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~SetApplicationAttribute(android:icon, "@mipmap/ic_launcher")~\n~CreateResource(mipmap-anydpi-v26, ic_launcher.xml,~\n~<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">~\n~    <background android:drawable="@mipmap/background"/>~\n~    <foreground android:drawable="@mipmap/foreground"/>~\n~</adaptive-icon>~\n~)~\n~AddPermission(android.permission.INTERNET)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetActivityAttribute(config, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(conf_scrsav_sv, android:windowSoftInputMode, adjustResize|stateHidden)~\n~~\n~SetApplicationAttribute(android:theme, "@style/MyAppTheme")~\n~CreateResource(values-v21, theme.xml,~\n~<resources>~\n~    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~        <item name="colorPrimary">#004ba0</item>~\n~        <item name="colorPrimaryDark">#004ba0</item>~\n~        <item name="colorAccent">#0098FF</item>~\n~        <item name="windowNoTitle">true</item>~\n~        <item name="windowActionBar">true</item>~\n~		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~    	<item name="android:statusBarColor">#004ba0</item>~\n~		<item name="android:navigationBarColor">#004ba0</item>~\n~		<item name="android:colorControlActivated">#1a237e</item>~\n~        <item name="android:colorControlNormal">#007CF5</item>~\n~	</style>~\n~	~\n~	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~    	<item name="android:textColorPrimary">#fff</item>~\n~    	<item name="android:colorBackground">#004ba0</item>~\n~   </style>~\n~</resources>~\n~)
-Module1=config
-Module10=update_bord
-Module11=classGetLatestVersion
-Module12=conf_scrsav_sv
-Module13=confScreenSaver
-Module14=classCrypt
-Module15=AESCryptUtilities
-Module16=CLVSwipe
-Module2=classFunc
-Module3=classClvBord
-Module4=Starter
-Module5=tsBordConfig
-Module6=units
-Module7=gnDb
-Module8=classGetConfig
-Module9=classSetConfig
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~SetApplicationAttribute(android:icon, "@mipmap/ic_launcher")~\n~CreateResource(mipmap-anydpi-v26, ic_launcher.xml,~\n~<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">~\n~    <background android:drawable="@mipmap/background"/>~\n~    <foreground android:drawable="@mipmap/foreground"/>~\n~</adaptive-icon>~\n~)~\n~AddPermission(android.permission.INTERNET)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetActivityAttribute(config, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(conf_scrsav_sv, android:windowSoftInputMode, adjustResize|stateHidden)~\n~~\n~SetApplicationAttribute(android:theme, "@style/MyAppTheme")~\n~CreateResource(values-v21, theme.xml,~\n~<resources>~\n~    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~        <item name="colorPrimary">#004ba0</item>~\n~        <item name="colorPrimaryDark">#004ba0</item>~\n~        <item name="colorAccent">#0098FF</item>~\n~        <item name="windowNoTitle">true</item>~\n~        <item name="windowActionBar">true</item>~\n~		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~    	<item name="android:statusBarColor">#004ba0</item>~\n~		<item name="android:navigationBarColor">#004ba0</item>~\n~		<item name="android:colorControlActivated">#1a237e</item>~\n~        <item name="android:colorControlNormal">#007CF5</item>~\n~	</style>~\n~	~\n~	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~    	<item name="android:textColorPrimary">#fff</item>~\n~    	<item name="android:colorBackground">#004ba0</item>~\n~   </style>~\n~</resources>~\n~)
+Module1=AESCryptUtilities
+Module10=conf_scrsav_sv
+Module11=config
+Module12=confScreenSaver
+Module13=gnDb
+Module14=Starter
+Module15=tsBordConfig
+Module16=units
+Module17=update_bord
+Module2=classClvBord
+Module3=classCrypt
+Module4=classFunc
+Module5=classGetConfig
+Module6=classGetLatestVersion
+Module7=classSetConfig
+Module8=CLVSnap
+Module9=CLVSwipe
 NumberOfFiles=18
 NumberOfLibraries=19
-NumberOfModules=16
-Version=9.5
+NumberOfModules=17
+Version=9.801
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: Bord config
@@ -110,8 +111,6 @@ Sub Globals
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
-	'getConfig
-	
 	Activity.LoadLayout("main")
 	lbl_bord_info.Text = $"Bord configurator v${Application.VersionName}"$
 	lbl_bord_info.TextSize = 18
@@ -135,47 +134,3 @@ Sub Activity_Pause (UserClosed As Boolean)
 
 End Sub
 
-'Sub getConfig
-'	
-'	ftp.Initialize("ftp", "pi", "0", "192.168.1.27", 22)
-'	Try
-'		ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
-'	Catch
-'		Log(LastException.Message)
-'	End Try
-'
-'
-'	Try
-'		ftp.List("/home/pi/44")
-'		wait for ftp_ListCompleted(ServerPath As String, Success As Boolean, Folders() As SFtpEntry, Files() As SFtpEntry)
-'		If Success = False Then
-'			Log(LastException)
-'			
-'		Else
-'			For i = 0 To Files.Length - 1
-'				Log(Files(i).Name)
-'			Next
-'			
-'		End If
-'	Catch ()
-'		Log(LastException.Message)
-'		ftp.Close
-'	
-'	End Try
-'	ftp.DownloadFile("/home/pi/44/cnf.44", Starter.hostPath, "cnf.44")
-'	ftp.Close
-'	
-'	StartActivity(config)
-'	Activity.Finish
-'	
-'End Sub
-
-'Sub ftp_ShowMessage (Message As String)
-'	Msgbox(Message, "")
-'End Sub
-
-'Sub ftp_PromptYesNo (Message As String)
-'	Log(Message)
-'	
-'	ftp.SetPromptResult(True)
-'End Sub

@@ -15,7 +15,6 @@ End Sub
 
 
 Sub TryConnectFtp(ipNumber As String) As ResumableSub
-'	Log(ipNumber)
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	
@@ -23,7 +22,6 @@ Sub TryConnectFtp(ipNumber As String) As ResumableSub
 	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
 
 	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
-'	Log(ServerPath & "  "  & Success)
 	Return Success
 End Sub
 
@@ -33,10 +31,16 @@ End Sub
 Sub pingBord(ipNumber As String) As ResumableSub
 	Dim p As Phone
 	
+	
+	If CheckIpRange(ipNumber.Replace(".", "-")) = False Then
+		Return False
+	End If
+	
 
 	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
 	If Success Then
 		If StdOut.IndexOf("Destination Host Unreachable") <> -1 Then
+			
 			Return False
 		Else
 			Starter.lstActiveBord.Add(ipNumber)
@@ -46,6 +50,8 @@ Sub pingBord(ipNumber As String) As ResumableSub
 		Return False
 	End If
 End Sub
+
+
 
 Sub createCustomToast(txt As String, color As String)
 	Dim cs As CSBuilder
@@ -78,6 +84,27 @@ Sub countChars(str As String, maxCount As Int) As Boolean
 		Return False
 	End If
 	Return True
-	
-	
 End Sub
+
+
+Public Sub CheckIpRange(ip As String) As Boolean
+	Dim lstBord, lstDevice As List
+	Dim deviceIp As String = Starter.deviceIp
+	
+	
+	lstBord.Initialize
+	lstDevice.Initialize
+	deviceIp = 	deviceIp.Replace(".", "-")
+	
+	lstBord = Regex.Split("-", ip)
+	lstDevice = Regex.Split("-", deviceIp)
+
+	
+	If lstBord.Get(2) = lstDevice.Get(2) Then
+		Return True
+	Else
+		Return False
+	End If
+End Sub
+
+
