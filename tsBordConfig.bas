@@ -90,6 +90,12 @@ Sub getConfig
 End Sub
 
 
+Sub ftp_PromptYesNo (Message As String)
+	Log(Message)
+	
+	ftp.SetPromptResult(True)
+End Sub
+
 Sub retrieveConfig(ipNumber As String)
 	Dim msg, unit As String
 	unit = Starter.selectedBordName
@@ -107,17 +113,23 @@ Sub retrieveConfig(ipNumber As String)
 		msg =$"${unit} niet bereikbaar"$
 		
 		clsFunc.createCustomToast(msg, Colors.Red)
-		Msgbox(msg, "Bord Config")
-		
 		ftp.Close
 		Return
 	End Try
 
+'	ftp.List("/home/pi/44/")
+'
+'	Wait For ListCompleted (ServerPath As String, Success As Boolean, Folders() As SFtpEntry, Files() As SFtpEntry)
+
 	ftp.DownloadFile("/home/pi/44/cnf.44", Starter.hostPath, "cnf.44")
 	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
+'	ftp.DownloadFile("/home/pi/score/cnf.44", Starter.hostPath, "cnf.44")
+'	ftp.DownloadFile("/home/pi/score/ver.pdg", Starter.hostPath, "ver.pdg")
+	
 	
 	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
+		Log(ServerPath)
 		msg =$"Config bestand van ${unit} niet gevonden"$
 		clsFunc.createCustomToast(msg, Colors.Red)
 	Else
