@@ -175,7 +175,7 @@ End Sub
 Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	Dim p As Panel
 	p.Initialize(Me)
-	p.SetLayout(0dip, 0dip, width, 150dip)
+	p.SetLayout(0dip, 0dip, width, 190dip)
 	p.LoadLayout("clv_bord")
 	
 	lbl_bord_name.Text = name
