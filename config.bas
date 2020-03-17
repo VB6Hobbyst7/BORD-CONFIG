@@ -79,6 +79,7 @@ Sub Globals
 	Private lbl_add_board As Label
 	
 	Private snap As CLVSnap
+	Private sw_retro As B4XSwitch
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -239,7 +240,7 @@ Sub Activity_Pause (UserClosed As Boolean)
 End Sub
 
 Sub getConfig
-	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time)
+	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time, sw_retro)
 	edtFnext
 End Sub
 
@@ -251,14 +252,14 @@ Sub btn_save_Click
 	
 	If chk_alle_borden.Checked = False Then
 		clsPutJson.ipNumber = lstValue.get(cmb_units.SelectedIndex)
-		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time)
+		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
 		userMessage
 	Else
 		For i = 1 To lstValue.Size - 1
 			Sleep(500)
 			clsPutJson.bordNaam = lstDisplay.Get(i)
 			clsPutJson.ipNumber = lstValue.get(i)
-			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time)
+			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
 			Wait For (userMessage) Complete (result As Boolean)
 		Next
 	End If

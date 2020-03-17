@@ -20,7 +20,7 @@ Public Sub Initialize
 End Sub
 
 
-Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List, swSponsor As B4XSwitch, swGameTime As B4XSwitch)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List, swSponsor As B4XSwitch, swGameTime As B4XSwitch, swShowRetro As B4XSwitch)
 		
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
 	
@@ -33,7 +33,14 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	Dim message As Map = root.Get("message")
 	Dim sponsor As Map = root.Get("reclame")
 	Dim gameTime As Map = root.Get("partijDuur")
+	Dim showRetro As Map = root.Get("retroBord")
 	
+	
+	If swShowRetro.Value = True Then
+		showRetro.Put("active", "1")
+	Else
+		showRetro.Put("active", "0")
+	End If
 	
 	If swTimeOut.Value = True Then
 		showPromote.Put("active", "1")
@@ -68,7 +75,7 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	
 	If swGameTime.Value = True Then
 		gameTime.Put("active", "1")
-		Else
+	Else
 		gameTime.Put("active", "0")
 	End If
 	

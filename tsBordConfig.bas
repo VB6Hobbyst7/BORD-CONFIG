@@ -46,6 +46,7 @@ Sub Globals
 	Private edt_regel_5 As EditText
 	Private btn_save As Label
 	Private chk_alle_borden As CheckBox
+	Private sw_retro As B4XSwitch
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -86,7 +87,7 @@ End Sub
 
 
 Sub getConfig
-	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time)
+	clsJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, sw_toon_sponsor, sw_game_time, sw_retro)
 End Sub
 
 
@@ -159,7 +160,7 @@ Sub btn_save_Click
 	
 	If chk_alle_borden.Checked = False Then
 		clsPutJson.ipNumber = Starter.selectedBordIp
-		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time)
+		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
 		userMessage
 	Else
 		Dim naam, ip, lstStr As String
@@ -175,7 +176,7 @@ Sub btn_save_Click
 			
 			clsPutJson.bordNaam = naam
 			clsPutJson.ipNumber = ip
-			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time)
+			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
 		Next
 
 	End If
