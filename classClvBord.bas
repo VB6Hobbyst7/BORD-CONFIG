@@ -6,11 +6,13 @@ Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
 	Private clsFunc As classFunc
+	Private clsRetro As setRetroBord
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
 Public Sub Initialize
 	clsFunc.Initialize
+	clsRetro.Initialize
 End Sub
 
 Sub bordAlive(clv As CustomListView)
@@ -139,9 +141,40 @@ Sub configItem(Index As Int, clv As CustomListView)
 		End If
 	Next
 	
+	For Each v As View In p.GetAllViewsRecursive
+		If v Is Label And v.Tag = "retro" Then
+			lbl = v
+			name = lbl.Text
+			Exit
+		End If
+	Next
+	
 	Starter.selectedBordName = name
 	Starter.selectedBordIp = ip
 	
 	StartActivity(tsBordConfig)
 	
 End Sub
+
+Public Sub ConfigItemRetro(Index As Int, clv As CustomListView)
+	Dim p As Panel
+	Dim lbl As Label
+	Dim ip As String
+	
+	p = clv.GetPanel(Index)
+	For Each v As View In p.GetAllViewsRecursive
+		If v Is Label And v.Tag = "ip" Then
+			lbl = v
+			ip = lbl.Text
+			Exit
+		End If
+	Next
+	clsRetro.SetBordToRetro(ip)
+	Log($"RETRO IP + ${ip}"$)
+	
+End Sub
+
+
+
+
+

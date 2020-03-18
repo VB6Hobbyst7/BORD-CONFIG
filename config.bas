@@ -80,6 +80,7 @@ Sub Globals
 	
 	Private snap As CLVSnap
 	Private sw_retro As B4XSwitch
+	Private lbl_bord_retro As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -595,8 +596,11 @@ End Sub
 
 
 Sub lbl_bord_config_Click
-	
 	clsClvBord.configItem(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
+
+Sub lbl_bord_retro_Click
+	clsClvBord.ConfigItemRetro(clv_borden.GetItemFromView(Sender), clv_borden)
 End Sub
 
 Sub lbl_add_board_Click
@@ -606,3 +610,4 @@ End Sub
 Sub clv_borden_ScrollChanged (Offset As Int)
 	snap.ScrollChanged(Offset)
 End Sub
+

@@ -14,7 +14,7 @@ Public Sub Initialize
 	
 End Sub
 
-Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, swSponsor As B4XSwitch, swGameTime As B4XSwitch, swRetro as B4XSwitch)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, swSponsor As B4XSwitch, swGameTime As B4XSwitch, swRetro As B4XSwitch)
 	Dim lstMsg As List
 		
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
