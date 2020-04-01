@@ -67,7 +67,7 @@ Sub Globals
 	Private btn_new_bord As Button
 	Private lbl_ip As Label
 	Private lbl_bord_name As Label
-	Private sw_update As B4XSwitch
+'	Private sw_update As B4XSwitch
 	Private lbl_alive As Label
 	Private lbl_delete_bord As Label
 	Private lbl_edit_bord As Label
@@ -133,6 +133,7 @@ End Sub
 
 Sub getUnits
 	btn_new_bord.SetVisibleAnimated(1000, False)
+	'lbl_add_board.SetVisibleAnimated(1000, False)
 	Swipe.ChangeYOffsetInit(245, False)
 	Swipe.PullToRefreshPanel.Visible = True
 	lblPullToRefresh.Text = "Borden zoeken..."
@@ -165,7 +166,8 @@ Sub HidePullDown
 	lblPullToRefresh.Text = "Sleep om te vernieuwen"
 	refreshIndicator.Hide
 	bordPinged = False
-	btn_new_bord.SetVisibleAnimated(1000, True)
+	btn_new_bord.SetVisibleAnimated(1000, False)
+	lbl_add_board.SetVisibleAnimated(1000, True)
 	
 End Sub
 

@@ -34,6 +34,7 @@ Sub bordAlive(clv As CustomListView)
 	Next
 	
 	For i = 0 To itemCount
+		Log(i)
 		'Sleep(300)
 		If i > 3 Then
 			clv.ScrollToItem(i)
@@ -64,6 +65,8 @@ Sub bordAlive(clv As CustomListView)
 				End If
 			End If
 			
+			EnableBordOptions(result, p)
+			
 		Next
 	Next
 	Sleep(400)
@@ -73,6 +76,19 @@ Sub bordAlive(clv As CustomListView)
 	
 End Sub
 
+Private Sub EnableBordOptions(enable As Boolean, p As Panel)
+	For Each v As View In p.GetAllViewsRecursive
+		If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then
+			Dim lbl As Label = v
+			lbl.Enabled = enable
+			If enable Then
+				lbl.TextColor = 0xFF000000
+			Else 
+				lbl.TextColor = 0xFFE4E4E4
+			End If
+		End If
+	Next
+End Sub
 
 Sub editItem(Index As Int, clv As CustomListView)
 	Dim p As Panel
@@ -141,13 +157,13 @@ Sub configItem(Index As Int, clv As CustomListView)
 		End If
 	Next
 	
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "retro" Then
-			lbl = v
-			name = lbl.Text
-			Exit
-		End If
-	Next
+'	For Each v As View In p.GetAllViewsRecursive
+'		If v Is Label And v.Tag = "retro" Then
+'			lbl = v
+'			name = lbl.Text
+'			Exit
+'		End If
+'	Next
 	
 	Starter.selectedBordName = name
 	Starter.selectedBordIp = ip
