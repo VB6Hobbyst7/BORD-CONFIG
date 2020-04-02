@@ -19,14 +19,13 @@ Sub bordAlive(clv As CustomListView)
 	Dim p As Panel
 	Dim itemCount As Int = clv.Size -1
 	Dim lbl As Label
-	Dim scrollOffset As Int = clv.AsView.ScrollViewOffsetY
 	
 	Starter.lstActiveBord.Initialize
 	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
 		For Each v As View In p.GetAllViewsRecursive
-			If v Is Label And v.Tag = "isAlive" Then
+	If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then'v.Tag = "isAlive" Then
 				lbl = v
 				lbl.TextColor = Colors.Black
 			End If
@@ -34,8 +33,6 @@ Sub bordAlive(clv As CustomListView)
 	Next
 	
 	For i = 0 To itemCount
-		Log(i)
-		'Sleep(300)
 		If i > 3 Then
 			clv.ScrollToItem(i)
 		End If
@@ -60,13 +57,12 @@ Sub bordAlive(clv As CustomListView)
 				
 				If result = True Then
 					lbl.TextColor = Colors.Green
+					EnableBordOptions(result, p)
 				Else
 					lbl.TextColor = Colors.Red
+					EnableBordOptions(result, p)
 				End If
 			End If
-			
-			EnableBordOptions(result, p)
-			
 		Next
 	Next
 	Sleep(400)
@@ -186,8 +182,6 @@ Public Sub ConfigItemRetro(Index As Int, clv As CustomListView)
 		End If
 	Next
 	clsRetro.SetBordToRetro(ip)
-	Log($"RETRO IP + ${ip}"$)
-	
 End Sub
 
 
