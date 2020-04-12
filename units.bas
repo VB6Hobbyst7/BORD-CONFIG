@@ -97,7 +97,7 @@ End Sub
 
 Sub btn_add_unit_Click
 	If edt_description.Text = "" Then
-		Msgbox("Geef een omschrijving op", "Bord config")
+		MsgboxAsync("Geef een omschrijving op", "Bord config")
 		Return
 	End If
 	addBord
@@ -113,23 +113,24 @@ Sub pingBord
 	If sb.Length = 0 Or sb.ToString.Contains("Unreachable") Then 
 		ProgressBar.Visible = False
 		btn_add_unit.Enabled = False
-		Msgbox("Kan ip nummer niet bereiken", "Bord Config")
+		MsgboxAsync("Kan ip nummer niet bereiken", "Bord Config")
+		
 	Else
 		ProgressBar.Visible = False
 		btn_add_unit.Enabled = True
-		Msgbox("Ip nummer bereikbaar", "Bord Config")
+		MsgboxAsync("Ip nummer bereikbaar", "Bord Config")
 	End If	
 	
 End Sub
 
 Sub addBord
 	If gnDb.bordNameExists(edt_description.Text) = True And Starter.edtUnit = False Then
-		Msgbox("Omschrijving bestaat reeds","Bord config")
+		MsgboxAsync("Omschrijving bestaat reeds","Bord config")
 		Return
 	End If
 	
 	If gnDb.bordIpExists(edt_ip.Text) = True And Starter.edtUnit = False Then
-		Msgbox("Ip nummer bestaat reeds","Bord config")
+		MsgboxAsync("Ip nummer bestaat reeds","Bord config")
 		Return
 	End If
 	

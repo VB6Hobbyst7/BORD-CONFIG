@@ -339,7 +339,7 @@ Sub retrieveConfig(ipNumber As String)
 		msg =$"${unit} niet bereikbaar"$
 		
 		clsFunc.createCustomToast(msg, Colors.Red)
-		Msgbox(msg, "Bord Config")
+		MsgboxAsync(msg, "Bord Config")
 		
 		ftp.Close
 		Return
@@ -379,7 +379,7 @@ End Sub
 
 
 Sub ftp_ShowMessage (Message As String)
-	Msgbox(Message, "")
+	MsgboxAsync(Message, "")
 End Sub
 
 Sub ftp_PromptYesNo (Message As String)
