@@ -27,6 +27,7 @@ Sub Globals
 	Private ProgressBar As ProgressBar
 	Private clsFunc As classFunc
 	Private btn_back As Button
+	Private description As String
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -39,6 +40,8 @@ Sub Activity_Create(FirstTime As Boolean)
 	If Starter.edtUnit = True Then
 		getUnit
 	End If
+	
+	Starter.newUnitName = ""
 
 End Sub
 
@@ -137,6 +140,7 @@ Sub addBord
 	If Starter.edtUnit = True Then
 		gnDb.updateBord(edt_description.Text, edt_ip.Text)
 		clsFunc.createCustomToast("Gegevens bijgewerkt", Colors.Blue)
+		Starter.newUnitName = edt_description.Text
 		Sleep(500)
 		Starter.edtUnit = False
 		Starter.edtIpNumber = ""
@@ -152,9 +156,20 @@ Sub setFieldsEdt(lst As List)
 	edt_description.Text = lst.Get(0)
 	edt_ip.Text = lst.Get(1)
 	
+	description = lst.Get(0)
 	
 End Sub
 
 Sub btn_back_Click
 	Activity.Finish
 End Sub
+
+'Sub edt_description_TextChanged (Old As String, New As String)
+'	If Old <> New Then
+'		Log(New)
+'	End If
+'End Sub
+'
+'Sub edt_description_FocusChanged (HasFocus As Boolean)
+'	
+'End Sub

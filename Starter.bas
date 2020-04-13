@@ -23,6 +23,7 @@ Sub Process_Globals
 	Public selectedBordPanel As Int
 	Public selectedBordName, selectedBordIp, deviceIp As String
 	Public lstActiveBord As List
+	Public newUnitName as String
 End Sub
 
 Sub Service_Create

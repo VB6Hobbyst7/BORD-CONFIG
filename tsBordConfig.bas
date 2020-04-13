@@ -69,7 +69,9 @@ Sub Activity_Create(FirstTime As Boolean)
 	btn_save.Color = Colors.Red
 	btn_save.TextColor = Colors.White
 	
-	Log(Starter.lstActiveBord.IndexOf(Starter.selectedBordIp))
+'	Log(Starter.lstActiveBord.IndexOf(Starter.selectedBordIp))
+	'Log(Starter.lstActiveBord.Size)
+	chk_alle_borden.Enabled = False
 	chk_alle_borden.Enabled = Starter.lstActiveBord.Size > 1
 	CheckBordActive
 	

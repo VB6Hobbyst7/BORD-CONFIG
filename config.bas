@@ -114,7 +114,27 @@ Sub Activity_Resume
 	Else
 		Starter.bordUpdate = False
 	End If
+	
+	If Starter.newUnitName <> "" Then
+		UpdateBordName(Starter.newUnitName)
+	End If
+	
 End Sub
+
+Sub UpdateBordName(name As String)
+	Dim p As Panel
+	Dim lbl As Label
+	Starter.newUnitName = ""
+	
+	p = clv_borden.GetPanel(Starter.selectedBordPanel)
+	For Each v As View In p.GetAllViewsRecursive
+		If v Is Label And v.Tag = "name" Then
+			lbl = v
+			lbl.Text = name
+		End If
+	Next
+End Sub
+
 
 Sub Swipe_RefreshRequested
 	Starter.lstActiveBord.Clear
