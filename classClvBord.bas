@@ -19,15 +19,27 @@ Sub bordAlive(clv As CustomListView)
 	Dim p As Panel
 	Dim itemCount As Int = clv.Size -1
 	Dim lbl As Label
+	Dim colorNameTextDisabled, colorNameBgDisAbled As Int
+	Dim colorNameTextEnabled, colorNameBgEnAbled As Int
+	
+	colorNameBgEnAbled = 0xFF0018FF
+	colorNameTextEnabled = 0xFFFFE700
+	colorNameTextDisabled = Colors.Red
+	colorNameBgDisAbled = Colors.Black
 	
 	Starter.lstActiveBord.Initialize
 	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
 		For Each v As View In p.GetAllViewsRecursive
-	If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then'v.Tag = "isAlive" Then
+			If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then'v.Tag = "isAlive" Then
 				lbl = v
 				lbl.TextColor = Colors.Black
+			End If
+			If v Is Label And v.Tag = "name" Then
+				lbl = v
+				lbl.TextColor = colorNameTextEnabled'0xFFFFE700
+				lbl.Color = colorNameBgEnAbled'0xFF0018FF
 			End If
 		Next
 	Next
@@ -50,16 +62,21 @@ Sub bordAlive(clv As CustomListView)
 				wait for (clsFunc.pingBord(lbl.Text)) Complete (result As Boolean)
 				
 				For Each v1 As View In p.GetAllViewsRecursive
-					If v1 Is Label And v1.Tag = "isAlive" Then
+					'If v1 Is Label And v1.Tag = "isAlive" Then
+					If v1 Is Label And v1.Tag = "name" Then
 						lbl = v1
 					End If
 				Next
 				
 				If result = True Then
-					lbl.TextColor = Colors.Green
+					'lbl.TextColor = Colors.Green
+					lbl.TextColor = colorNameTextEnabled
+					lbl.Color = colorNameBgEnAbled
 					EnableBordOptions(result, p)
 				Else
-					lbl.TextColor = Colors.Red
+					'lbl.TextColor = Colors.Red
+					lbl.TextColor = colorNameTextDisabled
+					lbl.Color = colorNameBgDisAbled
 					EnableBordOptions(result, p)
 				End If
 			End If
@@ -74,7 +91,8 @@ End Sub
 
 Private Sub EnableBordOptions(enable As Boolean, p As Panel)
 	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then
+		'If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then
+		If v Is Label And  v.Tag = "config" Or v.Tag = "retro" Then
 			Dim lbl As Label = v
 			lbl.Enabled = enable
 			If enable Then

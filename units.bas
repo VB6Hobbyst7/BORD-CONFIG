@@ -19,6 +19,7 @@ Sub Process_Globals
 End Sub
 
 Sub Globals
+	Private IME As IME
 	
 	Private edt_description As EditText
 	Private edt_ip As EditText
@@ -27,7 +28,6 @@ Sub Globals
 	Private ProgressBar As ProgressBar
 	Private clsFunc As classFunc
 	Private btn_back As Button
-	Private description As String
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -141,6 +141,7 @@ Sub addBord
 		gnDb.updateBord(edt_description.Text, edt_ip.Text)
 		clsFunc.createCustomToast("Gegevens bijgewerkt", Colors.Blue)
 		Starter.newUnitName = edt_description.Text
+		IME.HideKeyboard
 		Sleep(500)
 		Starter.edtUnit = False
 		Starter.edtIpNumber = ""
@@ -155,21 +156,12 @@ End Sub
 Sub setFieldsEdt(lst As List)
 	edt_description.Text = lst.Get(0)
 	edt_ip.Text = lst.Get(1)
-	
-	description = lst.Get(0)
-	
 End Sub
 
 Sub btn_back_Click
+	IME.HideKeyboard
 	Activity.Finish
 End Sub
 
-'Sub edt_description_TextChanged (Old As String, New As String)
-'	If Old <> New Then
-'		Log(New)
-'	End If
-'End Sub
-'
-'Sub edt_description_FocusChanged (HasFocus As Boolean)
-'	
-'End Sub
+
+
