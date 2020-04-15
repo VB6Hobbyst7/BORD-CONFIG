@@ -271,9 +271,24 @@ End Sub
 
 Sub setNewTimeOut(newValue As Int)
 	Dim oldTimeOut As Int = edt_timeout.Text
-	If oldTimeOut < 1 Then
+	Dim newTimeOut As Int
+	
+	sw_timeout.Value = True
+	edt_timeout.Text = oldTimeOut + newValue
+	newTimeOut = edt_timeout.Text
+	
+	If newTimeOut < 1 Then
+		edt_timeout.Text = "0"
+		sw_timeout.Value = False
 		Return
 	End If
-	edt_timeout.Text = edt_timeout.Text + newValue
+	
+	If newTimeOut >= 60 Then
+		edt_timeout.Text = "60"
+		Return
+	End If
 	
 End Sub
+
+
+
