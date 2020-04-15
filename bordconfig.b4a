@@ -50,6 +50,7 @@ Library18=xmllayoutbuilder
 Library19=viewsex
 Library2=jsch
 Library20=ime
+Library21=jmqtt
 Library3=runtimepermissions
 Library4=json
 Library5=sql
@@ -77,7 +78,7 @@ Module7=classSetConfig
 Module8=CLVSnap
 Module9=CLVSwipe
 NumberOfFiles=18
-NumberOfLibraries=20
+NumberOfLibraries=21
 NumberOfModules=18
 Version=9.801
 @EndOfDesignText@

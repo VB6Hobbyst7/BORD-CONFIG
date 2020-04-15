@@ -11,7 +11,7 @@ End Sub
 
 
 Sub RetieveBoards As Cursor
-	qry = "SELECT * FROM unit ORDER BY description"
+	qry = "SELECT * FROM unit ORDER BY description COLLATE NOCASE"
 	
 	Return Starter.sql.ExecQuery(qry)	
 End Sub

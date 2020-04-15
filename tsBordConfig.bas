@@ -230,6 +230,11 @@ Private Sub EnableControls(enable As Boolean)
 	
 	chk_alle_borden.Enabled =  Starter.lstActiveBord.Size > 1
 	
+	edt_timeout.Enabled = enable
+	lbl_timeout_min.Enabled = enable
+	lbl_timeout_plus.Enabled = enable
+	
+	
 	edt_regel_1.Enabled = enable
 	edt_regel_2.Enabled = enable
 	edt_regel_3.Enabled = enable
@@ -254,4 +259,21 @@ Sub userMessage As ResumableSub
 		End If
 	End If
 	Return True
+End Sub
+
+Sub lbl_timeout_min_Click
+	setNewTimeOut(-Abs(1))
+End Sub
+
+Sub lbl_timeout_plus_Click
+	setNewTimeOut(1)
+End Sub
+
+Sub setNewTimeOut(newValue As Int)
+	Dim oldTimeOut As Int = edt_timeout.Text
+	If oldTimeOut < 1 Then
+		Return
+	End If
+	edt_timeout.Text = edt_timeout.Text + newValue
+	
 End Sub

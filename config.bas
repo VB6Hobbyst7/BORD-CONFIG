@@ -108,6 +108,7 @@ End Sub
 
 Sub Activity_Resume
 	If Starter.bordUpdate = False Then
+		
 		If Starter.edtUnit = False Then
 		End If
 		Starter.edtUnit = False
@@ -204,8 +205,6 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	lbl_bord_name.Text = name
 	lbl_ip.Text = ip
 	
-	
-	
 	Return p
 End Sub
 
@@ -259,7 +258,9 @@ End Sub
 
 
 Sub Activity_Pause (UserClosed As Boolean)
-
+	If UserClosed = True Then
+		Activity.Finish
+	End If
 End Sub
 
 Sub getConfig

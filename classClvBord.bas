@@ -36,7 +36,7 @@ Sub bordAlive(clv As CustomListView)
 				lbl = v
 				lbl.TextColor = Colors.Black
 			End If
-			If v Is Label And v.Tag = "name" Then
+			If v Is Label And v.Tag = "name" Or v.Tag = "ip" Then
 				lbl = v
 				lbl.TextColor = colorNameTextEnabled'0xFFFFE700
 				lbl.Color = colorNameBgEnAbled'0xFF0018FF
@@ -63,22 +63,22 @@ Sub bordAlive(clv As CustomListView)
 				
 				For Each v1 As View In p.GetAllViewsRecursive
 					'If v1 Is Label And v1.Tag = "isAlive" Then
-					If v1 Is Label And v1.Tag = "name" Then
+					If v1 Is Label And v1.Tag = "name" Or v1.Tag = "ip" Then
 						lbl = v1
+						If result = True Then
+							'lbl.TextColor = Colors.Green
+							lbl.TextColor = colorNameTextEnabled
+							lbl.Color = colorNameBgEnAbled
+							EnableBordOptions(result, p)
+						Else
+							'lbl.TextColor = Colors.Red
+							lbl.TextColor = colorNameTextDisabled
+							lbl.Color = colorNameBgDisAbled
+							EnableBordOptions(result, p)
+						End If
 					End If
 				Next
 				
-				If result = True Then
-					'lbl.TextColor = Colors.Green
-					lbl.TextColor = colorNameTextEnabled
-					lbl.Color = colorNameBgEnAbled
-					EnableBordOptions(result, p)
-				Else
-					'lbl.TextColor = Colors.Red
-					lbl.TextColor = colorNameTextDisabled
-					lbl.Color = colorNameBgDisAbled
-					EnableBordOptions(result, p)
-				End If
 			End If
 		Next
 	Next
