@@ -230,7 +230,7 @@ Private Sub EnableControls(enable As Boolean)
 	
 	chk_alle_borden.Enabled =  Starter.lstActiveBord.Size > 1
 	
-	edt_timeout.Enabled = enable
+	edt_timeout.Enabled = False
 	lbl_timeout_min.Enabled = enable
 	lbl_timeout_plus.Enabled = enable
 	
@@ -245,20 +245,20 @@ End Sub
 
 Sub userMessage As ResumableSub
 	Return
-	If clsPutJson.updateResult = 2 Then
-		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-		Wait For Msgbox_Result (oke As Int)
-		If oke = DialogResponse.POSITIVE Then
-			Return True
-		End If
-	Else if clsPutJson.updateResult = 1 Then
-		Msgbox2Async("Configuratie verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-		Wait For Msgbox_Result (oke As Int)
-		If oke = DialogResponse.POSITIVE Then
-			Return True
-		End If
-	End If
-	Return True
+'	If clsPutJson.updateResult = 2 Then
+'		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
+'		Wait For Msgbox_Result (oke As Int)
+'		If oke = DialogResponse.POSITIVE Then
+'			Return True
+'		End If
+'	Else if clsPutJson.updateResult = 1 Then
+'		Msgbox2Async("Configuratie verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
+'		Wait For Msgbox_Result (oke As Int)
+'		If oke = DialogResponse.POSITIVE Then
+'			Return True
+'		End If
+'	End If
+'	Return True
 End Sub
 
 Sub lbl_timeout_min_Click
@@ -273,7 +273,6 @@ Sub setNewTimeOut(newValue As Int)
 	Dim oldTimeOut As Int = edt_timeout.Text
 	Dim newTimeOut As Int
 	
-	sw_timeout.Value = True
 	edt_timeout.Text = oldTimeOut + newValue
 	newTimeOut = edt_timeout.Text
 	
@@ -285,9 +284,11 @@ Sub setNewTimeOut(newValue As Int)
 	
 	If newTimeOut >= 60 Then
 		edt_timeout.Text = "60"
+		sw_timeout.Value = True
 		Return
 	End If
 	
+	sw_timeout.Value = True
 End Sub
 
 
