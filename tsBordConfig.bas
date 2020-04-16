@@ -47,6 +47,8 @@ Sub Globals
 	Private btn_save As Label
 	Private chk_alle_borden As CheckBox
 	Private sw_retro As B4XSwitch
+	Private lbl_ip_nummer1 As Label
+	Private lbl_bord_naam1 As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -56,13 +58,18 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsJson.Initialize
 	clsFunc.Initialize
 	clsPutJson.Initialize
-	svSettings.Initialize(1500)
+	svSettings.Initialize(100)
 	chk_alle_borden.Enabled = True
 	tsConfig.LoadLayout("configMain", "Instellingen")
 	tsConfig.LoadLayout("confScreenSaver", "ScreenSaver")
+	
 	svSettings.Panel.LoadLayout("conf_switch")
+	
 	lbl_bord_naam.Text = Starter.selectedBordName
 	lbl_ip_nummer.Text = Starter.selectedBordIp
+	
+	lbl_bord_naam1.Text = Starter.selectedBordName
+	lbl_ip_nummer1.Text = Starter.selectedBordIp
 	
 	chk_alle_borden.Enabled = False
 	btn_save.Enabled = False
@@ -75,6 +82,19 @@ Sub Activity_Create(FirstTime As Boolean)
 	chk_alle_borden.Enabled = Starter.lstActiveBord.Size > 1
 	CheckBordActive
 	
+End Sub
+
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+ 
+	If KeyCode = KeyCodes.KEYCODE_BACK Then
+		If tsConfig.CurrentPage = 1 Then
+			tsConfig.ScrollTo(0, True)
+			Return True
+		End If
+		Return False
+	Else
+		Return False
+	End If
 End Sub
 
 Sub Activity_Resume
@@ -163,7 +183,7 @@ Sub btn_save_Click
 	If chk_alle_borden.Checked = False Then
 		clsPutJson.ipNumber = Starter.selectedBordIp
 		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
-		userMessage
+		'userMessage
 	Else
 		Dim naam, ip, lstStr As String
 		
@@ -243,23 +263,23 @@ Private Sub EnableControls(enable As Boolean)
 	
 End Sub
 
-Sub userMessage As ResumableSub
-	Return
-'	If clsPutJson.updateResult = 2 Then
-'		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-'		Wait For Msgbox_Result (oke As Int)
-'		If oke = DialogResponse.POSITIVE Then
-'			Return True
-'		End If
-'	Else if clsPutJson.updateResult = 1 Then
-'		Msgbox2Async("Configuratie verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-'		Wait For Msgbox_Result (oke As Int)
-'		If oke = DialogResponse.POSITIVE Then
-'			Return True
-'		End If
-'	End If
-'	Return True
-End Sub
+'Sub userMessage As ResumableSub
+'	Return
+''	If clsPutJson.updateResult = 2 Then
+''		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
+''		Wait For Msgbox_Result (oke As Int)
+''		If oke = DialogResponse.POSITIVE Then
+''			Return True
+''		End If
+''	Else if clsPutJson.updateResult = 1 Then
+''		Msgbox2Async("Configuratie verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
+''		Wait For Msgbox_Result (oke As Int)
+''		If oke = DialogResponse.POSITIVE Then
+''			Return True
+''		End If
+''	End If
+''	Return True
+'End Sub
 
 Sub lbl_timeout_min_Click
 	setNewTimeOut(-Abs(1))

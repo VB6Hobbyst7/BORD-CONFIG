@@ -5,7 +5,7 @@ Type=Class
 Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
-	Dim ftp As SFtp
+'	Dim ftp As SFtp
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -14,16 +14,16 @@ Public Sub Initialize
 End Sub
 
 
-Sub TryConnectFtp(ipNumber As String) As ResumableSub
-	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
-	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
-	
-
-	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
-
-	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
-	Return Success
-End Sub
+'Sub TryConnectFtp(ipNumber As String) As ResumableSub
+'	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
+'	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
+'	
+'
+'	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
+'
+'	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
+'	Return Success
+'End Sub
 
 
 

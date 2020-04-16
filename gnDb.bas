@@ -25,7 +25,7 @@ End Sub
 
 
 Sub addBord(description As String, ipNumber As String)
-	Dim curs As Cursor
+'	Dim curs As Cursor
 	Dim id As String = GUID
 	
 	qry = "INSERT INTO unit (unit_id,description, ip_number) VALUES(?,?,?)"

@@ -14,7 +14,7 @@ Sub Process_Globals
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
 	Dim clsUpdate As classGetLatestVersion
-	Dim clsC As classCrypt
+	'Dim clsC As classCrypt
 	Dim clsClvBord As classClvBord
 	Dim ftp As SFtp
 	Dim lstDisplay, lstValue As List

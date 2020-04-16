@@ -23,7 +23,7 @@ Sub Globals
 	Private edt_regel_3 As EditText
 	Private edt_regel_4 As EditText
 	Private edt_regel_5 As EditText
-	Private pnl_config As Panel
+	'Private pnl_config As Panel
 	Private edt_regel_2 As EditText
 End Sub
 
