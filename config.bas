@@ -19,7 +19,7 @@ Sub Process_Globals
 	Dim ftp As SFtp
 	Dim lstDisplay, lstValue As List
 	Dim clsFunc As classFunc
-	Dim access As Accessiblity
+'	Dim access As Accessiblity
 	Dim bordPinged As Boolean = False
 	Private xui As XUI
 End Sub
@@ -29,18 +29,18 @@ Sub Globals
 	Public msgMaxCharacter As Int = 40
 	Public chk_timeout_active As CheckBox
 	Public edt_timeout As EditText
-	Private chk_use_digital As CheckBox
-	Private btn_saveA As Button
+''	Private chk_use_digital As CheckBox
+''	Private btn_saveA As Button
 	Private cmb_units As B4XComboBox
 	Private ProgressBar As ProgressBar
-	Private btn_add As Button
+'	Private btn_add As Button
 	Private btn_remove As Button
-	Private pnl_config As Panel
+'	Private pnl_config As Panel
 	Private sw_use_yellow_number As B4XSwitch
 	Private sw_digital_numbers As B4XSwitch
 	Private sw_timeout As B4XSwitch
-	Private lbl_timeout_min As Label
-	Private lbl_timeout_plus As Label
+'	Private lbl_timeout_min As Label
+'	Private lbl_timeout_plus As Label
 	Private edt_regel_1 As EditText
 	Private edt_regel_2 As EditText
 	Private edt_regel_3 As EditText
@@ -51,13 +51,13 @@ Sub Globals
 	Private btn_update As Label
 	
 	Private btn_save As Label
-	Private lbl_digital As Label
-	Private lbl_yellow As Label
-	Private lbl_sponsor As Label
-	Private lbl_timeout As Label
-	Private lbl_to_minutes As Label
-	Private lbl_text_header As Label
-	Private lbl_text_footer As Label
+'	Private lbl_digital As Label
+'	Private lbl_yellow As Label
+'	Private lbl_sponsor As Label
+'	Private lbl_timeout As Label
+'	Private lbl_to_minutes As Label
+'	Private lbl_text_header As Label
+'	Private lbl_text_footer As Label
 	Private sw_game_time As B4XSwitch
 	Private chk_alle_borden As CheckBox
 	Private tsConfig As TabStrip
@@ -228,32 +228,32 @@ Sub edtFnext
 	editTextForceNext(edt_regel_5)
 End Sub
 
-Sub setFontSize
-	lbl_yellow.Initialize("")
-	lbl_digital.Initialize("")
-	lbl_sponsor.Initialize("")
-	lbl_timeout.Initialize("")
-	lbl_to_minutes.Initialize("")
-	lbl_text_header.Initialize("")
-	lbl_text_footer.Initialize("")
-	
-	edt_regel_1.Initialize(Me)
-	edt_regel_2.Initialize(Me)
-	edt_regel_3.Initialize(Me)
-	edt_regel_4.Initialize(Me)
-	edt_regel_5.Initialize(Me)
-	
-	
-	
-	ResetUserFontScaleLabel(lbl_digital)
-	ResetUserFontScaleLabel(lbl_yellow)
-	ResetUserFontScaleLabel(lbl_sponsor)
-	ResetUserFontScaleLabel(lbl_timeout)
-	ResetUserFontScaleLabel(lbl_to_minutes)
-	ResetUserFontScaleLabel(lbl_text_header)
-	ResetUserFontScaleLabel(lbl_text_footer)
-	
-End Sub
+'Sub setFontSize
+'	lbl_yellow.Initialize("")
+'	lbl_digital.Initialize("")
+'	lbl_sponsor.Initialize("")
+'	lbl_timeout.Initialize("")
+'	lbl_to_minutes.Initialize("")
+'	lbl_text_header.Initialize("")
+'	lbl_text_footer.Initialize("")
+'	
+'	edt_regel_1.Initialize(Me)
+'	edt_regel_2.Initialize(Me)
+'	edt_regel_3.Initialize(Me)
+'	edt_regel_4.Initialize(Me)
+'	edt_regel_5.Initialize(Me)
+'	
+'	
+'	
+'	ResetUserFontScaleLabel(lbl_digital)
+'	ResetUserFontScaleLabel(lbl_yellow)
+'	ResetUserFontScaleLabel(lbl_sponsor)
+'	ResetUserFontScaleLabel(lbl_timeout)
+'	ResetUserFontScaleLabel(lbl_to_minutes)
+'	ResetUserFontScaleLabel(lbl_text_header)
+'	ResetUserFontScaleLabel(lbl_text_footer)
+'	
+'End Sub
 
 
 
@@ -297,27 +297,27 @@ Sub userMessage As ResumableSub
 	Return True
 End Sub
 
-Sub getUnits1
-	Dim curs As Cursor = gnDb.RetieveBoards
-	
-	lstDisplay.Initialize
-	lstValue.Initialize
-	
-	lstDisplay.Add("Selecteer bord")
-	lstValue.Add("0")
-	
-	For i = 0 To curs.RowCount - 1
-		curs.Position = i
-		lstDisplay.Add(curs.GetString("description"))
-		lstValue.Add(curs.GetString("ip_number"))
-	Next
-	cmb_units.SetItems(lstDisplay)
-	
-	
-	chk_alle_borden.Enabled = lstValue.Size >= 1
-	
-	
-End Sub
+'Sub getUnits1
+'	Dim curs As Cursor = gnDb.RetieveBoards
+'	
+'	lstDisplay.Initialize
+'	lstValue.Initialize
+'	
+'	lstDisplay.Add("Selecteer bord")
+'	lstValue.Add("0")
+'	
+'	For i = 0 To curs.RowCount - 1
+'		curs.Position = i
+'		lstDisplay.Add(curs.GetString("description"))
+'		lstValue.Add(curs.GetString("ip_number"))
+'	Next
+'	cmb_units.SetItems(lstDisplay)
+'	
+'	
+'	chk_alle_borden.Enabled = lstValue.Size >= 1
+'	
+'	
+'End Sub
 
 Sub cmb_units_SelectedIndexChanged (Index As Int)
 	Dim value As String = lstValue.get(cmb_units.SelectedIndex)
@@ -409,51 +409,51 @@ Sub ftp_PromptYesNo (Message As String)
 	ftp.SetPromptResult(True)
 End Sub
 
-Sub enableView(enable As Boolean)
-	sw_timeout.Enabled = enable
-	sw_timeout.Value = enable
-	
-	sw_digital_numbers.Enabled = enable
-	sw_digital_numbers.Value = enable
-	
-	sw_use_yellow_number.Enabled = enable
-	sw_use_yellow_number.Value = enable
-	
-	sw_toon_sponsor.Enabled = enable
-	sw_toon_sponsor.Value = enable
-	
-	sw_game_time.Enabled = enable
-	sw_game_time.Value = enable
-	
-	edt_timeout.Enabled = enable
-	edt_timeout.Text = ""
-	
-	lbl_timeout_min.Enabled = enable
-	lbl_timeout_plus.Enabled = enable
-	
-	edt_regel_1.Text = ""
-	edt_regel_1.Enabled = enable
-	
-	edt_regel_2.Text = ""
-	edt_regel_2.Enabled = enable
-	
-	edt_regel_3.Text = ""
-	edt_regel_3.Enabled = enable
-	
-	edt_regel_4.Text = ""
-	edt_regel_4.Enabled = enable
-	
-	edt_regel_5.Text = ""
-	edt_regel_5.Enabled = enable
-End Sub
+'Sub enableView(enable As Boolean)
+'	sw_timeout.Enabled = enable
+'	sw_timeout.Value = enable
+'	
+'	sw_digital_numbers.Enabled = enable
+'	sw_digital_numbers.Value = enable
+'	
+'	sw_use_yellow_number.Enabled = enable
+'	sw_use_yellow_number.Value = enable
+'	
+'	sw_toon_sponsor.Enabled = enable
+'	sw_toon_sponsor.Value = enable
+'	
+'	sw_game_time.Enabled = enable
+'	sw_game_time.Value = enable
+'	
+'	edt_timeout.Enabled = enable
+'	edt_timeout.Text = ""
+'	
+'	lbl_timeout_min.Enabled = enable
+'	lbl_timeout_plus.Enabled = enable
+'	
+'	edt_regel_1.Text = ""
+'	edt_regel_1.Enabled = enable
+'	
+'	edt_regel_2.Text = ""
+'	edt_regel_2.Enabled = enable
+'	
+'	edt_regel_3.Text = ""
+'	edt_regel_3.Enabled = enable
+'	
+'	edt_regel_4.Text = ""
+'	edt_regel_4.Enabled = enable
+'	
+'	edt_regel_5.Text = ""
+'	edt_regel_5.Enabled = enable
+'End Sub
 
-Sub clearConfig
-	sw_timeout.Enabled = False
-	sw_digital_numbers.Enabled = False
-	sw_use_yellow_number.Enabled = False
-	sw_toon_sponsor.Enabled = False
-	edt_timeout.Text = ""
-End Sub
+'Sub clearConfig
+'	sw_timeout.Enabled = False
+'	sw_digital_numbers.Enabled = False
+'	sw_use_yellow_number.Enabled = False
+'	sw_toon_sponsor.Enabled = False
+'	edt_timeout.Text = ""
+'End Sub
 
 Sub btn_add_Click
 	StartActivity(units)
@@ -559,24 +559,24 @@ Sub btn_update_Click
 	StartActivity(update_bord)
 End Sub
 
-Sub ResetUserFontScaleLabel(lbl As Label)
-	Dim fscale As Double
-	fscale = access.GetUserFontScale
-
-	lbl.TextSize = NumberFormat2(lbl.TextSize / fscale,1,0,0,False)
-
-End Sub
-
-Sub ResetUserFontScaleEdit(v As B4XView)
-	Dim fscale As Double
-	fscale = access.GetUserFontScale
-	chk_alle_borden.TextSize = 17
-	chk_alle_borden.TextSize = NumberFormat2(chk_alle_borden.TextSize / fscale,1,0,0,False)
-	
-	If v Is EditText Then
-		v.TextSize = NumberFormat2(v.TextSize / fscale,1,0,0,False)
-	End If
-End Sub
+'Sub ResetUserFontScaleLabel(lbl As Label)
+'	Dim fscale As Double
+'	fscale = access.GetUserFontScale
+'
+'	lbl.TextSize = NumberFormat2(lbl.TextSize / fscale,1,0,0,False)
+'
+'End Sub
+'
+'Sub ResetUserFontScaleEdit(v As B4XView)
+'	Dim fscale As Double
+'	fscale = access.GetUserFontScale
+'	chk_alle_borden.TextSize = 17
+'	chk_alle_borden.TextSize = NumberFormat2(chk_alle_borden.TextSize / fscale,1,0,0,False)
+'	
+'	If v Is EditText Then
+'		v.TextSize = NumberFormat2(v.TextSize / fscale,1,0,0,False)
+'	End If
+'End Sub
 
 Private Sub PerformHapticFeedback (view As Object)
    #if B4A
