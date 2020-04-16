@@ -8,7 +8,7 @@ Version=9.5
 	#FullScreen: false
 	#IncludeTitle: true
 #End Region
-#IgnoreWarnings: 10, 11, 12 , 20
+'#IgnoreWarnings: 10, 11, 12 , 20
 #Extends: android.support.v7.app.AppCompatActivity
 Sub Process_Globals
 	Dim clsJson As classGetConfig
@@ -140,7 +140,7 @@ End Sub
 Sub Swipe_RefreshRequested
 	Starter.lstActiveBord.Clear
 	getUnits
-	Dim i As Int
+'	Dim i As Int
 End Sub
 
 Sub Activity_CreateMenu(Menu As ACMenu)
@@ -160,7 +160,7 @@ Sub getUnits
 	lblPullToRefresh.Text = "Borden zoeken..."
 	refreshIndicator.Show
 
-	Dim unitList As List
+'	Dim unitList As List
 	Dim viewWidth As Int = clv_borden.AsView.Width
 	clv_borden.Clear
 	
@@ -543,7 +543,7 @@ End Sub
 
 
 Sub btn_edit_Click
-	Dim lst As List
+'	Dim lst As List
 	
 	Starter.edtUnit = True	
 	Starter.edtIpNumber = lstValue.get(cmb_units.SelectedIndex)
