@@ -61,9 +61,12 @@ Sub getUnit(ip As String) As List
 	Dim lst As List
 	
 	lst.Initialize
-	qry = "SELECT * FROM unit WHERE ip_number = ? COLLATE NOCASE"
+	qry = "SELECT * FROM unit WHERE ip_number = ? COLLATE NOCASE ORDER BY description COLLATE NOCASE"
 	
 	curs = Starter.sql.ExecQuery2(qry, Array As String(ip))
+	If curs.RowCount = 0 Then
+		Return lst
+	End If
 	curs.Position = 0
 	
 	lst.AddAll(Array As String(curs.GetString("description"), curs.GetString("ip_number"), curs.GetString("unit_id")))

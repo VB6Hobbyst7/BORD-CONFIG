@@ -81,6 +81,8 @@ Sub Globals
 	Private snap As CLVSnap
 	Private sw_retro As B4XSwitch
 	Private lbl_bord_retro As Label
+	Private lbl_mirror_bord As Label
+	Private labl_mirror_bord As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -199,7 +201,7 @@ End Sub
 Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	Dim p As Panel
 	p.Initialize(Me)
-	p.SetLayout(0dip, 0dip, width, 190dip)
+	p.SetLayout(0dip, 0dip, width, 245dip) '190
 	p.LoadLayout("clv_bord")
 	
 	lbl_bord_name.Text = name
@@ -626,6 +628,10 @@ Sub lbl_bord_retro_Click
 	clsClvBord.ConfigItemRetro(clv_borden.GetItemFromView(Sender), clv_borden)
 End Sub
 
+Sub lbl_mirror_bord_Click
+	clsClvBord.ConfigItemMirror(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
+
 Sub lbl_add_board_Click
 	StartActivity(units)
 End Sub
@@ -633,4 +639,6 @@ End Sub
 Sub clv_borden_ScrollChanged (Offset As Int)
 	snap.ScrollChanged(Offset)
 End Sub
+
+
 

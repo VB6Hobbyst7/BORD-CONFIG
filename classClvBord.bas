@@ -31,6 +31,7 @@ Sub bordAlive(clv As CustomListView)
 	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
+		
 		For Each v As View In p.GetAllViewsRecursive
 			If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then'v.Tag = "isAlive" Then
 				lbl = v
@@ -45,8 +46,9 @@ Sub bordAlive(clv As CustomListView)
 	Next
 	
 	For i = 0 To itemCount
-		If i > 3 Then
+		If i >= 2 Then
 			clv.ScrollToItem(i)
+			clv.JumpToItem(i)
 		End If
 		p = clv.GetPanel(i)
 		
@@ -85,23 +87,40 @@ Sub bordAlive(clv As CustomListView)
 	Sleep(400)
 	CallSub(config,"HidePullDown")
 	CallSub2(config, "PullDownSetTableName", "")
+	Sleep (1000)
 	clv.ScrollToItem(0)
 	
 End Sub
 
 Private Sub EnableBordOptions(enable As Boolean, p As Panel)
 	For Each v As View In p.GetAllViewsRecursive
-		'If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then
-		If v Is Label And  v.Tag = "config" Or v.Tag = "retro" Then
+		'If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Then
+		If v Is Label And  v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Then
 			Dim lbl As Label = v
 			lbl.Enabled = enable
 			If enable Then
 				lbl.TextColor = 0xFF000000
-			Else 
+			Else
 				lbl.TextColor = 0xFFE4E4E4
 			End If
 		End If
 	Next
+	
+	'STORE ENABLED BORD IPNUMBER
+	For Each v As View In p.GetAllViewsRecursive
+		If v.Tag = "ip" Then
+			Dim lbl As Label = v
+			lbl.Enabled = enable
+			If enable Then
+				If lbl.Tag = "ip" Then
+					If Starter.lstActiveBord.IndexOf(lbl.Text) = -1 Then
+						Starter.lstActiveBord.Add(lbl.Text)
+					End If
+				End If
+			End If
+		End If
+	Next
+	
 End Sub
 
 Sub editItem(Index As Int, clv As CustomListView)
@@ -202,7 +221,30 @@ Public Sub ConfigItemRetro(Index As Int, clv As CustomListView)
 	clsRetro.SetBordToRetro(ip)
 End Sub
 
-
+Public Sub ConfigItemMirror(Index As Int, clv As CustomListView)
+	Dim p As Panel
+	Dim lbl As Label
+	Dim name, ip As String
+	
+	p = clv.GetPanel(Index)
+	For Each v As View In p.GetAllViewsRecursive
+		If v Is Label And v.Tag = "ip" Then
+			lbl = v
+			ip = lbl.Text
+			Exit
+		End If
+	Next
+	For Each v As View In p.GetAllViewsRecursive
+		If v Is Label And v.Tag = "name" Then
+			lbl = v
+			name = lbl.Text
+			Exit
+		End If
+	Next
+	Starter.selectedBordName = name
+	Starter.selectedBordIp = ip
+	StartActivity(mirror_bord)
+End Sub
 
 
 
