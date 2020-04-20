@@ -14,8 +14,8 @@ Version=9.5
 
 Sub Process_Globals
 	Private nw As ServerSocket
-	Private clsAes As AESCryptUtilities
-	Private crypt As B4XCipher
+	'Private clsAes As AESCryptUtilities
+	'Private crypt As B4XCipher
 End Sub
 
 Sub Globals
@@ -36,7 +36,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	edt_ip.Hint = $"Bijvoorbeeld ${nw.GetMyIP}"$
 	edt_description.Hint = "Tafel 8"
 	clsFunc.Initialize
-	clsAes.Initialize
+	'clsAes.Initialize
 	If Starter.edtUnit = True Then
 		getUnit
 	End If
@@ -73,16 +73,16 @@ Sub Activity_KeyPress (KeyCode As Int) As Boolean
 End Sub
 
 
-Sub EncryptText(text As String, password As String) As Byte()
-	Dim c As B4XCipher
-	Return c.Encrypt(text.GetBytes("utf8"), password)
-End Sub
-
-Sub DecryptText(EncryptedData() As Byte, password As String) As String
-	Dim c As B4XCipher
-	Dim b() As Byte = c.Decrypt(EncryptedData, password)
-	Return BytesToString(b, 0, b.Length, "utf8")
-End Sub
+'Sub EncryptText(text As String, password As String) As Byte()
+'	Dim c As B4XCipher
+'	Return c.Encrypt(text.GetBytes("utf8"), password)
+'End Sub
+'
+'Sub DecryptText(EncryptedData() As Byte, password As String) As String
+'	Dim c As B4XCipher
+'	Dim b() As Byte = c.Decrypt(EncryptedData, password)
+'	Return BytesToString(b, 0, b.Length, "utf8")
+'End Sub
 
 
 Sub btn_test_Click
