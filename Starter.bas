@@ -14,7 +14,7 @@ Sub Process_Globals
 	Public hostPath,  edtIpNumber, unitId, bordVersion, updateFile, upDateVersion As String
 	Public fileSize As Long
 	Public edtUnit As Boolean = False
-	Public bordUpdate As Boolean = False
+	Public bordUpdate, bordAdded As Boolean = False
 	Public sql As SQL
 	Public xStr As String = "qlndfwjeklfnw213123912iedmd$%Gk"
 	Public pw As String = "peter"
@@ -23,7 +23,7 @@ Sub Process_Globals
 	Public selectedBordPanel As Int
 	Public selectedBordName, selectedBordIp, deviceIp As String
 	Public lstActiveBord As List
-	Public newUnitName as String
+	Public newUnitName As String
 End Sub
 
 Sub Service_Create

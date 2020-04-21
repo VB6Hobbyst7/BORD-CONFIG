@@ -149,6 +149,7 @@ Sub addBord
 		Activity.Finish
 	Else
 		gnDb.addBord(edt_description.Text, edt_ip.Text)
+		Starter.bordAdded = True
 	End If
 	
 End Sub

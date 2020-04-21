@@ -50,7 +50,7 @@ Sub GetDeelBorden()
 	Dim count As Int = 0
 	Dim lst As List
 	Dim aWidth As Int = clvDelen.AsView.Width
-	Dim aHeight As Int = 200
+	Dim aHeight As Int = 250
 	
 	For Each item As String In Starter.lstActiveBord
 		If item = Starter.selectedBordIp Then

@@ -20,7 +20,7 @@ Public Sub Initialize
 End Sub
 
 
-Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List, swSponsor As B4XSwitch, swGameTime As B4XSwitch, swShowRetro As B4XSwitch)
+Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As B4XSwitch, swUseYellow As B4XSwitch, msg As List, swSponsor As B4XSwitch, swGameTime As B4XSwitch, swShowRetro As B4XSwitch) As ResumableSub
 		
 	cnf = File.ReadString(Starter.hostPath, "cnf.44")
 	
@@ -88,9 +88,16 @@ Sub parseConfig(swTimeOut As B4XSwitch, edtTimeOut As EditText, swUseDigital As 
 	'Return
 	#End If
 	pushConfig
+	
+	Wait For (pushConfig) Complete (result As Boolean)
+	Log($"FTP RESULT : ${result}"$)
+	
+	Return result
 End Sub
 	
-Sub pushConfig
+Sub pushConfig As ResumableSub
+	'Log($"FTP IPNUMBER : ${ipNumber}"$)
+	
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
 	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	updateResult = 0
@@ -100,7 +107,7 @@ Sub pushConfig
 	Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
 		Log(LastException.Message)
-		ToastMessageShow($"Configuratie ${bordNaam} niet verzonden"$, False)		
+'		ToastMessageShow($"Configuratie ${bordNaam} niet verzonden"$, False)		
 '		clsfunc.createCustomToast("Configuratie niet verzonden", Colors.Red)
 		updateResult = 1
 	Else
@@ -113,6 +120,7 @@ Sub pushConfig
 	
 	ftp.Close
 	
+	Return Success
 	
 	
 End Sub

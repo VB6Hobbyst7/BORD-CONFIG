@@ -43,7 +43,9 @@ Sub pingBord(ipNumber As String) As ResumableSub
 			
 			Return False
 		Else
-			Starter.lstActiveBord.Add(ipNumber)
+			If Starter.lstActiveBord.IndexOf(ipNumber) = -1 Then
+				Starter.lstActiveBord.Add(ipNumber)
+			End If
 			Return True
 		End If
 	Else

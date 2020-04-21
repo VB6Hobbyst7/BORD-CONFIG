@@ -8,7 +8,7 @@ Version=9.5
 	#FullScreen: False
 	#IncludeTitle: True
 #End Region
-#IgnoreWarnings: 10, 11, 12 , 20
+'#IgnoreWarnings: 10, 11, 12 , 20
 #Extends: android.support.v7.app.AppCompatActivity
 
 Sub Process_Globals
@@ -53,13 +53,13 @@ End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("tsBordConfig")
-	chk_alle_borden.Initialize("")
+	'chk_alle_borden.Initialize("")
 	
 	clsJson.Initialize
 	clsFunc.Initialize
 	clsPutJson.Initialize
 	svSettings.Initialize(100)
-	chk_alle_borden.Enabled = True
+''	chk_alle_borden.Enabled = True
 	tsConfig.LoadLayout("configMain", "Instellingen")
 	tsConfig.LoadLayout("confScreenSaver", "ScreenSaver")
 	
@@ -71,16 +71,28 @@ Sub Activity_Create(FirstTime As Boolean)
 	lbl_bord_naam1.Text = Starter.selectedBordName
 	lbl_ip_nummer1.Text = Starter.selectedBordIp
 	
-	chk_alle_borden.Enabled = False
+''	chk_alle_borden.Enabled = False
 	btn_save.Enabled = False
 	btn_save.Color = Colors.Red
 	btn_save.TextColor = Colors.White
 	
 '	Log(Starter.lstActiveBord.IndexOf(Starter.selectedBordIp))
 	'Log(Starter.lstActiveBord.Size)
-	chk_alle_borden.Enabled = False
-	chk_alle_borden.Enabled = Starter.lstActiveBord.Size > 1
+''	chk_alle_borden.Enabled = False
+'''	chk_alle_borden.Enabled = Starter.lstActiveBord.Size > 1
 	CheckBordActive
+	
+	For i = 0 To Starter.lstActiveBord.Size - 1
+		Log($"IP NUMBER = ${Starter.lstActiveBord.Get(i)}"$)
+	Next
+	
+	Dim bordCount As Int = Starter.lstActiveBord.Size
+	
+	If bordCount = 1 Then
+		chk_alle_borden.Enabled = False
+	Else
+		chk_alle_borden.Enabled = True
+	End If
 	
 End Sub
 
@@ -186,48 +198,63 @@ Sub btn_save_Click
 		'userMessage
 	Else
 		Dim naam, ip, lstStr As String
-		
-		lstActiveBords.Initialize
-		wait for (getAliveBorden) Complete (result As Boolean)
-		lstBord.Initialize
-		For i = 0 To lstActiveBords.Size - 1
-			lstStr = lstActiveBords.Get(i)
-			lstBord = Regex.Split("\|", lstStr)
-			naam = lstBord.Get(0)
-			ip = lstBord.Get(1)
-			
+		Dim lstUnit As List
+'		If 1 = 2 Then
+'			lstActiveBords.Initialize
+'			wait for (getAliveBorden) Complete (result As Boolean)
+'			lstBord.Initialize
+'		End If
+		For i = 0 To Starter.lstActiveBord.Size - 1
+			lstUnit = gnDb.getUnit(Starter.lstActiveBord.Get(i))	
+			naam = lstUnit.Get(0)
+			ip = lstUnit.Get(1)
+			Log("TSCONFIG IP NUMBER : " & ip)
 			clsPutJson.bordNaam = naam
 			clsPutJson.ipNumber = ip
-			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
+			ToastMessageShow($"Configuratie ${naam} bijwerken"$, False)
+			'clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
+			wait for (clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)) Complete (result As Boolean)
+			Sleep(1000)
 		Next
+		
+'		For i = 0 To lstActiveBords.Size - 1
+'			lstStr = lstActiveBords.Get(i)
+'			lstBord = Regex.Split("\|", lstStr)
+'			naam = lstBord.Get(0)
+'			ip = lstBord.Get(1)
+'			
+'			clsPutJson.bordNaam = naam
+'			clsPutJson.ipNumber = ip
+'			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
+'		Next
 
 	End If
 End Sub
 
 
-Sub getAliveBorden As ResumableSub
-	Dim curs As Cursor = gnDb.RetieveBoards
-	
-	If curs.RowCount = 0 Then
-		curs.Close
-		Return False
-	End If
-	
-	ProgressDialogShow("Borden valideren")
-	
-	Sleep(300)
-	
-	For i = 0 To curs.RowCount - 1
-		curs.Position = i
-		wait for (clsFunc.pingBord(curs.GetString("ip_number"))) Complete (result As Boolean)
-		If result = True Then
-			lstActiveBords.AddAll(Array As String(curs.GetString("description")&"|"&curs.GetString("ip_number")))
-		End If
-	Next
-	ProgressDialogHide
-	curs.Close
-	Return False
-End Sub
+'Sub getAliveBorden As ResumableSub
+'	Dim curs As Cursor = gnDb.RetieveBoards
+'	
+'	If curs.RowCount = 0 Then
+'		curs.Close
+'		Return False
+'	End If
+'	
+'	ProgressDialogShow("Borden valideren")
+'	
+'	Sleep(300)
+'	
+'	For i = 0 To curs.RowCount - 1
+'		curs.Position = i
+'		wait for (clsFunc.pingBord(curs.GetString("ip_number"))) Complete (result As Boolean)
+'		If result = True Then
+'			lstActiveBords.AddAll(Array As String(curs.GetString("description")&"|"&curs.GetString("ip_number")))
+'		End If
+'	Next
+'	ProgressDialogHide
+'	curs.Close
+'	Return False
+'End Sub
 
 Private Sub CheckBordActive
 	If Starter.lstActiveBord.IndexOf(Starter.selectedBordIp) > -1 Then
@@ -248,7 +275,7 @@ Private Sub EnableControls(enable As Boolean)
 	sw_game_time.Enabled = enable
 	sw_timeout.Enabled = enable
 	
-	chk_alle_borden.Enabled =  Starter.lstActiveBord.Size > 1
+''	chk_alle_borden.Enabled =  Starter.lstActiveBord.Size > 1
 	
 	edt_timeout.Enabled = False
 	lbl_timeout_min.Enabled = enable
