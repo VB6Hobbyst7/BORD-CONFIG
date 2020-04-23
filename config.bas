@@ -5,8 +5,8 @@ Type=Activity
 Version=9.5
 @EndOfDesignText@
 #Region  Activity Attributes 
-	#FullScreen: false
-	#IncludeTitle: true
+	#FullScreen: False
+	#IncludeTitle: True
 #End Region
 '#IgnoreWarnings: 10, 11, 12 , 20
 #Extends: android.support.v7.app.AppCompatActivity
@@ -106,6 +106,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	Swipe.PullToRefreshPanel = PullToRefreshPanel
 	'#######################################################################
 	
+	Log(toolbar.THEME_LIGHT)
 	getUnits
 End Sub
 

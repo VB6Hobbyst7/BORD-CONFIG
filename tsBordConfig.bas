@@ -54,6 +54,7 @@ End Sub
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("tsBordConfig")
 	'chk_alle_borden.Initialize("")
+	toolbar.Elevation = 0
 	
 	clsJson.Initialize
 	clsFunc.Initialize
@@ -62,6 +63,7 @@ Sub Activity_Create(FirstTime As Boolean)
 ''	chk_alle_borden.Enabled = True
 	tsConfig.LoadLayout("configMain", "Instellingen")
 	tsConfig.LoadLayout("confScreenSaver", "ScreenSaver")
+	
 	
 	svSettings.Panel.LoadLayout("conf_switch")
 	
@@ -193,74 +195,38 @@ Sub btn_save_Click
 	msgList.AddAll(Array As String(edt_regel_1.text, edt_regel_2.text, edt_regel_3.text, edt_regel_4.text, edt_regel_5.text))
 	
 	If chk_alle_borden.Checked = False Then
+		ToastMessageShow($"Configuratie ${Starter.selectedBordName} bijwerken"$, True)
 		clsPutJson.ipNumber = Starter.selectedBordIp
 		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
 		'userMessage
 	Else
 		Dim naam, ip, lstStr As String
 		Dim lstUnit As List
-'		If 1 = 2 Then
-'			lstActiveBords.Initialize
-'			wait for (getAliveBorden) Complete (result As Boolean)
-'			lstBord.Initialize
-'		End If
+
+	'	Log($"START TIME : $Time{DateTime.Now}"$)
 		For i = 0 To Starter.lstActiveBord.Size - 1
 			lstUnit = gnDb.getUnit(Starter.lstActiveBord.Get(i))	
 			naam = lstUnit.Get(0)
 			ip = lstUnit.Get(1)
-			Log("TSCONFIG IP NUMBER : " & ip)
+	'		Log($"TSCONFIG IP NUMBER : ${ip} - $Time{DateTime.Now}"$)
 			clsPutJson.bordNaam = naam
 			clsPutJson.ipNumber = ip
 			ToastMessageShow($"Configuratie ${naam} bijwerken"$, False)
-			'clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
-			wait for (clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)) Complete (result As Boolean)
-			Sleep(1000)
+			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
+			'wait for (clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)) Complete (result As Boolean)
+			Sleep(2000)
 		Next
+		Log($"END TIME : $Time{DateTime.Now}"$)
 		
-'		For i = 0 To lstActiveBords.Size - 1
-'			lstStr = lstActiveBords.Get(i)
-'			lstBord = Regex.Split("\|", lstStr)
-'			naam = lstBord.Get(0)
-'			ip = lstBord.Get(1)
-'			
-'			clsPutJson.bordNaam = naam
-'			clsPutJson.ipNumber = ip
-'			clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
-'		Next
 
 	End If
 End Sub
 
-
-'Sub getAliveBorden As ResumableSub
-'	Dim curs As Cursor = gnDb.RetieveBoards
-'	
-'	If curs.RowCount = 0 Then
-'		curs.Close
-'		Return False
-'	End If
-'	
-'	ProgressDialogShow("Borden valideren")
-'	
-'	Sleep(300)
-'	
-'	For i = 0 To curs.RowCount - 1
-'		curs.Position = i
-'		wait for (clsFunc.pingBord(curs.GetString("ip_number"))) Complete (result As Boolean)
-'		If result = True Then
-'			lstActiveBords.AddAll(Array As String(curs.GetString("description")&"|"&curs.GetString("ip_number")))
-'		End If
-'	Next
-'	ProgressDialogHide
-'	curs.Close
-'	Return False
-'End Sub
-
 Private Sub CheckBordActive
 	If Starter.lstActiveBord.IndexOf(Starter.selectedBordIp) > -1 Then
 		btn_save.Enabled = True
-		btn_save.TextColor = Colors.Yellow
-		btn_save.Color = Colors.Blue
+		btn_save.TextColor = 0xFFA0B7D7'Colors.Yellow
+		btn_save.Color = 0xFF004BA0'Colors.Blue
 		retrieveConfig(Starter.selectedBordIp)
 		EnableControls(True)
 	Else
@@ -289,24 +255,6 @@ Private Sub EnableControls(enable As Boolean)
 	edt_regel_5.Enabled = enable
 	
 End Sub
-
-'Sub userMessage As ResumableSub
-'	Return
-''	If clsPutJson.updateResult = 2 Then
-''		Msgbox2Async("Configuratie niet verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-''		Wait For Msgbox_Result (oke As Int)
-''		If oke = DialogResponse.POSITIVE Then
-''			Return True
-''		End If
-''	Else if clsPutJson.updateResult = 1 Then
-''		Msgbox2Async("Configuratie verzonden", clsPutJson.bordNaam, "Oke", "", "", Null, False)
-''		Wait For Msgbox_Result (oke As Int)
-''		If oke = DialogResponse.POSITIVE Then
-''			Return True
-''		End If
-''	End If
-''	Return True
-'End Sub
 
 Sub lbl_timeout_min_Click
 	setNewTimeOut(-Abs(1))

@@ -99,6 +99,7 @@ Sub pushConfig As ResumableSub
 	'Log($"FTP IPNUMBER : ${ipNumber}"$)
 	
 	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
+	
 	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	updateResult = 0
 	

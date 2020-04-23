@@ -22,8 +22,8 @@ Sub bordAlive(clv As CustomListView)
 	Dim colorNameTextDisabled, colorNameBgDisAbled As Int
 	Dim colorNameTextEnabled, colorNameBgEnAbled As Int
 	
-	colorNameBgEnAbled = 0xFF0018FF
-	colorNameTextEnabled = 0xFFFFE700
+	colorNameBgEnAbled = 0xFF004BA0 '0xFF0018FF
+	colorNameTextEnabled = 0xFFA0B7D7'0xFFFFE700
 	colorNameTextDisabled = Colors.Red
 	colorNameBgDisAbled = Colors.Black
 	

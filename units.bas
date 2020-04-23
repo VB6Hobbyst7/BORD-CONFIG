@@ -5,8 +5,8 @@ Type=Activity
 Version=9.5
 @EndOfDesignText@
 #Region  Activity Attributes 
-	#FullScreen: True
-	#IncludeTitle: False
+	#FullScreen: False
+	#IncludeTitle: True
 #End Region
 
 #IgnoreWarnings: 10, 11, 12 , 20
@@ -28,6 +28,10 @@ Sub Globals
 	Private ProgressBar As ProgressBar
 	Private clsFunc As classFunc
 	Private btn_back As Button
+	Private btn_save As Label
+	Private btnTest As Label
+	Private btnAddUnit As Label
+	Private btnTerug As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
