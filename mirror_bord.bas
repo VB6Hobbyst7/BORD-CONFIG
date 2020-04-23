@@ -176,20 +176,23 @@ Sub btnStartShare_Click
 End Sub
 
 Sub CreateLocalShareList
+	
+
+	'generate JSON
 	Dim Map1 As Map
 	Map1.Initialize
 	Dim JSONGenerator As JSONGenerator
 	Dim Data As List
 	Data.Initialize
-	Map1.put("sharedips:","")
-	For i = 0 To shareIpList.Size-1
-		Map1.Put(i, shareIpList.Get(i))
+	Map1.put("Version:","1.1")
+	For i = 0 To 30
+		Map1.Put(i, "value " & i)
 	Next
 	Data.Add(Map1)
 	JSONGenerator.Initialize2(Data)
-	Dim ff As String = JSONGenerator.ToPrettyString(4)
-	'Log(JSONGenerator.ToPrettyString(4)&"{{")
-	Log(ff)
+
+
+	Log(JSONGenerator.ToPrettyString(4))
 End Sub
 
 
