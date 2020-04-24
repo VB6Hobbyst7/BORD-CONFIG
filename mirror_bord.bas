@@ -176,23 +176,53 @@ Sub btnStartShare_Click
 End Sub
 
 Sub CreateLocalShareList
+	If shareIpList.IndexOf(Starter.selectedBordIp) = -1 Then
+		shareIpList.InsertAt(0, Starter.selectedBordIp)
+	End If
 	
-
 	'generate JSON
 	Dim Map1 As Map
-	Map1.Initialize
-	Dim JSONGenerator As JSONGenerator
+	Dim Map2 As Map
 	Dim Data As List
+	Dim mList As List
+	Dim JSONGenerator As JSONGenerator
+	
+	Map1.Initialize
+	Map2.Initialize
 	Data.Initialize
-	Map1.put("Version:","1.1")
-	For i = 0 To 30
-		Map1.Put(i, "value " & i)
+
+	mList.Initialize
+	For i = 0 To shareIpList.Size-1
+		If i = 0 Then
+			'mList.AddAll(Array As String($"${shareIpList.Get(i)}, 1"$))
+			mList.AddAll(Array As Map(CreateMap("ip":shareIpList.Get(i), "server":1)))
+		Else
+			'mList.AddAll(Array As String($"${shareIpList.Get(i)}, 0"$))
+			mList.AddAll(Array As Map(CreateMap("ip":shareIpList.Get(i), "server":0)))
+		End If
 	Next
-	Data.Add(Map1)
+	
+	
+	Data.Add(mList)
 	JSONGenerator.Initialize2(Data)
+	
+	Dim str As String = JSONGenerator.ToPrettyString(2)
 
+	File.WriteString(Starter.hostPath, "mqtt.conf", JSONGenerator.ToPrettyString(2))
 
-	Log(JSONGenerator.ToPrettyString(4))
+	Return
+	Dim parser As JSONParser
+	parser.Initialize(str)
+	Dim root As List = parser.NextArray
+	For Each colroot As List In root
+		For Each colcolroot As Map In colroot
+			Dim server As Int = colcolroot.Get("server")
+			Dim ip As String = colcolroot.Get("ip")
+			
+			Log($"IP : ${ip} SERVER : ${server}"$)
+		Next
+	Next
+	'Log(JSONGenerator.ToPrettyString(4))
 End Sub
 
 

@@ -40,10 +40,13 @@ Sub GenMqttFile(ip As String, clientIp As String)
 	File.WriteString(Starter.hostPath, "mqtt.conf", JSONGenerator.ToPrettyString(2))
 	Sleep(50)
 	
-	PushMqttFile(pushTo)
+	'PushMqttFile(pushTo)
+'	Log($"start $DateTime{DateTime.Now}"$)
+	wait for (PushMqttFile(pushTo)) Complete (result As Boolean)
+'	Log($"end $DateTime{DateTime.Now}"$)
 End Sub
 
-Private Sub PushMqttFile(clientIp As String)
+Private Sub PushMqttFile(clientIp As String)As ResumableSub
 	ftp.Initialize("ftp", "pi", "0", clientIp, 22)
 	
 	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
@@ -53,14 +56,21 @@ Private Sub PushMqttFile(clientIp As String)
 	
 	Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
+		ftp.Close
 		Log(LastException.Message)
+		Log($"ftp success false $DateTime{DateTime.Now}"$)
+		Return Success
 	Else
+		ftp.Close
+		Log($"ftp success true $DateTime{DateTime.Now}"$)
+		Return Success
 '		ToastMessageShow($"Configuratie ${bordNaam} verzonden"$, False)
 	End If
 	
-	ftp.Close
+	'ftp.Close
 End Sub
 
 Sub ftp_PromptYesNo (Message As String)
 	ftp.SetPromptResult(True)
 End Sub
+
