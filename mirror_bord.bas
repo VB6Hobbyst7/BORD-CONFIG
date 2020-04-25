@@ -8,7 +8,8 @@ Version=9.801
 	#FullScreen: false
 	#IncludeTitle: true
 #End Region
-'#IgnoreWarnings: 10, 11, 12 , 20
+#IgnoreWarnings: 1 
+',10, 11, 12 , 20
 #Extends: android.support.v7.app.AppCompatActivity
 
 Sub Process_Globals
@@ -157,72 +158,55 @@ Sub clvDelen_ItemClick (Index As Int, Value As Object)
 End Sub
 
 Sub btnStartShare_Click
-	'CREATE LOCAL LIST OF SHARES
+'	'CREATE LOCAL LIST OF SHARES
 	CreateLocalShareList
-	Return
+	
+	'Return
 	B4XLoadingIndicator1.Show
+	
 	'SERVER
-	clsShare.GenMqttFile(Starter.selectedBordIp, "0.0.0.0")
+	clsShare.GenMqttFile(Starter.selectedBordIp, "0.0.0.0", "1")
 	Sleep(5000)
 	
 	'CLIENTS
 	For i = 0 To shareIpList.Size-1
-		clsShare.GenMqttFile(Starter.selectedBordIp, shareIpList.Get(i))
+		If Starter.selectedBordIp = shareIpList.Get(i) Then Continue
+		clsShare.GenMqttFile(Starter.selectedBordIp, shareIpList.Get(i), "1")
 		Sleep(1000)
 	Next
 	Sleep(2000)
 	B4XLoadingIndicator1.Hide
 	
+	Activity.Finish
+	StartActivity(Main)
 End Sub
 
 Sub CreateLocalShareList
+	Dim mList As List
+	Dim JSONGenerator As JSONGenerator
+		
 	If shareIpList.IndexOf(Starter.selectedBordIp) = -1 Then
 		shareIpList.InsertAt(0, Starter.selectedBordIp)
 	End If
-	
-	'generate JSON
-	Dim Map1 As Map
-	Dim Map2 As Map
-	Dim Data As List
-	Dim mList As List
-	Dim JSONGenerator As JSONGenerator
-	
-	Map1.Initialize
-	Map2.Initialize
-	Data.Initialize
 
 	mList.Initialize
 	For i = 0 To shareIpList.Size-1
 		If i = 0 Then
-			'mList.AddAll(Array As String($"${shareIpList.Get(i)}, 1"$))
 			mList.AddAll(Array As Map(CreateMap("ip":shareIpList.Get(i), "server":1)))
 		Else
-			'mList.AddAll(Array As String($"${shareIpList.Get(i)}, 0"$))
 			mList.AddAll(Array As Map(CreateMap("ip":shareIpList.Get(i), "server":0)))
 		End If
 	Next
 	
+	JSONGenerator.Initialize2(mList)
+	If File.Exists(Starter.hostPath, "mqttP.conf") Then
+		File.Delete(Starter.hostPath, "mqttP.conf")
+		Sleep(100)
+	End If
 	
-	Data.Add(mList)
-	JSONGenerator.Initialize2(Data)
-	
-	Dim str As String = JSONGenerator.ToPrettyString(2)
-
-	File.WriteString(Starter.hostPath, "mqtt.conf", JSONGenerator.ToPrettyString(2))
-
-	Return
-	Dim parser As JSONParser
-	parser.Initialize(str)
-	Dim root As List = parser.NextArray
-	For Each colroot As List In root
-		For Each colcolroot As Map In colroot
-			Dim server As Int = colcolroot.Get("server")
-			Dim ip As String = colcolroot.Get("ip")
-			
-			Log($"IP : ${ip} SERVER : ${server}"$)
-		Next
-	Next
-	'Log(JSONGenerator.ToPrettyString(4))
+	File.WriteString(Starter.hostPath, "mqttP.conf", JSONGenerator.ToPrettyString(2))
+'	Log(File.ReadString(Starter.hostPath, "mqttP.conf"))
+	Sleep(300)
 End Sub
 
 

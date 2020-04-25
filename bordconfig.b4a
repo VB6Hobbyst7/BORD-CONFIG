@@ -129,9 +129,9 @@ Sub Activity_Create(FirstTime As Boolean)
 	Sleep(2000)
 	#end if
 	
-	If File.Exists(Starter.hostPath, "mqtt.conf") Then
-		MsgboxAsync("Bord delen aktief","Bord Config")
-		Wait For Msgbox_Result (Result As Int)
+	If File.Exists(Starter.hostPath, "mqttP.conf") Then
+'		MsgboxAsync("Bord delen aktief","Bord Config")
+'		Wait For Msgbox_Result (Result As Int)
 		StartActivity(delen_aktief)
 		Activity.Finish
 	Else
