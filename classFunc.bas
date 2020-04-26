@@ -6,7 +6,7 @@ Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
 '	Dim ftp As SFtp
-Private parser as JSONParser
+Private parser As JSONParser
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -88,30 +88,34 @@ Public Sub SetTextShadow(pView As View, pRadius As Float, pDx As Float, pDy As F
 	ref.RunMethod4("setShadowLayer", Array As Object(pRadius, pDx, pDy, pColor), Array As String("java.lang.float", "java.lang.float", "java.lang.float", "java.lang.int"))
 End Sub
 
-Sub ParseMirrors As List
-	Dim str As String = File.ReadString(Starter.hostPath, "mqttP.conf")
-	Private mb As List
-	
-	mb.Initialize
-	parser.Initialize(str)
-	
-	Dim root As List = parser.NextArray
-	For Each colroot As Map In root
-		Dim b As mirrorBord
-						
-		b.name = GetBordNameFromIp(colroot.Get("ip"))
-		b.ip = colroot.Get("ip")
-		b.server = colroot.Get("server")
-		mb.Add(b)
-	Next
-	Return mb
-End Sub
+'Public Sub CheckMqttExists As Boolean
+'	Return File.Exists(Starter.hostPath, "mqttP.conf")
+'End Sub
 
-Sub GetBordNameFromIp(ip As String) As String
-	Dim lst As List = gnDb.getUnit(ip)
-	
-	Return lst.Get(0)
-End Sub
+'Sub ParseMirrors As List
+'	Dim str As String = File.ReadString(Starter.hostPath, "mqttP.conf")
+'	Private mb As List
+'	
+'	mb.Initialize
+'	parser.Initialize(str)
+'	
+'	Dim root As List = parser.NextArray
+'	For Each colroot As Map In root
+'		Dim b As mirrorBord
+'						
+'		b.name = GetBordNameFromIp(colroot.Get("ip"))
+'		b.ip = colroot.Get("ip")
+'		b.server = colroot.Get("server")
+'		mb.Add(b)
+'	Next
+'	Return mb
+'End Sub
+
+'Sub GetBordNameFromIp(ip As String) As String
+'	Dim lst As List = gnDb.getUnit(ip)
+'	
+'	Return lst.Get(0)
+'End Sub
 'Sub countChars(str As String, maxCount As Int) As Boolean
 '	If str.Length < 1 Then Return True
 '	

@@ -12,15 +12,14 @@ Version=9.801
 #Extends: android.support.v7.app.AppCompatActivity
 
 Sub Process_Globals
-	'Type mirrorBord(name As String, ip As String, server As String)
+	
 End Sub
 
 Sub Globals
-	Private parser As JSONParser
 	Private mb As List
 	Private serverIp As String
 	Private mqtt As SetMqtt
-	Private clsFunc As classFunc
+	Private clsMqtt As classMqtt
 	
 	Private btnStopDelen As Label
 	Private clvMirror As CustomListView
@@ -29,13 +28,14 @@ Sub Globals
 	Private ACSwitch1 As ACSwitch
 	Private lblClientBord As Label
 	Private lblClientIp As Label
+	Private B4XLoadingIndicator1 As B4XLoadingIndicator
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("delen_aktief")
 	mqtt.Initialize
 	mb.Initialize
-	clsFunc.Initialize
+	clsMqtt.Initialize
 	ParseMirrors
 End Sub
 
@@ -50,19 +50,8 @@ Sub Activity_Pause (UserClosed As Boolean)
 End Sub
 
 Sub ParseMirrors
-'	Dim str As String = File.ReadString(Starter.hostPath, "mqttP.conf")
-'	
-'	parser.Initialize(str)
-'	Dim root As List = parser.NextArray
-'	For Each colroot As Map In root
-'			Dim b As mirrorBord
-'						
-'			b.name = GetBordNameFromIp(colroot.Get("ip"))
-'			b.ip = colroot.Get("ip")
-'			b.server = colroot.Get("server")
-'			mb.Add(b)
-'		Next
-	mb = clsFunc.ParseMirrors
+	If clsMqtt.CheckMqttExists = False Then Return
+	mb = clsMqtt.ParseMirrors
 	GenClv
 End Sub
 
@@ -150,6 +139,7 @@ Sub StopDelen_Click
 End Sub
 
 Sub StopSharing
+	B4XLoadingIndicator1.Show
 	mb.SortType("server", False)
 	Dim b As mirrorBord
 	
@@ -170,6 +160,7 @@ Sub StopSharing
 	clvMirror.Clear
 	lblServerName.Text = ""
 	
+	B4XLoadingIndicator1.Hide
 	Sleep(1000)
 	Activity.Finish
 	StartActivity(Main)

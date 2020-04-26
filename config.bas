@@ -16,8 +16,9 @@ Sub Process_Globals
 	Dim clsUpdate As classGetLatestVersion
 	Dim clsClvBord As classClvBord
 	Dim clsFunc As classFunc
+	Dim clsMqtt As classMqtt
 	Dim bordPinged As Boolean = False
-''	Private xui As XUI
+	Private xui As XUI
 End Sub
 
 Sub Globals
@@ -46,6 +47,8 @@ Sub Globals
 	Private labl_mirror_bord As Label
 	Private lblBordToevoegenTxt As Label
 	Private lblMIrror As Label
+	Private pnlBlockInput As Panel
+	Private pnlMirror As Panel
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -56,16 +59,12 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsPutJson.Initialize
 	clsUpdate.Initialize
 	clsClvBord.Initialize
-	
+	clsMqtt.Initialize
 	svInput.Initialize(1500dip)
 	
 	tsConfig.LoadLayout("main_bord", "Borden")
 	
-	lblMIrror.Visible = File.Exists(Starter.hostPath, "mqttP.conf")
-	clsFunc.SetTextShadow(lblMIrror, 10,8,8, 0xFF000000)
-	clsFunc.SetTextShadow(lbl_add_board, 10,8,8, 0xFF000000)
-	
-	
+	ShowMirror
 	getUnits
 End Sub
 
@@ -86,7 +85,14 @@ Sub Activity_Resume
 		Starter.bordAdded = False
 		getUnits
 	End If
+	ShowMirror
 	
+End Sub
+
+Sub ShowMirror
+	pnlMirror.Visible = clsMqtt.CheckMqttExists 'File.Exists(Starter.hostPath, "mqttP.conf")
+	'clsFunc.SetTextShadow(lblMIrror, 3,8,8, 0xFF000000)
+	'clsFunc.SetTextShadow(lbl_add_board, 3,8,8, 0xFF000000)
 End Sub
 
 Sub UpdateBordName(name As String)
@@ -104,6 +110,9 @@ Sub UpdateBordName(name As String)
 End Sub
 
 Sub getUnits
+	pnlBlockInput.Visible = True
+	pnlBlockInput.Color = xui.Color_Transparent
+	Sleep(500)
 	Starter.lstActiveBord.Initialize
 	btn_new_bord.SetVisibleAnimated(1000, False)
 	Dim viewWidth As Int = clv_borden.AsView.Width
@@ -130,6 +139,7 @@ Sub getUnits
 		clsClvBord.bordAlive(clv_borden)
 	End If
 	curs.Close
+	pnlBlockInput.Visible = False
 End Sub
 
 Sub genUnitList(name As String, ip As String, width As Int) As Panel

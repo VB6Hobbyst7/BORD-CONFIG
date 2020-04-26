@@ -1,26 +1,25 @@
 ﻿Build1=Marcel,nl.pdeg.bordconfig,Marcel
 Build2=Sale,nl.pdeg.bordconfig,Sale
 File1=Arial.ttf
-File10=confScreenSaver.bal
-File11=delen_aktief.bal
-File12=main.bal
-File13=main_bord.bal
-File14=main_config.bal
+File10=delen_aktief.bal
+File11=main.bal
+File12=main_bord.bal
+File13=main_config.bal
+File14=materialdesignicons-webfont.ttf
 File15=mirror_bord.bal
 File16=Montserrat-Regular.ttf
 File17=mqtt.conf
-File18=pulltorefresh.bal
-File19=tsBordConfig.bal
+File18=tsBordConfig.bal
+File19=units.bal
 File2=boards.db
-File20=units.bal
-File21=update.bal
+File20=update.bal
 File3=bord.png
 File4=clv_bord.bal
 File5=clvDeelBord.bal
 File6=conf_scrsav_sv.bal
 File7=conf_switch.bal
-File8=configInput.bal
-File9=configMain.bal
+File8=configMain.bal
+File9=confScreenSaver.bal
 FileGroup1=Default Group
 FileGroup10=Default Group
 FileGroup11=Default Group
@@ -34,7 +33,6 @@ FileGroup18=Default Group
 FileGroup19=Default Group
 FileGroup2=Default Group
 FileGroup20=Default Group
-FileGroup21=Default Group
 FileGroup3=Default Group
 FileGroup4=Default Group
 FileGroup5=Default Group
@@ -61,25 +59,26 @@ Library8=network
 Library9=javaobject
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~SetApplicationAttribute(android:icon, "@mipmap/ic_launcher")~\n~CreateResource(mipmap-anydpi-v26, ic_launcher.xml,~\n~<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">~\n~    <background android:drawable="@mipmap/background"/>~\n~    <foreground android:drawable="@mipmap/foreground"/>~\n~</adaptive-icon>~\n~)~\n~AddPermission(android.permission.INTERNET)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetActivityAttribute(config, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(conf_scrsav_sv, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(confScreenSaver, android:windowSoftInputMode, adjustResize|stateHidden)~\n~~\n~SetApplicationAttribute(android:theme, "@style/MyAppTheme")~\n~CreateResource(values-v21, theme.xml,~\n~<resources>~\n~    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~        <item name="colorPrimary">#004ba0</item>~\n~        <item name="colorPrimaryDark">#004ba0</item>~\n~        <item name="colorAccent">#0098FF</item>~\n~        <item name="windowNoTitle">true</item>~\n~        <item name="windowActionBar">true</item>~\n~		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~    	<item name="android:statusBarColor">#004ba0</item>~\n~		<item name="android:navigationBarColor">#004ba0</item>~\n~		<item name="android:colorControlActivated">#1a237e</item>~\n~        <item name="android:colorControlNormal">#007CF5</item>~\n~	</style>~\n~	~\n~	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~    	<item name="android:textColorPrimary">#fff</item>~\n~    	<item name="android:colorBackground">#004ba0</item>~\n~   </style>~\n~</resources>~\n~)
 Module1=classClvBord
-Module10=gnDb
-Module11=mirror_bord
-Module12=SetMqtt
-Module13=setRetroBord
-Module14=Starter
-Module15=tsBordConfig
-Module16=units
-Module17=update_bord
+Module10=delen_aktief
+Module11=gnDb
+Module12=mirror_bord
+Module13=SetMqtt
+Module14=setRetroBord
+Module15=Starter
+Module16=tsBordConfig
+Module17=units
+Module18=update_bord
 Module2=classFunc
 Module3=classGetConfig
 Module4=classGetLatestVersion
-Module5=classSetConfig
-Module6=conf_scrsav_sv
-Module7=config
-Module8=confScreenSaver
-Module9=delen_aktief
-NumberOfFiles=21
+Module5=classMqtt
+Module6=classSetConfig
+Module7=conf_scrsav_sv
+Module8=config
+Module9=confScreenSaver
+NumberOfFiles=20
 NumberOfLibraries=16
-NumberOfModules=17
+NumberOfModules=18
 Version=9.801
 @EndOfDesignText@
 #Region  Project Attributes 
@@ -91,7 +90,7 @@ Version=9.801
 	#CanInstallToExternalStorage: False
 	#additionaljar: com.android.support:support-v4
 #End Region
- #IgnoreWarnings: 10, 16, 20
+ '#IgnoreWarnings: 10, 16, 20
  #Extends: android.support.v7.app.AppCompatActivity
 #Region  Activity Attributes 
 	#FullScreen: False
@@ -101,8 +100,6 @@ Version=9.801
 #BridgeLogger: True
 
 Sub Process_Globals
-	Dim ftp As SFtp
-	Type mirrorBord(name As String, ip As String, server As String)
 End Sub
 
 Sub Globals
@@ -126,15 +123,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	Sleep(2000)
 	#end if
 	
-'	If File.Exists(Starter.hostPath, "mqttP.conf") Then
-''		MsgboxAsync("Bord delen aktief","Bord Config")
-''		Wait For Msgbox_Result (Result As Int)
-'		StartActivity(delen_aktief)
-'		Activity.Finish
-'	Else
-'		StartActivity(config)
-'		Activity.Finish
-'	End If
+
 	StartActivity(config)
 	Activity.Finish
 End Sub

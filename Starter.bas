@@ -24,6 +24,7 @@ Sub Process_Globals
 	Public selectedBordName, selectedBordIp, deviceIp As String
 	Public lstActiveBord As List
 	Public newUnitName As String
+	Type mirrorBord(name As String, ip As String, server As String)
 End Sub
 
 Sub Service_Create
