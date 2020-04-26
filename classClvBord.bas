@@ -9,6 +9,8 @@ Sub Class_Globals
 	Private clsMqtt As classMqtt
 	Private clsRetro As setRetroBord
 	Private mb As List
+	Private colorNameTextDisabled, colorNameBgDisAbled As Int
+	Private colorNameTextEnabled, colorNameBgEnAbled As Int
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -22,8 +24,6 @@ Sub bordAlive(clv As CustomListView)
 	Dim p As Panel
 	Dim itemCount As Int = clv.Size -1
 	Dim lbl As Label
-	Dim colorNameTextDisabled, colorNameBgDisAbled As Int
-	Dim colorNameTextEnabled, colorNameBgEnAbled As Int
 	
 	colorNameBgEnAbled = 0xFF004BA0 '0xFF0018FF
 	colorNameTextEnabled = 0xFFA0B7D7'0xFFFFE700
@@ -36,66 +36,39 @@ Sub bordAlive(clv As CustomListView)
 		mb = clsMqtt.ParseMirrors
 	End If
 	
-	For i = 0 To itemCount
-		p = clv.GetPanel(i)
-		
-		For Each v As View In p.GetAllViewsRecursive
-			If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Then'v.Tag = "isAlive" Then
-				lbl = v
-				lbl.TextColor = Colors.Black
-			End If
-			If v Is Label And v.Tag = "name" Or v.Tag = "ip" Then
-				lbl = v
-				lbl.TextColor = colorNameTextEnabled'0xFFFFE700
-				lbl.Color = colorNameBgEnAbled'0xFF0018FF
-			End If
-		Next
-	Next
+	ResetBordLabels(clv)
 	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
 		
 		For Each v As View In p.GetAllViewsRecursive
-			If v Is Label And v.Tag = "name" Then
-				lbl = v
-			End If
 			
 			If v Is Label And v.Tag = "ip" Then
 				lbl = v
 				wait for (clsFunc.pingBord(lbl.Text)) Complete (result As Boolean)
-				
+
 				For Each v1 As View In p.GetAllViewsRecursive
-					
-					If v1.Tag = "mirror" And clsMqtt.mqttExists = False Or result = False Then
-						lbl.TextColor = 0xFF000000
-						lbl.Enabled = False
-					Else
-						lbl.TextColor = 0xFFC80C0C
-						lbl.Enabled = True
+					If v1.Tag = "mirror" Then'Or result = False Then
+						SetMirrorColor(v1)
 					End If
-					
-					If v1 Is Label And v1.Tag = "name" Or v1.Tag = "ip" Then
-						lbl = v1
-						If result = True Then
-							lbl.TextColor = colorNameTextEnabled
-							lbl.Color = colorNameBgEnAbled
-							EnableBordOptions(result, lbl)
+
+					If v Is Label And v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Then
+						lbl = v
+						lbl.Enabled = result
+						If result Then
+							lbl.TextColor = Colors.Black'
 						Else
-							lbl.TextColor = colorNameTextDisabled
-							lbl.Color = colorNameBgDisAbled
-							EnableBordOptions(result, lbl)
+							lbl.TextColor =  0xFFE4E4E4
 						End If
 					End If
+				
+
 				Next
 				
 			End If
 		Next
 	Next
 	Sleep(400)
-	''	CallSub(config,"HidePullDown")
-	''	CallSub2(config, "PullDownSetTableName", "")
-	
-	
 End Sub
 
 Private Sub EnableBordOptions(enable As Boolean, lbl As Label)
@@ -236,5 +209,31 @@ Public Sub ConfigItemMirror(Index As Int, clv As CustomListView)
 	StartActivity(mirror_bord)
 End Sub
 
+Sub ResetBordLabels(clv As CustomListView)
+	Dim p As Panel
+	Dim itemCount As Int = clv.Size -1
+	Dim lbl As Label
+	For i = 0 To itemCount
+		p = clv.GetPanel(i)
+		
+		For Each v As View In p.GetAllViewsRecursive
+			If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Then'v.Tag = "isAlive" Then
+				lbl = v
+				lbl.TextColor = Colors.Black
+			End If
+		Next
+	Next
+End Sub
+
+
+Sub SetMirrorColor(lbl As Label)
+	If clsMqtt.mqttExists = False Then
+		lbl.TextColor = 0xFF000000
+		lbl.Enabled = True
+	Else
+		lbl.TextColor = 0xFFC80C0C
+		lbl.Enabled = False
+	End If
+End Sub
 
 

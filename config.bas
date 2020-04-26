@@ -147,6 +147,7 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	p.Initialize(Me)
 	p.SetLayout(0dip, 0dip, width, 245dip) '190
 	p.LoadLayout("clv_bord")
+	p.Tag = ip
 	
 	lbl_bord_name.Text = name
 	lbl_ip.Text = ip

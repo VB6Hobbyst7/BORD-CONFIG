@@ -11,7 +11,7 @@ End Sub
 
 
 Public Sub Initialize
-	
+	CheckMqttExists
 End Sub
 
 Public Sub CheckMqttExists As Boolean
