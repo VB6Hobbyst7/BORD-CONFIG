@@ -12,7 +12,7 @@ Version=9.801
 #Extends: android.support.v7.app.AppCompatActivity
 
 Sub Process_Globals
-	Type mirrorBord(name As String, ip As String, server As String)
+	'Type mirrorBord(name As String, ip As String, server As String)
 End Sub
 
 Sub Globals
@@ -20,6 +20,7 @@ Sub Globals
 	Private mb As List
 	Private serverIp As String
 	Private mqtt As SetMqtt
+	Private clsFunc As classFunc
 	
 	Private btnStopDelen As Label
 	Private clvMirror As CustomListView
@@ -34,6 +35,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("delen_aktief")
 	mqtt.Initialize
 	mb.Initialize
+	clsFunc.Initialize
 	ParseMirrors
 End Sub
 
@@ -48,18 +50,19 @@ Sub Activity_Pause (UserClosed As Boolean)
 End Sub
 
 Sub ParseMirrors
-	Dim str As String = File.ReadString(Starter.hostPath, "mqttP.conf")
-	
-	parser.Initialize(str)
-	Dim root As List = parser.NextArray
-	For Each colroot As Map In root
-			Dim b As mirrorBord
-						
-			b.name = GetBordNameFromIp(colroot.Get("ip"))
-			b.ip = colroot.Get("ip")
-			b.server = colroot.Get("server")
-			mb.Add(b)
-		Next
+'	Dim str As String = File.ReadString(Starter.hostPath, "mqttP.conf")
+'	
+'	parser.Initialize(str)
+'	Dim root As List = parser.NextArray
+'	For Each colroot As Map In root
+'			Dim b As mirrorBord
+'						
+'			b.name = GetBordNameFromIp(colroot.Get("ip"))
+'			b.ip = colroot.Get("ip")
+'			b.server = colroot.Get("server")
+'			mb.Add(b)
+'		Next
+	mb = clsFunc.ParseMirrors
 	GenClv
 End Sub
 

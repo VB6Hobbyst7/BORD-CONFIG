@@ -84,9 +84,9 @@ Sub Activity_Create(FirstTime As Boolean)
 '''	chk_alle_borden.Enabled = Starter.lstActiveBord.Size > 1
 	CheckBordActive
 	
-	For i = 0 To Starter.lstActiveBord.Size - 1
-		Log($"IP NUMBER = ${Starter.lstActiveBord.Get(i)}"$)
-	Next
+'	For i = 0 To Starter.lstActiveBord.Size - 1
+'		Log($"IP NUMBER = ${Starter.lstActiveBord.Get(i)}"$)
+'	Next
 	
 	Dim bordCount As Int = Starter.lstActiveBord.Size
 	

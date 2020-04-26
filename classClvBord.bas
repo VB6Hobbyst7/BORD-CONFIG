@@ -7,6 +7,7 @@ Version=9.5
 Sub Class_Globals
 	Private clsFunc As classFunc
 	Private clsRetro As setRetroBord
+	Private mb as List
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -28,6 +29,9 @@ Sub bordAlive(clv As CustomListView)
 	colorNameBgDisAbled = Colors.Black
 	
 	Starter.lstActiveBord.Initialize
+	mb.Initialize
+	
+	mb = clsFunc.ParseMirrors
 	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
@@ -46,16 +50,16 @@ Sub bordAlive(clv As CustomListView)
 	Next
 	
 	For i = 0 To itemCount
-		If i >= 2 Then
-			clv.ScrollToItem(i)
-			clv.JumpToItem(i)
-		End If
+'		If i >= 2 Then
+'			clv.ScrollToItem(i)
+'			clv.JumpToItem(i)
+'		End If
 		p = clv.GetPanel(i)
 		
 		For Each v As View In p.GetAllViewsRecursive
 			If v Is Label And v.Tag = "name" Then
 				lbl = v
-				CallSub2(config, "PullDownSetTableName", lbl.Text)
+				'CallSub2(config, "PullDownSetTableName", lbl.Text)
 				
 			End If
 			
@@ -85,8 +89,8 @@ Sub bordAlive(clv As CustomListView)
 		Next
 	Next
 	Sleep(400)
-	CallSub(config,"HidePullDown")
-	CallSub2(config, "PullDownSetTableName", "")
+''	CallSub(config,"HidePullDown")
+''	CallSub2(config, "PullDownSetTableName", "")
 	Sleep (1000)
 	clv.ScrollToItem(0)
 	
