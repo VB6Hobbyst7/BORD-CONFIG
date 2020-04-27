@@ -9,13 +9,11 @@ Version=9.5
 	#IncludeTitle: True
 #End Region
 
-#IgnoreWarnings: 10, 11, 12 , 20
+'#IgnoreWarnings: 10, 11, 12 , 20
 #Extends: android.support.v7.app.AppCompatActivity
 
 Sub Process_Globals
 	Private nw As ServerSocket
-	'Private clsAes As AESCryptUtilities
-	'Private crypt As B4XCipher
 End Sub
 
 Sub Globals
@@ -37,10 +35,10 @@ End Sub
 Sub Activity_Create(FirstTime As Boolean)
 	nw.Initialize(0, "")
 	Activity.LoadLayout("units")
+	IME.Initialize(Me)
 	edt_ip.Hint = $"Bijvoorbeeld ${nw.GetMyIP}"$
 	edt_description.Hint = "Tafel 8"
 	clsFunc.Initialize
-	'clsAes.Initialize
 	If Starter.edtUnit = True Then
 		getUnit
 	End If
@@ -76,29 +74,7 @@ Sub Activity_KeyPress (KeyCode As Int) As Boolean
 	Return True
 End Sub
 
-
-'Sub EncryptText(text As String, password As String) As Byte()
-'	Dim c As B4XCipher
-'	Return c.Encrypt(text.GetBytes("utf8"), password)
-'End Sub
-'
-'Sub DecryptText(EncryptedData() As Byte, password As String) As String
-'	Dim c As B4XCipher
-'	Dim b() As Byte = c.Decrypt(EncryptedData, password)
-'	Return BytesToString(b, 0, b.Length, "utf8")
-'End Sub
-
-
 Sub btn_test_Click
-'	Dim encryptedData() As Byte = EncryptText(Starter.pw, Starter.xStr)
-'	Log(BytesToString(encryptedData, 0, encryptedData.Length, "UTF8"))
-'	Log(DecryptText(encryptedData, Starter.xStr))
-'	
-'	
-'	
-'	Return
-	
-	
 	pingBord
 End Sub
 

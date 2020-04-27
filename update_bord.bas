@@ -21,7 +21,6 @@ Sub Globals
 	Private clvBorden As CustomListView
 	Private pn_bord As Panel
 	Private lbl_bord_name As Label
-'	Private sw_update As B4XSwitch
 	Private lbl_ping_bord As Label
 	Private btn_update As Button
 	Private lbl_progres As Label

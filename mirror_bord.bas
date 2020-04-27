@@ -91,11 +91,10 @@ End Sub
 Sub ACSwitch1_CheckedChange(Checked As Boolean)
 	Dim ip As String
 	Dim v As ACSwitch
+	Dim p As Panel = pnlDeelBord
+	
 	v.Initialize(Me)
 	v = Sender
-	Dim p As Panel = v.Parent
-	
-	
 	
 	If Checked Then
 		shareCount = shareCount +1
@@ -112,7 +111,6 @@ Sub ACSwitch1_CheckedChange(Checked As Boolean)
 		End If
 	Next
 
-
 	If Checked Then
 		shareIpList.Add(ip)
 	Else
@@ -122,8 +120,7 @@ Sub ACSwitch1_CheckedChange(Checked As Boolean)
 			End If
 		Next
 	End If
-'	If shareCount > 1 Then btnStartShare.Text = "Deel op borden"	
-'	If shareCount <= 1 Then btnStartShare.Text = "Deel op bord"	
+
 	If shareCount > 1 Then btnDeelBord.Text = "Deel op borden"
 	If shareCount <= 1 Then btnDeelBord.Text = "Deel op bord"
 	If shareCount = 0 Then btnDeelBord.Text = "Selecteer een bord"
@@ -133,9 +130,8 @@ Sub ACSwitch1_CheckedChange(Checked As Boolean)
 		btnDeelBord.TextColor = 0xFFA0B7D7
 			
 	End If
-'	btnStartShare.Enabled = shareCount > 0
+
 	btnDeelBord.Enabled = shareCount > 0
-	
 End Sub
 
 Sub clvDelen_ItemClick (Index As Int, Value As Object)
@@ -158,6 +154,13 @@ Sub clvDelen_ItemClick (Index As Int, Value As Object)
 End Sub
 
 Sub btnStartShare_Click
+	Msgbox2Async("Bord delen?", "Bord Config", "JA", "", "NEE", Null, False)
+	Wait For Msgbox_Result (Result As Int)
+	
+	If Result = DialogResponse.NEGATIVE Then
+		Return
+	End If
+	
 '	'CREATE LOCAL LIST OF SHARES
 	CreateLocalShareList
 	
@@ -178,7 +181,8 @@ Sub btnStartShare_Click
 	B4XLoadingIndicator1.Hide
 	
 	Activity.Finish
-	StartActivity(Main)
+	CallSubDelayed(config, "lblRefresh_Click")
+	'StartActivity(Main)
 End Sub
 
 Sub CreateLocalShareList
@@ -205,7 +209,6 @@ Sub CreateLocalShareList
 	End If
 	
 	File.WriteString(Starter.hostPath, "mqttP.conf", JSONGenerator.ToPrettyString(2))
-'	Log(File.ReadString(Starter.hostPath, "mqttP.conf"))
 	Sleep(300)
 End Sub
 

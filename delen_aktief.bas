@@ -123,11 +123,11 @@ End Sub
 '	Next
 'End Sub
 
-Sub GetBordNameFromIp(ip As String) As String
-	Dim lst As List = gnDb.getUnit(ip)
-	
-	Return lst.Get(0)
-End Sub
+'Sub GetBordNameFromIp(ip As String) As String
+'	Dim lst As List = gnDb.getUnit(ip)
+'	
+'	Return lst.Get(0)
+'End Sub
 
 Sub StopDelen_Click
 	Msgbox2Async("Stop delen naar alle borden?", "Bord Config", "JA", "", "NEE", Null, False)
@@ -159,11 +159,11 @@ Sub StopSharing
 
 	clvMirror.Clear
 	lblServerName.Text = ""
+	clsMqtt.mqttExists = False
 	
 	B4XLoadingIndicator1.Hide
 	Sleep(1000)
 	Activity.Finish
-	StartActivity(Main)
-	
-	
+	StartActivity(config)
+	CallSubDelayed(config, "lblRefresh_Click")
 End Sub

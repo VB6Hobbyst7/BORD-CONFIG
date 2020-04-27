@@ -47,8 +47,7 @@ Library11=xcustomlistview
 Library12=appcompat
 Library13=tabstripviewpager
 Library14=reflection
-Library15=xmllayoutbuilder
-Library16=ime
+Library15=ime
 Library2=jsch
 Library3=runtimepermissions
 Library4=json
@@ -77,12 +76,12 @@ Module7=conf_scrsav_sv
 Module8=config
 Module9=confScreenSaver
 NumberOfFiles=20
-NumberOfLibraries=16
+NumberOfLibraries=15
 NumberOfModules=18
 Version=9.801
 @EndOfDesignText@
 #Region  Project Attributes 
-	#ApplicationLabel: Bord config
+	#ApplicationLabel: BiljartBord Config
 	#VersionCode: 1
 	#VersionName: 0.9.5
 	'SupportedOrientations possible values: unspecified, landscape or portrait.

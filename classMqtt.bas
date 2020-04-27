@@ -21,6 +21,8 @@ Public Sub CheckMqttExists As Boolean
 End Sub
 
 Sub ParseMirrors As List
+	
+	
 	Dim str As String = File.ReadString(Starter.hostPath, "mqttP.conf")
 	Private mb As List
 	

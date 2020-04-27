@@ -16,7 +16,7 @@ Sub Process_Globals
 	Private ftp As SFtp
 	Private clsFunc As classFunc
 	Dim clsPutJson As classSetConfig
-	Dim lstActiveBords As List
+'	Dim lstActiveBords As List
 End Sub
 
 Sub Globals
@@ -60,10 +60,13 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsFunc.Initialize
 	clsPutJson.Initialize
 	svSettings.Initialize(100)
-''	chk_alle_borden.Enabled = True
 	tsConfig.LoadLayout("configMain", "Instellingen")
 	tsConfig.LoadLayout("confScreenSaver", "ScreenSaver")
-	
+	For Each lbl As Label In GetAllTabLabels(tsConfig)
+		'lbl.Typeface = Typeface.MATERIALICONS
+		'lbl.TextSize=12
+		lbl.Width=50%x
+	Next
 	
 	svSettings.Panel.LoadLayout("conf_switch")
 	
@@ -73,20 +76,11 @@ Sub Activity_Create(FirstTime As Boolean)
 	lbl_bord_naam1.Text = Starter.selectedBordName
 	lbl_ip_nummer1.Text = Starter.selectedBordIp
 	
-''	chk_alle_borden.Enabled = False
 	btn_save.Enabled = False
 	btn_save.Color = Colors.Red
 	btn_save.TextColor = Colors.White
 	
-'	Log(Starter.lstActiveBord.IndexOf(Starter.selectedBordIp))
-	'Log(Starter.lstActiveBord.Size)
-''	chk_alle_borden.Enabled = False
-'''	chk_alle_borden.Enabled = Starter.lstActiveBord.Size > 1
 	CheckBordActive
-	
-'	For i = 0 To Starter.lstActiveBord.Size - 1
-'		Log($"IP NUMBER = ${Starter.lstActiveBord.Get(i)}"$)
-'	Next
 	
 	Dim bordCount As Int = Starter.lstActiveBord.Size
 	
@@ -119,7 +113,18 @@ Sub Activity_Pause (UserClosed As Boolean)
 
 End Sub
 
-
+Sub GetAllTabLabels (tabstrip As TabStrip) As List
+	Dim jo As JavaObject = tabstrip
+	Dim r As Reflector
+	r.Target = jo.GetField("tabStrip")
+	Dim tc As Panel = r.GetField("tabsContainer")
+	Dim res As List
+	res.Initialize
+	For Each v As View In tc
+		If v Is Label Then res.Add(v)
+	Next
+	Return res
+End Sub
 
 
 Sub getConfig
@@ -154,14 +159,8 @@ Sub retrieveConfig(ipNumber As String)
 		Return
 	End Try
 
-'	ftp.List("/home/pi/44/")
-'
-'	Wait For ListCompleted (ServerPath As String, Success As Boolean, Folders() As SFtpEntry, Files() As SFtpEntry)
-
 	ftp.DownloadFile("/home/pi/44/cnf.44", Starter.hostPath, "cnf.44")
 	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
-'	ftp.DownloadFile("/home/pi/score/cnf.44", Starter.hostPath, "cnf.44")
-'	ftp.DownloadFile("/home/pi/score/ver.pdg", Starter.hostPath, "ver.pdg")
 	
 	
 	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
@@ -189,8 +188,9 @@ End Sub
 
 
 Sub btn_save_Click
-	'clsPutJson.parseConfig(chk_timeout_active, edt_timeout, chk_use_digital)
-	Dim msgList, lstBord As List
+	'Dim msgList, lstBord As List
+	Dim msgList As List
+	
 	msgList.Initialize
 	msgList.AddAll(Array As String(edt_regel_1.text, edt_regel_2.text, edt_regel_3.text, edt_regel_4.text, edt_regel_5.text))
 	
@@ -200,7 +200,8 @@ Sub btn_save_Click
 		clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)
 		'userMessage
 	Else
-		Dim naam, ip, lstStr As String
+		'Dim naam, ip, lstStr As String
+		Dim naam, ip As String
 		Dim lstUnit As List
 
 	'	Log($"START TIME : $Time{DateTime.Now}"$)
@@ -216,7 +217,7 @@ Sub btn_save_Click
 			'wait for (clsPutJson.parseConfig(sw_timeout, edt_timeout, sw_digital_numbers, sw_use_yellow_number, msgList, sw_toon_sponsor, sw_game_time, sw_retro)) Complete (result As Boolean)
 			Sleep(2000)
 		Next
-		Log($"END TIME : $Time{DateTime.Now}"$)
+'		Log($"END TIME : $Time{DateTime.Now}"$)
 		
 
 	End If
@@ -241,19 +242,15 @@ Private Sub EnableControls(enable As Boolean)
 	sw_game_time.Enabled = enable
 	sw_timeout.Enabled = enable
 	
-''	chk_alle_borden.Enabled =  Starter.lstActiveBord.Size > 1
-	
 	edt_timeout.Enabled = False
 	lbl_timeout_min.Enabled = enable
 	lbl_timeout_plus.Enabled = enable
-	
 	
 	edt_regel_1.Enabled = enable
 	edt_regel_2.Enabled = enable
 	edt_regel_3.Enabled = enable
 	edt_regel_4.Enabled = enable
 	edt_regel_5.Enabled = enable
-	
 End Sub
 
 Sub lbl_timeout_min_Click

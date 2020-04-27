@@ -5,8 +5,6 @@ Type=Class
 Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
-'	Dim ftp As SFtp
-Private parser As JSONParser
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -14,28 +12,14 @@ Public Sub Initialize
 	
 End Sub
 
-
-'Sub TryConnectFtp(ipNumber As String) As ResumableSub
-'	ftp.Initialize("ftp", "pi", "0", ipNumber, 22)
-'	ftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
-'	
-'
-'	ftp.DownloadFile("/home/pi/44/ver.pdg", Starter.hostPath, "ver.pdg")
-'
-'	wait for ftp_DownloadCompleted (ServerPath As String, Success As Boolean)
-'	Return Success
-'End Sub
-
-
-
-
 Sub pingBord(ipNumber As String) As ResumableSub
 	Dim p As Phone
 	
+'	Log($"PING BORD ${ipNumber}"$)
 	
-	If CheckIpRange(ipNumber.Replace(".", "-")) = False Then
-		Return False
-	End If
+'	If CheckIpRange(ipNumber.Replace(".", "-")) = False Then
+'		Return False
+'	End If
 	
 
 	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
@@ -87,45 +71,6 @@ Public Sub SetTextShadow(pView As View, pRadius As Float, pDx As Float, pDy As F
 	ref.Target = pView
 	ref.RunMethod4("setShadowLayer", Array As Object(pRadius, pDx, pDy, pColor), Array As String("java.lang.float", "java.lang.float", "java.lang.float", "java.lang.int"))
 End Sub
-
-'Public Sub CheckMqttExists As Boolean
-'	Return File.Exists(Starter.hostPath, "mqttP.conf")
-'End Sub
-
-'Sub ParseMirrors As List
-'	Dim str As String = File.ReadString(Starter.hostPath, "mqttP.conf")
-'	Private mb As List
-'	
-'	mb.Initialize
-'	parser.Initialize(str)
-'	
-'	Dim root As List = parser.NextArray
-'	For Each colroot As Map In root
-'		Dim b As mirrorBord
-'						
-'		b.name = GetBordNameFromIp(colroot.Get("ip"))
-'		b.ip = colroot.Get("ip")
-'		b.server = colroot.Get("server")
-'		mb.Add(b)
-'	Next
-'	Return mb
-'End Sub
-
-'Sub GetBordNameFromIp(ip As String) As String
-'	Dim lst As List = gnDb.getUnit(ip)
-'	
-'	Return lst.Get(0)
-'End Sub
-'Sub countChars(str As String, maxCount As Int) As Boolean
-'	If str.Length < 1 Then Return True
-'	
-'	If str.Length > maxCount Then
-''		createCustomToast($"Maximaal ${maxCount} tekens.."$, Colors.Blue)
-'		Return False
-'	End If
-'	Return True
-'End Sub
-
 
 Public Sub CheckIpRange(ip As String) As Boolean
 	Dim lstBord, lstDevice As List

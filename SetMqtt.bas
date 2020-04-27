@@ -29,9 +29,6 @@ Sub GenMqttFile(ip As String, clientIp As String, enabled As String)
 	parser.Initialize(strMqtt)
 	Dim root As Map = parser.NextObject
 	Dim mqttClients As Map = root.Get("mqttClients")
-	'Dim server As String = mqttClients.Get("server")
-	'Dim enabled As String = mqttClients.Get("enabled")
-	
 	
 	mqttClients.Put("server", ip.Replace(".", "_"))
 	mqttClients.Put("enabled", enabled)
@@ -40,10 +37,7 @@ Sub GenMqttFile(ip As String, clientIp As String, enabled As String)
 	File.WriteString(Starter.hostPath, "mqtt.conf", JSONGenerator.ToPrettyString(2))
 	Sleep(50)
 	
-	'PushMqttFile(pushTo)
-'	Log($"start $DateTime{DateTime.Now}"$)
 	wait for (PushMqttFile(pushTo)) Complete (result As Boolean)
-'	Log($"end $DateTime{DateTime.Now}"$)
 End Sub
 
 Private Sub PushMqttFile(clientIp As String)As ResumableSub
@@ -57,17 +51,11 @@ Private Sub PushMqttFile(clientIp As String)As ResumableSub
 	Wait For ftp_UploadCompleted (ServerPath As String, Success As Boolean)
 	If Success = False Then
 		ftp.Close
-	'	Log(LastException.Message)
-	'	Log($"ftp success false $DateTime{DateTime.Now}"$)
 		Return Success
 	Else
 		ftp.Close
-'		Log($"ftp success true $DateTime{DateTime.Now}"$)
 		Return Success
-'		ToastMessageShow($"Configuratie ${bordNaam} verzonden"$, False)
 	End If
-	
-	'ftp.Close
 End Sub
 
 Sub ftp_PromptYesNo (Message As String)
