@@ -140,6 +140,8 @@ End Sub
 
 Sub StopSharing
 	B4XLoadingIndicator1.Show
+	ProgressDialogShow2("Delen borden beëindigen", False)
+	Sleep(0)
 	mb.SortType("server", False)
 	Dim b As mirrorBord
 	
@@ -162,6 +164,7 @@ Sub StopSharing
 	clsMqtt.mqttExists = False
 	
 	B4XLoadingIndicator1.Hide
+	ProgressDialogHide
 	Sleep(1000)
 	Activity.Finish
 	StartActivity(config)

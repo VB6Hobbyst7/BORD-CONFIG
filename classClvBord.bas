@@ -229,6 +229,7 @@ Sub ResetBordLabels(clv As CustomListView)
 			If v Is Label And v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Then
 				lbl = v
 				lbl.TextColor = Colors.Black
+				lbl.Enabled = True
 			End If
 		Next
 	Next

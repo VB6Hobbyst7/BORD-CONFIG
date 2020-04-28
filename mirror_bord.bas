@@ -161,6 +161,8 @@ Sub btnStartShare_Click
 		Return
 	End If
 	
+	ProgressDialogShow2("Borden Synchroniseren", False)
+	Sleep(0)
 '	'CREATE LOCAL LIST OF SHARES
 	CreateLocalShareList
 	
@@ -177,8 +179,9 @@ Sub btnStartShare_Click
 		clsShare.GenMqttFile(Starter.selectedBordIp, shareIpList.Get(i), "1")
 		Sleep(1000)
 	Next
-	Sleep(2000)
 	B4XLoadingIndicator1.Hide
+	ProgressDialogHide
+	Sleep(2000)
 	
 	Activity.Finish
 	CallSubDelayed(config, "lblRefresh_Click")
