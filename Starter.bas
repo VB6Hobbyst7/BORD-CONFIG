@@ -14,7 +14,7 @@ Sub Process_Globals
 	Public hostPath,  edtIpNumber, unitId, bordVersion, updateFile, upDateVersion As String
 	Public fileSize As Long
 	Public edtUnit As Boolean = False
-	Public bordUpdate, bordAdded As Boolean = False
+	Public bordUpdate, bordAdded, darkTheme As Boolean = False
 	Public sql As SQL
 	Public xStr As String = "qlndfwjeklfnw213123912iedmd$%Gk"
 	Public pw As String = "peter"

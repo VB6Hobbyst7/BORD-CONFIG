@@ -46,10 +46,13 @@ Sub Globals
 	Private pnlReload As Panel
 	Private pnlNew As Panel
 	Private lblBordName As Label
+	Private pnlDark As Panel
+	Private lblDark As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("main_config")
+	'Activity.LoadLayout("main_config_dark")
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
@@ -59,6 +62,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	svInput.Initialize(1500dip)
 	
 	tsConfig.LoadLayout("main_bord", "Overzicht borden")
+	'tsConfig.LoadLayout("main_bord_dark", "Overzicht borden")
 	For Each lbl As Label In GetAllTabLabels(tsConfig)
 		'lbl.Typeface = Typeface.MATERIALICONS
 		'lbl.TextSize=12
@@ -122,12 +126,10 @@ End Sub
 Sub getUnits
 	lblBordName.Text = ""
 	
-	pnlMirror.Visible = False
-	pnlNew.Visible = False
-	pnlReload.Visible = False
 	
 	pnlBlockInput.BringToFront
-	pnlBlockInput.Visible = True
+	'pnlBlockInput.Visible = True
+	HideButtons
 	
 	Sleep(500)
 	Starter.lstActiveBord.Initialize
@@ -164,6 +166,7 @@ Public Sub HidePnlBlockInput
 	pnlMirror.SetVisibleAnimated(500, clsMqtt.CheckMqttExists)
 	pnlNew.SetVisibleAnimated(500, True)
 	pnlReload.SetVisibleAnimated(500, True)
+	pnlDark.SetVisibleAnimated(500, True)
 	Sleep(1000)
 End Sub
 
@@ -172,6 +175,7 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	p.Initialize(Me)
 	p.SetLayout(0dip, 0dip, width, 245dip) '190
 	p.LoadLayout("clv_bord")
+	'p.LoadLayout("clv_bord_dark")
 	p.Tag = name
 	
 	lbl_bord_name.Text = name.Trim
@@ -247,11 +251,8 @@ End Sub
 Sub lblRefresh_Click
 	clsMqtt.CheckMqttExists
 	lblBordName.Text = ""
-	pnlBlockInput.SetVisibleAnimated(500, True)
-	pnlMirror.SetVisibleAnimated(500, False)
-	pnlNew.SetVisibleAnimated(500, False)
-	pnlReload.SetVisibleAnimated(500, False)
 	
+	HideButtons
 	Sleep(750)
 	clsClvBord.bordAlive(clv_borden)
 	Sleep(750)
@@ -265,4 +266,21 @@ End Sub
 
 Sub pnlBlockInput_Click
 	Return
+End Sub
+
+Sub lblDark_Click
+	Msgbox2Async("Donkere modus inschekelen", Starter.AppName, "JA", "", "NEE", Starter.appIcon, False)
+	Wait For Msgbox_Result (Result As Int)
+	
+	If Result = DialogResponse.NEGATIVE Then
+		Return
+	End If
+End Sub
+
+Sub HideButtons
+	pnlBlockInput.SetVisibleAnimated(500, True)
+	pnlMirror.SetVisibleAnimated(500, False)
+	pnlNew.SetVisibleAnimated(500, False)
+	pnlReload.SetVisibleAnimated(500, False)
+	pnlDark.SetVisibleAnimated(500, False)
 End Sub
