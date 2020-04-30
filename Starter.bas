@@ -23,11 +23,14 @@ Sub Process_Globals
 	Public selectedBordPanel As Int
 	Public selectedBordName, selectedBordIp, deviceIp As String
 	Public lstActiveBord As List
-	Public newUnitName As String
+	Public newUnitName, AppName As String
+	Public appIcon As Bitmap
 	Type mirrorBord(name As String, ip As String, server As String)
 End Sub
 
 Sub Service_Create
+	AppName = Application.LabelName
+	appIcon = LoadBitmap(File.DirAssets, "app_icon.png")
 	GetDeviceIp
 	hostPath = rp.GetSafeDirDefaultExternal("host")
 	If File.Exists(hostPath, "boards.db") = False Then

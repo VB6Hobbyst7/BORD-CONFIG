@@ -154,7 +154,7 @@ Sub clvDelen_ItemClick (Index As Int, Value As Object)
 End Sub
 
 Sub btnStartShare_Click
-	Msgbox2Async("Bord delen?", "Bord Config", "JA", "", "NEE", Null, False)
+	Msgbox2Async("Bord delen?", Starter.AppName, "JA", "", "NEE", Starter.appIcon, False)
 	Wait For Msgbox_Result (Result As Int)
 	
 	If Result = DialogResponse.NEGATIVE Then

@@ -18,7 +18,7 @@ Public Sub Initialize
 End Sub
 
 Public Sub SetBordToRetro(ip As String)
-	Msgbox2Async("RETRO aan/uitzetten", $"Bord ${ip}"$, "JA", "", "NEE", Null, False)
+	Msgbox2Async("RETRO aan/uitzetten", $"Bord ${ip}"$, "JA", "", "NEE", Starter.appIcon, False)
 	Wait For Msgbox_Result (Result As Int)
 	If Result = DialogResponse.NEGATIVE Then
 		Return
@@ -36,7 +36,7 @@ Sub ConnectToBord(ip As String)
 	Catch
 		Dim msg As String =$"${ip} niet bereikbaar"$
 		
-		Msgbox2Async(msg, $"Bord ${ip}"$, "", "", "OKE", Null, False)
+		Msgbox2Async(msg, $"Bord ${ip}"$, Starter.AppName, "", "OKE", Starter.appIcon, False)
 		Wait For Msgbox_Result (Result As Int)
 		If Result = DialogResponse.NEGATIVE Then
 			Return

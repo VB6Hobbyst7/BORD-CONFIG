@@ -130,7 +130,7 @@ End Sub
 'End Sub
 
 Sub StopDelen_Click
-	Msgbox2Async("Stop delen naar alle borden?", "Bord Config", "JA", "", "NEE", Null, False)
+	Msgbox2Async("Stop delen naar alle borden?", Starter.AppName, "JA", "", "NEE", Starter.appIcon, False)
 	Wait For Msgbox_Result (Result As Int)
 	
 	If Result = DialogResponse.POSITIVE Then

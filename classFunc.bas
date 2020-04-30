@@ -5,6 +5,7 @@ Type=Class
 Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
+	
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -92,4 +93,24 @@ Public Sub CheckIpRange(ip As String) As Boolean
 	End If
 End Sub
 
+Sub IsValidIp(ip As String) As Boolean
+	Dim m As Matcher
+	m = Regex.Matcher("^(\d+)\.(\d+)\.(\d+)\.(\d+)$", ip)
+	If m.Find = False Then Return False
+	For i = 1 To 4
+		If m.Group(i) > 255 Or m.Group(i) < 0 Then Return False
+	Next
+	Return True
+End Sub
+
+
+Sub SetLabelColor(labels As List, bgColor As Long, fgColor As Long)
+	Dim lbl As Label
+	
+	For Each v In labels
+		lbl = v
+		lbl.Color = bgColor
+		lbl.TextColor = fgColor
+	Next
+End Sub
 

@@ -174,8 +174,9 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	p.LoadLayout("clv_bord")
 	p.Tag = name
 	
-	lbl_bord_name.Text = name
-	lbl_ip.Text = ip
+	lbl_bord_name.Text = name.Trim
+	lbl_ip.Text = ip.Trim
+	
 	Return p
 End Sub
 

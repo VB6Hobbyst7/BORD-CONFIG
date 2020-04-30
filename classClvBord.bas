@@ -38,7 +38,6 @@ Sub bordAlive(clv As CustomListView)
 	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
-		
 		For Each v As View In p.GetAllViewsRecursive
 			
 			If Not (checkIsLabel(v)) Then Continue
@@ -133,7 +132,7 @@ Sub deleteItem(Index As Int, clv As CustomListView)
 	For Each v As View In p.GetAllViewsRecursive
 		If v Is Label And v.Tag = "ip" Then
 			lbl = v
-			Msgbox2Async("Geselecteerde bord verwijderen", "", "Ja", "", "Nee", Null, False)
+			Msgbox2Async("Geselecteerde bord verwijderen", Starter.AppName, "Ja", "", "Nee", Starter.appIcon, False)
 			Wait For Msgbox_Result (Result As Int)
 			If Result = DialogResponse.POSITIVE Then
 				clv.RemoveAt(Index)

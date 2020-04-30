@@ -21,15 +21,11 @@ Sub Globals
 	
 	Private edt_description As EditText
 	Private edt_ip As EditText
-	Private btn_test As Button
-	Private btn_add_unit As Button
-	Private ProgressBar As ProgressBar
 	Private clsFunc As classFunc
-	Private btn_back As Button
-	Private btn_save As Label
 	Private btnTest As Label
 	Private btnAddUnit As Label
 	Private btnTerug As Label
+	Private LoadingIndicator As B4XLoadingIndicator
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -62,7 +58,7 @@ Sub getUnit
 	lst = gnDb.getUnit(Starter.edtIpNumber)
 	Starter.unitId = lst.Get(2)
 	setFieldsEdt(lst)
-	btn_add_unit.Enabled = True
+	btnAddUnit.Enabled = True
 End Sub
 
 
@@ -80,56 +76,55 @@ End Sub
 
 Sub btn_add_unit_Click
 	If edt_description.Text = "" Then
-		MsgboxAsync("Geef een omschrijving op", "Bord config")
+		MsgboxAsync("Geef een omschrijving op", Starter.AppName)
 		Return
 	End If
 	addBord
 End Sub
 
 Sub pingBord
-	ProgressBar.Visible = True
-	Sleep(1000)
-	Dim p As Phone
-	Dim sb As StringBuilder
-	sb.Initialize
-	p.Shell($"ping -c 1 ${edt_ip.text}"$,Null,sb,Null)
-	If sb.Length = 0 Or sb.ToString.Contains("Unreachable") Then 
-		ProgressBar.Visible = False
-		btn_add_unit.Enabled = False
-		MsgboxAsync("Kan ip nummer niet bereiken", "Bord Config")
-		
-	Else
-		ProgressBar.Visible = False
-		btn_add_unit.Enabled = True
-		MsgboxAsync("Ip nummer bereikbaar", "Bord Config")
-	End If	
+	btnAddUnit.Enabled = False
+	If Not(clsFunc.IsValidIp(edt_ip.Text)) Then
+		MsgboxAsync("Ip nummer niet geldig", Starter.AppName)
+		btnAddUnit.Enabled = False
+		Return
+	End If
 	
+	LoadingIndicator.Show
+	Sleep(0)
+	wait for (clsFunc.pingBord(edt_ip.Text)) Complete (result As Boolean)
+	If result Then
+		LoadingIndicator.Hide
+		btnAddUnit.Enabled = True
+		MsgboxAsync("Ip nummer bereikbaar", Starter.AppName)
+	Else
+		LoadingIndicator.Hide
+		btnAddUnit.Enabled = False
+		MsgboxAsync("Kan ip nummer niet bereiken", Starter.AppName)
+	End If
 End Sub
 
 Sub addBord
 	If gnDb.bordNameExists(edt_description.Text) = True And Starter.edtUnit = False Then
-		MsgboxAsync("Omschrijving bestaat reeds","Bord config")
+		MsgboxAsync("Omschrijving bestaat reeds",Starter.AppName)
 		Return
 	End If
 	
 	If gnDb.bordIpExists(edt_ip.Text) = True And Starter.edtUnit = False Then
-		MsgboxAsync("Ip nummer bestaat reeds","Bord config")
+		MsgboxAsync("Ip nummer bestaat reeds",Starter.AppName)
 		Return
 	End If
 	
 	If Starter.edtUnit = True Then
 		gnDb.updateBord(edt_description.Text, edt_ip.Text)
-		clsFunc.createCustomToast("Gegevens bijgewerkt", Colors.Blue)
 		Starter.newUnitName = edt_description.Text
 		IME.HideKeyboard
 		Sleep(500)
-		Starter.edtUnit = False
-		Starter.edtIpNumber = ""
-		Starter.unitId = ""
-		Activity.Finish
+		MsgboxAsync("Bord opgeslagen",Starter.AppName)
 	Else
 		gnDb.addBord(edt_description.Text, edt_ip.Text)
 		Starter.bordAdded = True
+		MsgboxAsync("Bord opgeslagen",Starter.AppName)
 	End If
 	
 End Sub

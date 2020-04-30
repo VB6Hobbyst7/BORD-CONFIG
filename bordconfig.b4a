@@ -1,25 +1,26 @@
 ﻿Build1=Marcel,nl.pdeg.bordconfig,Marcel
 Build2=Sale,nl.pdeg.bordconfig,Sale
-File1=Arial.ttf
-File10=delen_aktief.bal
-File11=main.bal
-File12=main_bord.bal
-File13=main_config.bal
-File14=materialdesignicons-webfont.ttf
-File15=mirror_bord.bal
-File16=Montserrat-Regular.ttf
-File17=mqtt.conf
-File18=tsBordConfig.bal
-File19=units.bal
-File2=boards.db
-File20=update.bal
-File3=bord.png
-File4=clv_bord.bal
-File5=clvDeelBord.bal
-File6=conf_scrsav_sv.bal
-File7=conf_switch.bal
-File8=configMain.bal
-File9=confScreenSaver.bal
+File1=app_icon.png
+File10=confScreenSaver.bal
+File11=delen_aktief.bal
+File12=main.bal
+File13=main_bord.bal
+File14=main_config.bal
+File15=materialdesignicons-webfont.ttf
+File16=mirror_bord.bal
+File17=Montserrat-Regular.ttf
+File18=mqtt.conf
+File19=tsBordConfig.bal
+File2=Arial.ttf
+File20=units.bal
+File21=update.bal
+File3=boards.db
+File4=bord.png
+File5=clv_bord.bal
+File6=clvDeelBord.bal
+File7=conf_scrsav_sv.bal
+File8=conf_switch.bal
+File9=configMain.bal
 FileGroup1=Default Group
 FileGroup10=Default Group
 FileGroup11=Default Group
@@ -33,6 +34,7 @@ FileGroup18=Default Group
 FileGroup19=Default Group
 FileGroup2=Default Group
 FileGroup20=Default Group
+FileGroup21=Default Group
 FileGroup3=Default Group
 FileGroup4=Default Group
 FileGroup5=Default Group
@@ -75,13 +77,13 @@ Module6=classSetConfig
 Module7=conf_scrsav_sv
 Module8=config
 Module9=confScreenSaver
-NumberOfFiles=20
+NumberOfFiles=21
 NumberOfLibraries=15
 NumberOfModules=18
 Version=9.801
 @EndOfDesignText@
 #Region  Project Attributes 
-	#ApplicationLabel: BiljartBord Config
+	#ApplicationLabel: BiljartBord Instellingen
 	#VersionCode: 1
 	#VersionName: 0.9.5
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
