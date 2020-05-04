@@ -51,8 +51,12 @@ Sub Globals
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
+	If Starter.darkTheme Then
+	Activity.LoadLayout("main_config_dark")
+	Else 
 	Activity.LoadLayout("main_config")
-	'Activity.LoadLayout("main_config_dark")
+			
+	End If
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
@@ -61,8 +65,11 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsMqtt.Initialize
 	svInput.Initialize(1500dip)
 	
-	tsConfig.LoadLayout("main_bord", "Overzicht borden")
-	'tsConfig.LoadLayout("main_bord_dark", "Overzicht borden")
+	If Starter.darkTheme Then
+	tsConfig.LoadLayout("main_bord_dark", "Overzicht borden")
+	Else
+	tsConfig.LoadLayout("main_bord_dark", "Overzicht borden")
+	End If
 	For Each lbl As Label In GetAllTabLabels(tsConfig)
 		'lbl.Typeface = Typeface.MATERIALICONS
 		'lbl.TextSize=12
@@ -71,6 +78,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	
 	ShowMirror
 	getUnits
+	'Starter.SetViewColor(Activity, True)
 End Sub
 
 Sub Activity_Resume
@@ -130,11 +138,13 @@ Sub getUnits
 	pnlBlockInput.BringToFront
 	'pnlBlockInput.Visible = True
 	HideButtons
-	
 	Sleep(500)
 	Starter.lstActiveBord.Initialize
 	Dim viewWidth As Int = clv_borden.AsView.Width
 	clv_borden.Clear
+	
+	
+	
 	
 	Dim curs As Cursor = gnDb.RetieveBoards
 	
@@ -180,7 +190,10 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	
 	lbl_bord_name.Text = name.Trim
 	lbl_ip.Text = ip.Trim
-	
+'	If Starter.darkTheme Then lbl_bord_name.TextColor = 0xFF00FF00
+'	If Starter.darkTheme Then lbl_bord_name.Color = 0xFF000000
+'	If Starter.darkTheme Then lbl_ip.TextColor = 0xFF00FF00
+'	If Starter.darkTheme Then lbl_ip.Color = 0xFF000000
 	Return p
 End Sub
 

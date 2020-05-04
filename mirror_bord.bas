@@ -95,7 +95,7 @@ Sub ACSwitch1_CheckedChange(Checked As Boolean)
 	
 	v.Initialize(Me)
 	v = Sender
-	
+	p = v.Parent
 	If Checked Then
 		shareCount = shareCount +1
 	Else
@@ -175,6 +175,7 @@ Sub btnStartShare_Click
 	
 	'CLIENTS
 	For i = 0 To shareIpList.Size-1
+		Log($"BORD IP ${shareIpList.Get(i)}"$)
 		If Starter.selectedBordIp = shareIpList.Get(i) Then Continue
 		clsShare.GenMqttFile(Starter.selectedBordIp, shareIpList.Get(i), "1")
 		Sleep(1000)
