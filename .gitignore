@@ -1,9 +1,16 @@
-/Objects/*
+/Objects/b4xlibs
+/Objects/bin
+/Objects/gen
+/Objects/shell
+/Objects/src
+/AutoBackups/
 # Compiled class file
 *.class
 *.java
 # Log file
 *.log
+*.dex
+*.APK
 
 # BlueJ files
 *.ctxt

@@ -10,7 +10,7 @@ Version=9.801
 #End Region
 #IgnoreWarnings: 1 
 ',10, 11, 12 , 20
-#Extends: android.support.v7.app.AppCompatActivity
+'#Extends: android.support.v7.app.AppCompatActivity
 
 Sub Process_Globals
 
@@ -19,7 +19,7 @@ End Sub
 Sub Globals
 	Private clsShare As SetMqtt
 	
-	Private toolbar As ACToolBarDark
+	'Private toolbar As ACToolBarDark
 	Private lblBordNaam As Label
 	Private pnlDeelBord As Panel
 	Private clvDelen As CustomListView

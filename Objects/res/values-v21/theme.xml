@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">
+        <item name="colorPrimary">#004ba0</item>
+        <item name="colorPrimaryDark">#004ba0</item>
+        <item name="colorAccent">#0098FF</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
+		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    	<item name="android:statusBarColor">#004ba0</item>
+		<item name="android:navigationBarColor">#004ba0</item>
+		<item name="android:colorControlActivated">#1a237e</item>
+        <item name="android:colorControlNormal">#007CF5</item>
+	</style>
+	
+	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">
+    	<item name="android:textColorPrimary">#fff</item>
+    	<item name="android:colorBackground">#004ba0</item>
+   </style>
+</resources>
