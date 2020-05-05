@@ -163,13 +163,13 @@ Sub deleteItem(Index As Int, clv As CustomListView)
 	Dim lbl As Label
 	Dim xui As XUI
 
-	Dim icon As B4XBitmap = xui.LoadBitmapResize(File.DirAssets, "app_icon.png", 60dip, 60dip, True)
-	Dim sf As Object = xui.Msgbox2Async("Delete file?", Starter.AppName, "Yes", "Cancel", "No", icon)
-	
-	Wait For (sf) Msgbox_Result (Result As Int)
-	If Result = xui.DialogResponse_Positive Then
-		Log("Deleted!!!")
-	End If
+'	Dim icon As B4XBitmap = xui.LoadBitmapResize(File.DirAssets, "app_icon.png", 60dip, 60dip, True)
+'	Dim sf As Object = xui.Msgbox2Async("Delete file?", Starter.AppName, "Yes", "Cancel", "No", icon)
+'	
+'	Wait For (sf) Msgbox_Result (Result As Int)
+'	If Result = xui.DialogResponse_Positive Then
+'		Log("Deleted!!!")
+'	End If
 	
 	
 	Starter.selectedBordPanel = Index

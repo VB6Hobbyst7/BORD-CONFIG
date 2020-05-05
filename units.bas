@@ -76,7 +76,8 @@ End Sub
 
 Sub btn_add_unit_Click
 	If edt_description.Text = "" Then
-		MsgboxAsync("Geef een omschrijving op", Starter.AppName)
+		Msgbox2Async("Geef een omschrijving op", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Wait For Msgbox_Result (Result As Int)
 		Return
 	End If
 	addBord
@@ -106,12 +107,16 @@ End Sub
 
 Sub addBord
 	If gnDb.bordNameExists(edt_description.Text) = True And Starter.edtUnit = False Then
-		MsgboxAsync("Omschrijving bestaat reeds",Starter.AppName)
+		'MsgboxAsync("Omschrijving bestaat reeds",Starter.AppName)
+		Msgbox2Async("Omschrijving bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Wait For Msgbox_Result (Result As Int)
 		Return
 	End If
 	
 	If gnDb.bordIpExists(edt_ip.Text) = True And Starter.edtUnit = False Then
-		MsgboxAsync("Ip nummer bestaat reeds",Starter.AppName)
+		'MsgboxAsync("Ip nummer bestaat reeds",Starter.AppName)
+		Msgbox2Async("Ip nummer bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Wait For Msgbox_Result (Result As Int)
 		Return
 	End If
 	
@@ -120,11 +125,15 @@ Sub addBord
 		Starter.newUnitName = edt_description.Text
 		IME.HideKeyboard
 		Sleep(500)
-		MsgboxAsync("Bord opgeslagen",Starter.AppName)
+		'MsgboxAsync("Bord opgeslagen",Starter.AppName)
+		Msgbox2Async("Bord opgeslagen", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Wait For Msgbox_Result (Result As Int)
 	Else
 		gnDb.addBord(edt_description.Text, edt_ip.Text)
 		Starter.bordAdded = True
-		MsgboxAsync("Bord opgeslagen",Starter.AppName)
+		'MsgboxAsync("Bord opgeslagen",Starter.AppName)
+		Msgbox2Async("Bord opgeslagen", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Wait For Msgbox_Result (Result As Int)
 	End If
 	
 End Sub
