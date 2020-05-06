@@ -8,6 +8,7 @@ Sub Class_Globals
 	Private clsFunc As classFunc
 	Private clsMqtt As classMqtt
 	Private clsRetro As setRetroBord
+	Private clsFindItem As classFindActiveBord
 	Private mb As List
 	Private mqttExists As Boolean
 	Private countActiveBord As Int
@@ -18,13 +19,13 @@ Public Sub Initialize
 	clsFunc.Initialize
 	clsMqtt.Initialize
 	clsRetro.Initialize
+	clsFindItem.Initialize
 End Sub
 
 Sub bordAlive(clv As CustomListView)
 	Dim p As Panel
 	Dim itemCount As Int = clv.Size -1
 	Dim lbl As Label
-	
 	mqttExists = clsMqtt.CheckMqttExists
 	
 	CallSub2(config, "SetReloadBordName", "")
@@ -37,9 +38,14 @@ Sub bordAlive(clv As CustomListView)
 	
 	ResetBordLabels(clv)
 	countActiveBord = 0
-	
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
+		
+		clv.ScrollToItem(i)
+		
+'	Log($"CURRENT INDEX : ${i} LAST VISIBLE INDEX : ${clv.LastVisibleIndex}"$)
+		'GET AND SHOW FIND ICON TAG IS findbord
+		clsFindItem.ShowFindIcon(p, i, False)
 		
 		For Each v As View In p.GetAllViewsRecursive
 			If Not (checkIsLabel(v)) Then Continue
@@ -85,20 +91,26 @@ Sub bordAlive(clv As CustomListView)
 	Next
 	
 	'DISABLE MIRROR If Starter.lstActiveBord.Size <= 1
-'	If Starter.lstActiveBord.Size <= 1 Then
-'		For j = 0 To itemCount
-'		p = clv.GetPanel(j)
-'		For Each v As View In p.GetAllViewsRecursive
-'			If v.Tag = "mirror" Then
-'				EnableLabel(v, False)
-'			End If
-'		Next
-'		Next
-'	End If
+	If Starter.lstActiveBord.Size <= 1 Then
+		For j = 0 To itemCount
+			p = clv.GetPanel(j)
+			For Each v As View In p.GetAllViewsRecursive
+				If v.Tag = "mirror" Then
+					EnableLabel(v, False)
+				End If
+			Next
+		Next
+	End If
+	
+	'GET AND SHOW FIND ICON TAG IS findbord
+	Sleep(1000)
+	clsFindItem.ShowFindIcon(p, i, True)
 	
 	CallSub(config, "HidePnlBlockInput")
-	Sleep(400)
 End Sub
+
+
+
 
 Sub EnableLabel(v As Label, enable As Boolean)
 	v.Enabled = enable

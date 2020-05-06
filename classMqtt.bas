@@ -43,6 +43,9 @@ End Sub
 
 Sub GetBordNameFromIp(ip As String) As String
 	Dim lst As List = gnDb.getUnit(ip)
-	
+	If lst.Size > 0 Then
 	Return lst.Get(0)
+	Else
+	Return Null
+	End If	
 End Sub

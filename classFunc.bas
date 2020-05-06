@@ -5,7 +5,7 @@ Type=Class
 Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
-	
+	Dim p As Phone
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
@@ -14,15 +14,6 @@ Public Sub Initialize
 End Sub
 
 Sub pingBord(ipNumber As String) As ResumableSub
-	Dim p As Phone
-	
-'	Log($"PING BORD ${ipNumber}"$)
-	
-'	If CheckIpRange(ipNumber.Replace(".", "-")) = False Then
-'		Return False
-'	End If
-	
-
 	Wait For (p.ShellAsync("ping", Array As String("-c", "1", ipNumber))) Complete (Success As Boolean, ExitValue As Int, StdOut As String, StdErr As String)
 	If Success Then
 		If StdOut.IndexOf("Destination Host Unreachable") <> -1 Then

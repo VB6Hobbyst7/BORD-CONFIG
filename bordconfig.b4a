@@ -1,60 +1,66 @@
 ﻿Build1=Marcel,nl.pdeg.bordconfig,Marcel
 Build2=Sale,nl.pdeg.bordconfig,Sale
 File1=app_icon.png
-File10=conf_scrsav_sv.bal
-File11=conf_switch.bal
-File12=configMain.bal
-File13=confScreenSaver.bal
-File14=delen_aktief.bal
-File15=main.bal
-File16=main_bord.bal
-File17=main_bord_dark.bal
-File18=main_config.bal
-File19=main_config_dark.bal
+File10=clv_bord.bal
+File11=clv_bord_dark.bal
+File12=clvDeelBord.bal
+File13=conf_scrsav_sv.bal
+File14=conf_switch.bal
+File15=configMain.bal
+File16=confScreenSaver.bal
+File17=delen_aktief.bal
+File18=main.bal
+File19=main_bord.bal
 File2=Arial.ttf
-File20=main_dark.bal
-File21=main_nt.bal
-File22=materialdesignicons-webfont.ttf
-File23=mirror_bord.bal
-File24=Montserrat-Regular.ttf
-File25=mqtt.conf
-File26=tsBordConfig.bal
-File27=units.bal
-File28=update.bal
-File3=BalooTamma2-Medium.ttf
-File4=BalooTamma2-Regular.ttf
-File5=boards.db
-File6=bord.png
-File7=clv_bord.bal
-File8=clv_bord_dark.bal
-File9=clvDeelBord.bal
+File20=main_bord_dark.bal
+File21=main_config.bal
+File22=main_config_dark.bal
+File23=main_dark.bal
+File24=main_nt.bal
+File25=materialdesignicons-webfont.ttf
+File26=mirror_bord.bal
+File27=Montserrat-Regular.ttf
+File28=mqtt.conf
+File29=tsBordConfig.bal
+File3=Baloo2-Bold.ttf
+File30=units.bal
+File31=update.bal
+File4=Baloo2-Medium.ttf
+File5=Baloo2-Regular.ttf
+File6=BalooTamma2-Medium.ttf
+File7=BalooTamma2-Regular.ttf
+File8=boards.db
+File9=bord.png
 FileGroup1=Default Group
 FileGroup10=Default Group
-FileGroup11=Default Group
+FileGroup11=Dark
 FileGroup12=Default Group
 FileGroup13=Default Group
 FileGroup14=Default Group
 FileGroup15=Default Group
 FileGroup16=Default Group
-FileGroup17=Dark
+FileGroup17=Default Group
 FileGroup18=Default Group
-FileGroup19=Dark
+FileGroup19=Default Group
 FileGroup2=Default Group
 FileGroup20=Dark
 FileGroup21=Default Group
-FileGroup22=Default Group
-FileGroup23=Default Group
+FileGroup22=Dark
+FileGroup23=Dark
 FileGroup24=Default Group
 FileGroup25=Default Group
 FileGroup26=Default Group
 FileGroup27=Default Group
 FileGroup28=Default Group
+FileGroup29=Default Group
 FileGroup3=Default Group
+FileGroup30=Default Group
+FileGroup31=Default Group
 FileGroup4=Default Group
 FileGroup5=Default Group
 FileGroup6=Default Group
 FileGroup7=Default Group
-FileGroup8=Dark
+FileGroup8=Default Group
 FileGroup9=Default Group
 Group=Default Group
 Library1=core
@@ -73,28 +79,29 @@ Library6=xui views
 Library7=phone
 Library8=network
 Library9=javaobject
-ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~SetApplicationAttribute(android:icon, "@mipmap/ic_launcher")~\n~CreateResource(mipmap-anydpi-v26, ic_launcher.xml,~\n~<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">~\n~    <background android:drawable="@mipmap/background"/>~\n~    <foreground android:drawable="@mipmap/foreground"/>~\n~</adaptive-icon>~\n~)~\n~AddPermission(android.permission.INTERNET)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetActivityAttribute(config, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(conf_scrsav_sv, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(confScreenSaver, android:windowSoftInputMode, adjustResize|stateHidden)~\n~~\n~SetApplicationAttribute(android:theme, "@style/MyAppTheme")~\n~CreateResource(values-v21, theme.xml,~\n~<resources>~\n~    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~        <item name="colorPrimary">#004ba0</item>~\n~        <item name="colorPrimaryDark">#004ba0</item>~\n~        <item name="colorAccent">#0098FF</item>~\n~        <item name="windowNoTitle">true</item>~\n~        <item name="windowActionBar">true</item>~\n~		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~    	<item name="android:statusBarColor">#004ba0</item>~\n~		<item name="android:navigationBarColor">#004ba0</item>~\n~		<item name="android:colorControlActivated">#1a237e</item>~\n~        <item name="android:colorControlNormal">#007CF5</item>~\n~	</style>~\n~	~\n~	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~    	<item name="android:textColorPrimary">#fff</item>~\n~    	<item name="android:colorBackground">#004ba0</item>~\n~   </style>~\n~</resources>~\n~)~\n~~\n~'<resources>~\n~'    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~'        <item name="colorPrimary">#004ba0</item>~\n~'        <item name="colorPrimaryDark">#004ba0</item>~\n~'        <item name="colorAccent">#0098FF</item>~\n~'        <item name="windowNoTitle">true</item>~\n~'        <item name="windowActionBar">true</item>~\n~'		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~'    	<item name="android:statusBarColor">#004ba0</item>~\n~'		<item name="android:navigationBarColor">#004ba0</item>~\n~'		<item name="android:colorControlActivated">#1a237e</item>~\n~'        <item name="android:colorControlNormal">#007CF5</item>~\n~'	</style>~\n~'	~\n~'	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~'    	<item name="android:textColorPrimary">#fff</item>~\n~'    	<item name="android:colorBackground">#004ba0</item>~\n~'   </style>~\n~'</resources>
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~~\n~AddManifestText(<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />)~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~SetApplicationAttribute(android:icon, "@mipmap/ic_launcher")~\n~CreateResource(mipmap-anydpi-v26, ic_launcher.xml,~\n~<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">~\n~    <background android:drawable="@mipmap/background"/>~\n~    <foreground android:drawable="@mipmap/foreground"/>~\n~</adaptive-icon>~\n~)~\n~AddPermission(android.permission.INTERNET)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~~\n~SetActivityAttribute(config, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(conf_scrsav_sv, android:windowSoftInputMode, adjustResize|stateHidden)~\n~SetActivityAttribute(confScreenSaver, android:windowSoftInputMode, adjustResize|stateHidden)~\n~~\n~SetApplicationAttribute(android:theme, "@style/MyAppTheme")~\n~CreateResource(values-v21, theme.xml,~\n~<resources>~\n~    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~        <item name="colorPrimary">#004ba0</item>~\n~        <item name="colorPrimaryDark">#004ba0</item>~\n~        <item name="colorAccent">#0098FF</item>~\n~        <item name="windowNoTitle">true</item>~\n~        <item name="windowActionBar">true</item>~\n~		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~    	<item name="android:statusBarColor">#004ba0</item>~\n~		<item name="android:colorControlActivated">#1a237e</item>~\n~        <item name="android:colorControlNormal">#007CF5</item>~\n~	</style>~\n~	~\n~	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~    	<item name="android:textColorPrimary">#fff</item>~\n~    	<item name="android:colorBackground">#004ba0</item>~\n~   </style>~\n~</resources>~\n~)~\n~''	<item name="android:navigationBarColor">#004ba0</item>~\n~'<resources>~\n~'    <style name="MyAppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">'.light.NoActionBar">~\n~'        <item name="colorPrimary">#004ba0</item>~\n~'        <item name="colorPrimaryDark">#004ba0</item>~\n~'        <item name="colorAccent">#0098FF</item>~\n~'        <item name="windowNoTitle">true</item>~\n~'        <item name="windowActionBar">true</item>~\n~'		<item name="android:windowDrawsSystemBarBackgrounds">true</item>~\n~'    	<item name="android:statusBarColor">#004ba0</item>~\n~'		<item name="android:navigationBarColor">#004ba0</item>~\n~'		<item name="android:colorControlActivated">#1a237e</item>~\n~'        <item name="android:colorControlNormal">#007CF5</item>~\n~'	</style>~\n~'	~\n~'	<style name="ToolbarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">~\n~'    	<item name="android:textColorPrimary">#fff</item>~\n~'    	<item name="android:colorBackground">#004ba0</item>~\n~'   </style>~\n~'</resources>
 Module1=classClvBord
-Module10=delen_aktief
-Module11=gnDb
-Module12=mirror_bord
-Module13=SetMqtt
-Module14=setRetroBord
-Module15=Starter
-Module16=tsBordConfig
-Module17=units
-Module18=update_bord
-Module2=classFunc
-Module3=classGetConfig
-Module4=classGetLatestVersion
-Module5=classMqtt
-Module6=classSetConfig
-Module7=conf_scrsav_sv
-Module8=config
-Module9=confScreenSaver
-NumberOfFiles=28
+Module10=confScreenSaver
+Module11=delen_aktief
+Module12=gnDb
+Module13=mirror_bord
+Module14=SetMqtt
+Module15=setRetroBord
+Module16=Starter
+Module17=tsBordConfig
+Module18=units
+Module19=update_bord
+Module2=classFindActiveBord
+Module3=classFunc
+Module4=classGetConfig
+Module5=classGetLatestVersion
+Module6=classMqtt
+Module7=classSetConfig
+Module8=conf_scrsav_sv
+Module9=config
+NumberOfFiles=31
 NumberOfLibraries=16
-NumberOfModules=18
+NumberOfModules=19
 Version=9.801
 @EndOfDesignText@
 #Region  Project Attributes 
@@ -129,7 +136,7 @@ Sub Globals
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
-	Activity.LoadLayout("main_nt")
+	Activity.LoadLayout("main")
 	'Activity.Color = 0xFF000000
 	'Activity.LoadLayout("main_dark")
 	lbl_bord_info.Text = $"Bord configurator v${Application.VersionName}"$
@@ -140,9 +147,9 @@ Sub Activity_Create(FirstTime As Boolean)
 	
 	
 	#if release
-	Sleep(2000)
+	Sleep(4000)
 	#else
-	Sleep(100)
+	Sleep(2000)
 	#end if
 	'Return
 

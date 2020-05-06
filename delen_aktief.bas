@@ -56,7 +56,7 @@ Sub ParseMirrors
 End Sub
 
 Sub GenClv()
-	Dim aWidth As Int = clvMirror.AsView.Width
+	Dim aWidth As Int = clvMirror.AsView.Width+3dip
 	Dim aHeight As Int = 250
 	
 	clvMirror.Clear

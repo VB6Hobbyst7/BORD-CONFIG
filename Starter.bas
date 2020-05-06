@@ -74,7 +74,8 @@ End Sub
 
 Sub GetDeviceIp
 	Dim s As ServerSocket
-	s.Initialize(5555, Me)
+'	s.Initialize(5555, Me)
+	s.Initialize(5559, Me)
 	deviceIp = s.GetMyIP
 '	Log(s.GetMyIp)
 End Sub

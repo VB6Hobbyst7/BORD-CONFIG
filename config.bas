@@ -9,12 +9,12 @@ Version=9.5
 	#IncludeTitle: false
 #End Region
 '#IgnoreWarnings: 10, 11, 12 , 20
-'#Extends: android.support.v7.app.AppCompatActivity
+#Extends: android.support.v7.app.AppCompatActivity
 Sub Process_Globals
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
 	Dim clsUpdate As classGetLatestVersion
-	Dim clsClvBord As classClvBord
+	'Dim clsClvBord As classClvBord
 	Dim clsFunc As classFunc
 	Dim clsMqtt As classMqtt
 	Dim bordPinged As Boolean = False
@@ -22,12 +22,14 @@ Sub Process_Globals
 End Sub
 
 Sub Globals
+	Dim clsClvBord As classClvBord
+	
 	Public msgMaxCharacter As Int = 40
 	Public chk_timeout_active As CheckBox
 	Public edt_timeout As EditText
 	Private tsConfig As TabStrip
 	Private svInput As ScrollView
-'	Private toolbar As ACToolBarDark
+	Private toolbar As ACToolBarDark
 	Private clv_borden As CustomListView
 	Private lbl_ip As Label
 	Private lbl_bord_name As Label
@@ -48,13 +50,15 @@ Sub Globals
 	Private lblBordName As Label
 	Private pnlDark As Panel
 	Private lblDark As Label
+	
+	Private findBordActive As Boolean
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	If Starter.darkTheme Then
 		Activity.LoadLayout("main_config_dark")
 	Else
-		Activity.LoadLayout("main_config")
+		'Activity.LoadLayout("main_config")
 		Activity.LoadLayout("main_bord")
 	End If
 
@@ -66,19 +70,11 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsMqtt.Initialize
 	svInput.Initialize(1500dip)
 	
-'	If Starter.darkTheme Then
-'		tsConfig.LoadLayout("main_bord_dark", "Overzicht borden")
-'	Else
-'		tsConfig.LoadLayout("main_bord", "Overzicht borden")
-'	End If
-	For Each lbl As Label In GetAllTabLabels(tsConfig)
-		'lbl.Typeface = Typeface.MATERIALICONS
-		'lbl.TextSize=12
-		lbl.Width=100%x
-	Next
-	
 	ShowMirror
 	getUnits
+	If clv_borden.Size > 0 Then
+''		PingBord
+	End If
 	'Starter.SetViewColor(Activity, True)
 End Sub
 
@@ -100,6 +96,25 @@ Sub Activity_Resume
 		getUnits
 	End If
 End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	If UserClosed = True Then
+		Activity.Finish
+	End If
+End Sub
+
+Sub Activity_KeyPress (KeyCode As Int) As Boolean
+ 
+	If KeyCode = KeyCodes.KEYCODE_BACK Then
+		If findBordActive Then
+			Return True
+		End If
+		Return False
+	Else
+		Return False
+	End If
+End Sub
+
 
 Sub GetAllTabLabels (tabstrip As TabStrip) As List
 	Dim jo As JavaObject = tabstrip
@@ -136,16 +151,13 @@ Sub getUnits
 	lblBordName.Text = ""
 	
 	
-	pnlBlockInput.BringToFront
+''	pnlBlockInput.BringToFront
 	'pnlBlockInput.Visible = True
-	HideButtons
-	Sleep(500)
+''	HideButtons
+''	Sleep(500)
 	Starter.lstActiveBord.Initialize
 	Dim viewWidth As Int = clv_borden.AsView.Width
 	clv_borden.Clear
-	
-	
-	
 	
 	Dim curs As Cursor = gnDb.RetieveBoards
 	
@@ -163,22 +175,24 @@ Sub getUnits
 		Return
 	End If
 
-	If bordPinged = False Then
-		bordPinged = True
-		clsClvBord.bordAlive(clv_borden)
-	End If
+''	If bordPinged = False Then
+''		bordPinged = True
+''		PingBord
+''	End If
 	curs.Close
 	
+	PingBord
+End Sub
+
+Private Sub PingBord
+	findBordActive = True
+	HideButtons
+	clsClvBord.bordAlive(clv_borden)
 End Sub
 
 Public Sub HidePnlBlockInput
 	Sleep(1000)
 	pnlBlockInput.SetVisibleAnimated(500, False)
-'	pnlMirror.SetVisibleAnimated(500, clsMqtt.CheckMqttExists)
-'	pnlNew.SetVisibleAnimated(500, True)
-'	pnlReload.SetVisibleAnimated(500, True)
-'	pnlDark.SetVisibleAnimated(500, True)
-	
 	
 	pnlBlockInput.SetElevationAnimated(500, 6dip)
 	pnlMirror.SetElevationAnimated(500, 6dip)
@@ -186,6 +200,8 @@ Public Sub HidePnlBlockInput
 	pnlReload.SetElevationAnimated(500, 6dip)
 	pnlDark.SetElevationAnimated(500, 6dip)
 	Sleep(1000)
+	findBordActive = False
+	clv_borden.ScrollToItem(0)
 End Sub
 
 Sub genUnitList(name As String, ip As String, width As Int) As Panel
@@ -193,23 +209,14 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	p.Initialize(Me)
 	p.SetLayout(0dip, 0dip, width, 245dip) '190
 	p.LoadLayout("clv_bord")
-	'p.LoadLayout("clv_bord_dark")
 	p.Tag = name
 	
 	lbl_bord_name.Text = name.Trim
 	lbl_ip.Text = ip.Trim
-'	If Starter.darkTheme Then lbl_bord_name.TextColor = 0xFF00FF00
-'	If Starter.darkTheme Then lbl_bord_name.Color = 0xFF000000
-'	If Starter.darkTheme Then lbl_ip.TextColor = 0xFF00FF00
-'	If Starter.darkTheme Then lbl_ip.Color = 0xFF000000
 	Return p
 End Sub
 
-Sub Activity_Pause (UserClosed As Boolean)
-	If UserClosed = True Then
-		Activity.Finish
-	End If
-End Sub
+
 
 Sub btn_add_Click
 	StartActivity(units)
@@ -275,7 +282,8 @@ Sub lblRefresh_Click
 	
 	HideButtons
 	Sleep(750)
-	clsClvBord.bordAlive(clv_borden)
+	'clsClvBord.bordAlive(clv_borden)
+	PingBord
 	Sleep(750)
 End Sub
 
@@ -300,10 +308,6 @@ End Sub
 
 Sub HideButtons
 	pnlBlockInput.SetVisibleAnimated(500, True)
-'	pnlMirror.SetVisibleAnimated(500, False)
-'	pnlNew.SetVisibleAnimated(500, False)
-'	pnlReload.SetVisibleAnimated(500, False)
-'	pnlDark.SetVisibleAnimated(500, False)
 	
 	pnlBlockInput.SetElevationAnimated(500, 0dip)
 	pnlMirror.SetElevationAnimated(500, 0dip)

@@ -10,16 +10,17 @@ Version=9.801
 #End Region
 #IgnoreWarnings: 1 
 ',10, 11, 12 , 20
-'#Extends: android.support.v7.app.AppCompatActivity
+#Extends: android.support.v7.app.AppCompatActivity
 
 Sub Process_Globals
 
 End Sub
 
 Sub Globals
-	Private clsShare As SetMqtt
 	
-	'Private toolbar As ACToolBarDark
+	
+	Private clsShare As SetMqtt
+	Private toolbar As ACToolBarDark
 	Private lblBordNaam As Label
 	Private pnlDeelBord As Panel
 	Private clvDelen As CustomListView
@@ -50,6 +51,8 @@ Sub Activity_Pause (UserClosed As Boolean)
 
 End Sub
 
+
+
 Sub GetDeelBorden()
 	clvDelen.Clear
 	Dim count As Int = 0
@@ -75,7 +78,7 @@ End Sub
 Sub AddBord(width As Int, name As String, ip As String, height As Int) As Panel
 	Dim p As Panel
 	p.Initialize(Me)
-	p.SetLayout(0dip, 10dip, width-10, height) '190
+	p.SetLayout(0dip, 10dip, width, height) '190
 	p.LoadLayout("clvDeelBord")
 	'p.LoadLayout("deel_bord")
 	p.Tag = ip
