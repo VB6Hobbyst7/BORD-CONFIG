@@ -26,6 +26,8 @@ Sub bordAlive(clv As CustomListView)
 	Dim p As Panel
 	Dim itemCount As Int = clv.Size -1
 	Dim lbl As Label
+	Dim pValue As Int = 100/itemCount
+	
 	mqttExists = clsMqtt.CheckMqttExists
 	
 	CallSub2(config, "SetReloadBordName", "")
@@ -40,14 +42,11 @@ Sub bordAlive(clv As CustomListView)
 	countActiveBord = 0
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
-		
-		clv.ScrollToItem(i)
-		
-'	Log($"CURRENT INDEX : ${i} LAST VISIBLE INDEX : ${clv.LastVisibleIndex}"$)
-		'GET AND SHOW FIND ICON TAG IS findbord
-		clsFindItem.ShowFindIcon(p, i, False)
-		
+'		CallSub2(config, "SetReloadBordName", p.Tag)
+'		CallSub2(config, "UpdateProgress", pValue*i)
 		For Each v As View In p.GetAllViewsRecursive
+			CallSub2(config, "SetReloadBordName", p.Tag)
+			CallSub2(config, "UpdateProgress", pValue*i)
 			If Not (checkIsLabel(v)) Then Continue
 			If v.Tag = "" Or v.Tag = "name" Then Continue
 			
@@ -55,6 +54,8 @@ Sub bordAlive(clv As CustomListView)
 				lbl = v
 				wait for (clsFunc.pingBord(lbl.Text)) Complete (result As Boolean)
 				CallSub2(config, "SetReloadBordName", p.Tag)
+				CallSub2(config, "UpdateProgress", pValue*i)
+				
 			End If
 			
 			If result Then countActiveBord = countActiveBord +1
@@ -102,10 +103,9 @@ Sub bordAlive(clv As CustomListView)
 		Next
 	End If
 	
-	'GET AND SHOW FIND ICON TAG IS findbord
 	Sleep(1000)
-	clsFindItem.ShowFindIcon(p, i, True)
-	
+	CallSub2(config, "UpdateProgress", 0)
+	Sleep(1000)
 	CallSub(config, "HidePnlBlockInput")
 End Sub
 
@@ -173,7 +173,7 @@ End Sub
 Sub deleteItem(Index As Int, clv As CustomListView)
 	Dim p As Panel
 	Dim lbl As Label
-	Dim xui As XUI
+'	Dim xui As XUI
 
 '	Dim icon As B4XBitmap = xui.LoadBitmapResize(File.DirAssets, "app_icon.png", 60dip, 60dip, True)
 '	Dim sf As Object = xui.Msgbox2Async("Delete file?", Starter.AppName, "Yes", "Cancel", "No", icon)

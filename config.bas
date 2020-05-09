@@ -40,7 +40,7 @@ Sub Globals
 	Private lbl_bord_retro As Label
 	Private lbl_mirror_bord As Label
 	Private labl_mirror_bord As Label
-	Private lblBordToevoegenTxt As Label
+'	Private lblBordToevoegenTxt As Label
 	Private lblMIrror As Label
 	Private pnlBlockInput As Panel
 	Private pnlMirror As Panel
@@ -52,6 +52,14 @@ Sub Globals
 	Private lblDark As Label
 	
 	Private findBordActive As Boolean
+'	Private clvBordForPing As CustomListView
+'	Private pnlBord As Panel
+'	
+'	Private lblForPingBordName As Label
+'	Private lblForPingBordIp As Label
+'	Private lblPingBordAlive As Label
+	Private lblLocatingBord As Label
+	Private AnotherProgressBar1 As AnotherProgressBar
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -69,7 +77,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	clsClvBord.Initialize
 	clsMqtt.Initialize
 	svInput.Initialize(1500dip)
-	
+	AnotherProgressBar1.Value = 0
 	ShowMirror
 	getUnits
 	If clv_borden.Size > 0 Then
@@ -116,18 +124,18 @@ Sub Activity_KeyPress (KeyCode As Int) As Boolean
 End Sub
 
 
-Sub GetAllTabLabels (tabstrip As TabStrip) As List
-	Dim jo As JavaObject = tabstrip
-	Dim r As Reflector
-	r.Target = jo.GetField("tabStrip")
-	Dim tc As Panel = r.GetField("tabsContainer")
-	Dim res As List
-	res.Initialize
-	For Each v As View In tc
-		If v Is Label Then res.Add(v)
-	Next
-	Return res
-End Sub
+'Sub GetAllTabLabels (tabstrip As TabStrip) As List
+'	Dim jo As JavaObject = tabstrip
+'	Dim r As Reflector
+'	r.Target = jo.GetField("tabStrip")
+'	Dim tc As Panel = r.GetField("tabsContainer")
+'	Dim res As List
+'	res.Initialize
+'	For Each v As View In tc
+'		If v Is Label Then res.Add(v)
+'	Next
+'	Return res
+'End Sub
 
 Sub ShowMirror
 	pnlMirror.Visible = clsMqtt.CheckMqttExists 'File.Exists(Starter.hostPath, "mqttP.conf")
@@ -148,13 +156,8 @@ Sub UpdateBordName(name As String)
 End Sub
 
 Sub getUnits
-	lblBordName.Text = ""
-	
-	
-''	pnlBlockInput.BringToFront
-	'pnlBlockInput.Visible = True
-''	HideButtons
-''	Sleep(500)
+'	lblBordName.Text = ""
+
 	Starter.lstActiveBord.Initialize
 	Dim viewWidth As Int = clv_borden.AsView.Width
 	clv_borden.Clear
@@ -175,23 +178,25 @@ Sub getUnits
 		Return
 	End If
 
-''	If bordPinged = False Then
-''		bordPinged = True
-''		PingBord
-''	End If
 	curs.Close
-	
 	PingBord
 End Sub
 
 Private Sub PingBord
 	findBordActive = True
+	lblLocatingBord.Text = ""
+	AnotherProgressBar1.Value = 0
+	AnotherProgressBar1.Visible = True
+	AnotherProgressBar1.UpdateGraphics
+	Sleep(10)
 	HideButtons
 	clsClvBord.bordAlive(clv_borden)
 End Sub
 
 Public Sub HidePnlBlockInput
-	Sleep(1000)
+'	Sleep(1000)
+'	AnotherProgressBar1.Visible = True
+	lblLocatingBord.Text = ""
 	pnlBlockInput.SetVisibleAnimated(500, False)
 	
 	pnlBlockInput.SetElevationAnimated(500, 6dip)
@@ -201,7 +206,8 @@ Public Sub HidePnlBlockInput
 	pnlDark.SetElevationAnimated(500, 6dip)
 	Sleep(1000)
 	findBordActive = False
-	clv_borden.ScrollToItem(0)
+	
+	'clv_borden.ScrollToItem(0)
 End Sub
 
 Sub genUnitList(name As String, ip As String, width As Int) As Panel
@@ -278,18 +284,23 @@ End Sub
 
 Sub lblRefresh_Click
 	clsMqtt.CheckMqttExists
-	lblBordName.Text = ""
+'	lblBordName.Text = ""
 	
 	HideButtons
 	Sleep(750)
 	'clsClvBord.bordAlive(clv_borden)
 	PingBord
-	Sleep(750)
+''	Sleep(750)
 End Sub
 
 Sub SetReloadBordName(name As String)
-	lblBordName.Text = name
-	
+	lblLocatingBord.Text = name
+	Sleep(0)
+	'clsFunc.SetTextShadow(lblLocatingBord, 2, 4, 5, Colors.Gray)
+End Sub
+
+Sub UpdateProgress(value As Int)
+	AnotherProgressBar1.Value = value
 End Sub
 
 
@@ -307,6 +318,7 @@ Sub lblDark_Click
 End Sub
 
 Sub HideButtons
+'	AnotherProgressBar1.Visible = False
 	pnlBlockInput.SetVisibleAnimated(500, True)
 	
 	pnlBlockInput.SetElevationAnimated(500, 0dip)
