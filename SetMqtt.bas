@@ -17,8 +17,9 @@ End Sub
 
 Sub GenMqttFile(ip As String, clientIp As String, enabled As String)
 	Dim strMqtt As String = File.ReadString(File.DirAssets, "mqtt.conf")
-	Dim pushTo As String
 	
+	Dim pushTo As String
+	Dim lst As List = gnDb.getUnit(ip)
 	If clientIp = "0.0.0.0" Then
 		pushTo = ip
 		ip = clientIp
@@ -32,6 +33,7 @@ Sub GenMqttFile(ip As String, clientIp As String, enabled As String)
 	
 	mqttClients.Put("server", ip.Replace(".", "_"))
 	mqttClients.Put("enabled", enabled)
+	mqttClients.Put("name", lst.Get(0))
 	JSONGenerator.Initialize(root)
 	
 	File.WriteString(Starter.hostPath, "mqtt.conf", JSONGenerator.ToPrettyString(2))
