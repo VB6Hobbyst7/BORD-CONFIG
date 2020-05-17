@@ -7,6 +7,7 @@ Version=9.5
 Sub Class_Globals
 	Private clsFunc As classFunc
 	Private clsMqtt As classMqtt
+	Private clsSetMqtt As SetMqtt
 	Private clsRetro As setRetroBord
 	Private clsFindItem As classFindActiveBord
 	Private mb As List
@@ -18,6 +19,7 @@ End Sub
 Public Sub Initialize
 	clsFunc.Initialize
 	clsMqtt.Initialize
+	clsSetMqtt.Initialize
 	clsRetro.Initialize
 	clsFindItem.Initialize
 End Sub
@@ -136,6 +138,24 @@ Sub checkIsLabel(v As View) As Boolean
 	Return v Is Label
 End Sub
 
+Sub PanelBordIpName(Index As Int, clv As CustomListView, tag As String) As String
+	Dim p As Panel
+	Dim lbl As Label
+	
+	Starter.selectedBordPanel = Index
+	
+	p = clv.GetPanel(Index)
+	For Each v As View In p.GetAllViewsRecursive
+		If v Is Label And v.Tag = tag Then
+			lbl = v
+			Return lbl.Text
+			Exit
+		End If
+	Next
+	
+	Return "unknown"
+End Sub
+
 Sub DisableButtons(p As Panel)
 	Dim lbl As Label
 	For Each v As View In p.GetAllViewsRecursive
@@ -152,127 +172,46 @@ Sub DisableButtons(p As Panel)
 End Sub
 
 Sub editItem(Index As Int, clv As CustomListView)
-	Dim p As Panel
-	Dim lbl As Label
-	
+	Starter.edtUnit = True
 	Starter.selectedBordPanel = Index
-	
-	p = clv.GetPanel(Index)
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "ip" Then
-			lbl = v
-			Starter.edtUnit = True
-			Starter.edtIpNumber = lbl.Text
-			StartActivity(units)
-			Exit
-		End If
-	Next
-	
+	Starter.edtIpNumber = PanelBordIpName(Index, clv, "ip")
+	StartActivity(units)
 End Sub
 
 Sub deleteItem(Index As Int, clv As CustomListView)
-	Dim p As Panel
-	Dim lbl As Label
-'	Dim xui As XUI
-
-'	Dim icon As B4XBitmap = xui.LoadBitmapResize(File.DirAssets, "app_icon.png", 60dip, 60dip, True)
-'	Dim sf As Object = xui.Msgbox2Async("Delete file?", Starter.AppName, "Yes", "Cancel", "No", icon)
-'	
-'	Wait For (sf) Msgbox_Result (Result As Int)
-'	If Result = xui.DialogResponse_Positive Then
-'		Log("Deleted!!!")
-'	End If
-	
-	
+	Dim ip As String = PanelBordIpName(Index, clv, "ip")
 	Starter.selectedBordPanel = Index
 	
-	p = clv.GetPanel(Index)
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "ip" Then
-			lbl = v
-			
-			Msgbox2Async("Geselecteerde bord verwijderen", Starter.AppName, "Ja", "", "Nee", Starter.appIcon, False)
-			Wait For Msgbox_Result (Result As Int)
-			If Result = DialogResponse.POSITIVE Then
-				clv.RemoveAt(Index)
-				gnDb.deleteBord(lbl.Text)
-				CallSub(config, "getUnits")
-			End If
-			Exit
-		End If
-	Next
-	
+	Msgbox2Async("Geselecteerde bord verwijderen", Starter.AppName, "Ja", "", "Nee", Starter.appIcon, False)
+	Wait For Msgbox_Result (Result As Int)
+	If Result = DialogResponse.POSITIVE Then
+		clv.RemoveAt(Index)
+		gnDb.deleteBord(ip)
+		CallSub(config, "getUnits")
+	End If
 End Sub
 
 Sub configItem(Index As Int, clv As CustomListView)
-	Dim p As Panel
-	Dim lbl As Label
-	Dim name, ip As String
-	
+	Starter.selectedBordIp = PanelBordIpName(Index, clv, "ip")
+	Starter.selectedBordName = PanelBordIpName(Index, clv, "name")
 	Starter.selectedBordPanel = Index
-	
-	p = clv.GetPanel(Index)
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "ip" Then
-			lbl = v
-			ip = lbl.Text
-			Exit
-		End If
-	Next
-	
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "name" Then
-			lbl = v
-			name = lbl.Text
-			Exit
-		End If
-	Next
-	
-	Starter.selectedBordName = name
-	Starter.selectedBordIp = ip
-	
 	StartActivity(tsBordConfig)
-	
+End Sub
+
+Sub ConfigBordOnDroid(Index As Int, clv As CustomListView)
+	Starter.selectedBordIp = PanelBordIpName(Index, clv, "ip")
+	Starter.selectedBordName = PanelBordIpName(Index, clv, "name")
+	Starter.selectedBordPanel = Index
+	'clsSetMqtt.GenMqttFile(
 End Sub
 
 Public Sub ConfigItemRetro(Index As Int, clv As CustomListView)
-	Dim p As Panel
-	Dim lbl As Label
-	Dim ip As String
-	
-	p = clv.GetPanel(Index)
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "ip" Then
-			lbl = v
-			ip = lbl.Text
-			Exit
-		End If
-	Next
-	clsRetro.SetBordToRetro(ip)
+	clsRetro.SetBordToRetro(PanelBordIpName(Index, clv, "ip"))
 End Sub
 
 Public Sub ConfigItemMirror(Index As Int, clv As CustomListView)
-	Dim p As Panel
-	Dim lbl As Label
-	Dim name, ip As String
-	
-	p = clv.GetPanel(Index)
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "ip" Then
-			lbl = v
-			ip = lbl.Text
-			Exit
-		End If
-	Next
-	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "name" Then
-			lbl = v
-			name = lbl.Text
-			Exit
-		End If
-	Next
-	Starter.selectedBordName = name
-	Starter.selectedBordIp = ip
+	Starter.selectedBordIp = PanelBordIpName(Index, clv, "ip")
+	Starter.selectedBordName = PanelBordIpName(Index, clv, "name")
 	StartActivity(mirror_bord)
 End Sub
 

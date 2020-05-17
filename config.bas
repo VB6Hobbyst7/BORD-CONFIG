@@ -60,6 +60,8 @@ Sub Globals
 '	Private lblPingBordAlive As Label
 	Private lblLocatingBord As Label
 	Private AnotherProgressBar1 As AnotherProgressBar
+	Private labl_on_droid As Label
+	Private lbl_bord_on_droid As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -122,20 +124,6 @@ Sub Activity_KeyPress (KeyCode As Int) As Boolean
 		Return False
 	End If
 End Sub
-
-
-'Sub GetAllTabLabels (tabstrip As TabStrip) As List
-'	Dim jo As JavaObject = tabstrip
-'	Dim r As Reflector
-'	r.Target = jo.GetField("tabStrip")
-'	Dim tc As Panel = r.GetField("tabsContainer")
-'	Dim res As List
-'	res.Initialize
-'	For Each v As View In tc
-'		If v Is Label Then res.Add(v)
-'	Next
-'	Return res
-'End Sub
 
 Sub ShowMirror
 	pnlMirror.Visible = clsMqtt.CheckMqttExists 'File.Exists(Starter.hostPath, "mqttP.conf")
@@ -222,8 +210,6 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	Return p
 End Sub
 
-
-
 Sub btn_add_Click
 	StartActivity(units)
 End Sub
@@ -270,6 +256,10 @@ Sub lbl_mirror_bord_Click
 	clsClvBord.ConfigItemMirror(clv_borden.GetItemFromView(Sender), clv_borden)
 End Sub
 
+Sub lbl_bord_on_droid_Click
+	clsClvBord.ConfigBordOnDroid(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
+
 Sub lbl_add_board_Click
 	StartActivity(units)
 End Sub
@@ -303,7 +293,6 @@ Sub UpdateProgress(value As Int)
 	AnotherProgressBar1.Value = value
 End Sub
 
-
 Sub pnlBlockInput_Click
 	Return
 End Sub
@@ -328,3 +317,4 @@ Sub HideButtons
 	pnlDark.SetElevationAnimated(500, 0dip)
 	Sleep(1000)
 End Sub
+

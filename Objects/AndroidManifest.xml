@@ -52,6 +52,13 @@
 			android:screenOrientation="portrait">
 		</activity>
 		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
+			android:name=".mirror_bord"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
 			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
 			android:name=".conf_scrsav_sv"
@@ -69,13 +76,6 @@
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
 			android:name=".delen_aktief"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:windowSoftInputMode="stateHidden"
-			android:launchMode="singleTop"
-			android:name=".mirror_bord"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
