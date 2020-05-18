@@ -129,7 +129,7 @@ Sub Process_Globals
 End Sub
 
 Sub Globals
-
+	Private baseMqttConfig As Base
 	Private toolbar As ACToolBarDark
 	Private lbl_bord_img As Label
 	Private lbl_bord_info As Label
@@ -138,6 +138,9 @@ Sub Globals
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
+	baseMqttConfig.Initialize("mqtt-conf", "config")
+	
+	Return
 	Activity.LoadLayout("main")
 	'Activity.Color = 0xFF000000
 	'Activity.LoadLayout("main_dark")

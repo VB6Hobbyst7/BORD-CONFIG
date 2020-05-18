@@ -3,6 +3,7 @@
 /Objects/gen
 /Objects/shell
 /Objects/src
+/Objects/res
 /AutoBackups/
 # Compiled class file
 *.class
