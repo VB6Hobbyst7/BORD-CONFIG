@@ -86,14 +86,15 @@ Module10=config
 Module11=confScreenSaver
 Module12=delen_aktief
 Module13=gnDb
-Module14=mirror_bord
-Module15=SetMqtt
-Module16=setRetroBord
-Module17=Starter
-Module18=tsBordConfig
-Module19=units
+Module14=KvsMqtt
+Module15=mirror_bord
+Module16=SetMqtt
+Module17=setRetroBord
+Module18=Starter
+Module19=tsBordConfig
 Module2=classClvBord
-Module20=update_bord
+Module20=units
+Module21=update_bord
 Module3=classFindActiveBord
 Module4=classFunc
 Module5=classGetConfig
@@ -103,7 +104,7 @@ Module8=classSetConfig
 Module9=conf_scrsav_sv
 NumberOfFiles=31
 NumberOfLibraries=17
-NumberOfModules=20
+NumberOfModules=21
 Version=9.801
 @EndOfDesignText@
 #Region  Project Attributes 
@@ -125,6 +126,7 @@ Version=9.801
 
 #BridgeLogger: True
 
+
 Sub Process_Globals
 End Sub
 
@@ -140,7 +142,7 @@ End Sub
 Sub Activity_Create(FirstTime As Boolean)
 	baseMqttConfig.Initialize("mqtt-conf", "config")
 	
-	Return
+	
 	Activity.LoadLayout("main")
 	'Activity.Color = 0xFF000000
 	'Activity.LoadLayout("main_dark")

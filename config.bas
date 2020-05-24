@@ -11,6 +11,7 @@ Version=9.5
 '#IgnoreWarnings: 10, 11, 12 , 20
 #Extends: android.support.v7.app.AppCompatActivity
 Sub Process_Globals
+	Dim kvs As KvsMqtt
 	Dim clsJson As classGetConfig
 	Dim clsPutJson As classSetConfig
 	Dim clsUpdate As classGetLatestVersion
@@ -71,7 +72,7 @@ Sub Activity_Create(FirstTime As Boolean)
 		'Activity.LoadLayout("main_config")
 		Activity.LoadLayout("main_bord")
 	End If
-
+	kvs.Initialize
 	clsFunc.Initialize
 	clsJson.Initialize
 	clsPutJson.Initialize
@@ -207,6 +208,13 @@ Sub genUnitList(name As String, ip As String, width As Int) As Panel
 	
 	lbl_bord_name.Text = name.Trim
 	lbl_ip.Text = ip.Trim
+	
+	If gnDb.GetBordOnDroid(name) Then
+		lbl_bord_on_droid.TextColor = Colors.Green
+		Else
+		lbl_bord_on_droid.TextColor = Colors.Red
+	End If
+	
 	Return p
 End Sub
 
@@ -253,11 +261,44 @@ Sub lbl_bord_retro_Click
 End Sub
 
 Sub lbl_mirror_bord_Click
+	'BordOnDroid(clsClvBord.PanelBordIpName(clv_borden.GetItemFromView(Sender), clv_borden, "name"))
+
+	'kvs.MirrorBord(clsClvBord.PanelBordIpName(clv_borden.GetItemFromView(Sender), clv_borden, "name"))
 	clsClvBord.ConfigItemMirror(clv_borden.GetItemFromView(Sender), clv_borden)
 End Sub
 
+Sub BordOnDroid(bordName As String) As Boolean
+	Return gnDb.GetBordOnDroid(bordName)
+End Sub
+
+
 Sub lbl_bord_on_droid_Click
-	clsClvBord.ConfigBordOnDroid(clv_borden.GetItemFromView(Sender), clv_borden)
+	Dim bordName As String = clsClvBord.PanelBordIpName(clv_borden.GetItemFromView(Sender), clv_borden, "name")
+	Dim bordIp As String = clsClvBord.PanelBordIpName(clv_borden.GetItemFromView(Sender), clv_borden, "ip")
+	
+	If BordOnDroid(bordName) Then
+		
+	Else
+				
+	End If
+	
+	
+	
+	'clsClvBord.ConfigBordOnDroid(clv_borden.GetItemFromView(Sender), clv_borden)
+End Sub
+
+Sub CreateMqtt(bordName As String, ip As String)
+	Dim mqtt As String = File.ReadString(File.DirAssets, "mqtt.conf")
+	
+	Dim parser As JSONParser
+	parser.Initialize(mqtt)
+	Dim root As Map = parser.NextObject
+	Dim mqttClients As Map = root.Get("mqttClients")
+	mqttClients.Put("server", "0_0_0_0")
+	mqttClients.put("name", bordName)
+	mqttClients.put("enabled", "1")
+	mqttClients.Put("base", "base")
+	
 End Sub
 
 Sub lbl_add_board_Click

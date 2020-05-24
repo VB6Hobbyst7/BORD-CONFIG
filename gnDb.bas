@@ -101,6 +101,24 @@ Sub deleteBord(ip As String)
 	
 End Sub
 
+Sub GetBordOnDroid(bordName As String) As Boolean
+	Dim curs As Cursor
+	qry = "SELECT version FROM unit WHERE description = ?"
+	
+	curs = Starter.sql.ExecQuery2(qry, Array As String(bordName))
+	
+	If curs.RowCount = 0 Then
+		Return False
+	Else
+		curs.Position = 0
+		If curs.GetString("version") = "1" Then
+			Return True
+		Else
+			Return False
+		End If
+	End If
+End Sub
+
 
 Sub GUID As String
 	Dim sb As StringBuilder

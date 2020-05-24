@@ -212,6 +212,7 @@ End Sub
 Public Sub ConfigItemMirror(Index As Int, clv As CustomListView)
 	Starter.selectedBordIp = PanelBordIpName(Index, clv, "ip")
 	Starter.selectedBordName = PanelBordIpName(Index, clv, "name")
+	
 	StartActivity(mirror_bord)
 End Sub
 
