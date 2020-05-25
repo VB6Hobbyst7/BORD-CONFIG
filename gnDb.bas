@@ -39,6 +39,11 @@ Sub updateBord(description As String, ipNumber As String)
 	
 End Sub
 
+Sub updateMqttStatus(name As String, status As String)
+	qry = "UPDATE unit Set version = ? WHERE description = ?"
+	Starter.sql.ExecNonQuery2(qry, Array As String(status, name))
+End Sub
+
 Sub bordNameExists(name As String) As Boolean
 	Dim curs As Cursor
 	Dim count As Int
@@ -103,6 +108,8 @@ End Sub
 
 Sub GetBordOnDroid(bordName As String) As Boolean
 	Dim curs As Cursor
+	Dim mqttShared As String
+	
 	qry = "SELECT version FROM unit WHERE description = ?"
 	
 	curs = Starter.sql.ExecQuery2(qry, Array As String(bordName))
@@ -111,6 +118,8 @@ Sub GetBordOnDroid(bordName As String) As Boolean
 		Return False
 	Else
 		curs.Position = 0
+		mqttShared = curs.GetString("version")
+		If mqttShared = Null Then Return False
 		If curs.GetString("version") = "1" Then
 			Return True
 		Else

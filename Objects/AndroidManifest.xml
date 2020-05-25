@@ -40,14 +40,21 @@
 		<activity
 			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
-			android:name=".conf_scrsav_sv"
+			android:name=".config"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
+			android:name=".mqttbord"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
 		<activity
 			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
-			android:name=".config"
+			android:name=".conf_scrsav_sv"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>

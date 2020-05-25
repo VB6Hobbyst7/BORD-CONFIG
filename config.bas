@@ -127,7 +127,7 @@ Sub Activity_KeyPress (KeyCode As Int) As Boolean
 End Sub
 
 Sub ShowMirror
-	pnlMirror.Visible = clsMqtt.CheckMqttExists 'File.Exists(Starter.hostPath, "mqttP.conf")
+'	pnlMirror.Visible = clsMqtt.CheckMqttExists 'File.Exists(Starter.hostPath, "mqttP.conf")
 End Sub
 
 Sub UpdateBordName(name As String)
@@ -281,8 +281,8 @@ Sub lbl_bord_on_droid_Click
 	Else
 				
 	End If
-	
-	
+	'clsClvBord.ConfigItemMirror(clv_borden.GetItemFromView(Sender), clv_borden)
+	StartActivity(mqttbord)
 	
 	'clsClvBord.ConfigBordOnDroid(clv_borden.GetItemFromView(Sender), clv_borden)
 End Sub
@@ -310,7 +310,8 @@ Sub clv_borden_ScrollChanged (Offset As Int)
 End Sub
 
 Sub lblMIrror_Click
-	StartActivity(delen_aktief)
+	'StartActivity(delen_aktief)
+	StartActivity(mqttbord)
 End Sub
 
 Sub lblRefresh_Click
