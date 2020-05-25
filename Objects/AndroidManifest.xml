@@ -52,6 +52,13 @@
 			android:screenOrientation="portrait">
 		</activity>
 		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
+			android:name=".units"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
 			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
 			android:name=".conf_scrsav_sv"
@@ -83,13 +90,6 @@
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
 			android:name=".tsbordconfig"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:windowSoftInputMode="stateHidden"
-			android:launchMode="singleTop"
-			android:name=".units"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
