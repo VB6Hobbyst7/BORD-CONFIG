@@ -40,28 +40,14 @@
 		<activity
 			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
-			android:name=".config"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:windowSoftInputMode="stateHidden"
-			android:launchMode="singleTop"
-			android:name=".mqttbord"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:windowSoftInputMode="stateHidden"
-			android:launchMode="singleTop"
-			android:name=".units"
+			android:name=".conf_scrsav_sv"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
 		<activity
 			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
-			android:name=".conf_scrsav_sv"
+			android:name=".config"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
@@ -89,6 +75,13 @@
 		<activity
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
+			android:name=".mqttbord"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
 			android:name=".tsbordconfig"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
@@ -96,7 +89,21 @@
 		<activity
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
+			android:name=".units"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
 			android:name=".update_bord"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
+			android:windowSoftInputMode="adjustResize|stateHidden"
+			android:launchMode="singleTop"
+			android:name=".bordsetname"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>

@@ -16,6 +16,10 @@ Sub RetieveBoards As Cursor
 	Return Starter.sql.ExecQuery(qry)	
 End Sub
 
+Sub RetrieveBordIp(ip As String) as Cursor
+	qry = "SELECT ip_number FROM unit WHERE description = ? COLLATE NOCASE"
+	Return Starter.sql.ExecQuery2(qry, Array As String(ip))
+End Sub
 
 Sub RetieveBoardsForUpdate As Cursor
 	qry = "SELECT * FROM unit ORDER BY description"

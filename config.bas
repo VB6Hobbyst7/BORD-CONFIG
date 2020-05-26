@@ -340,12 +340,13 @@ Sub pnlBlockInput_Click
 End Sub
 
 Sub lblDark_Click
-	Msgbox2Async("Donkere modus inschekelen", Starter.AppName, "JA", "", "NEE", Starter.appIcon, False)
-	Wait For Msgbox_Result (Result As Int)
-	
-	If Result = DialogResponse.NEGATIVE Then
-		Return
-	End If
+'	Msgbox2Async("Donkere modus inschekelen", Starter.AppName, "JA", "", "NEE", Starter.appIcon, False)
+'	Wait For Msgbox_Result (Result As Int)
+'	
+'	If Result = DialogResponse.NEGATIVE Then
+'		Return
+'	End If
+StartActivity(bordSetName)
 End Sub
 
 Sub HideButtons
