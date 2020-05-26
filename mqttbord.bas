@@ -86,17 +86,17 @@ Sub fltCode_EnterPressed
 	
 	If fltCode.Text <> currBaseName Then
 		msg = $"De deelcode is anders dan de deelcode in gebruik, reeds gedeelde borden bijwerken?"$
-		Msgbox2Async(msg, Application.LabelName, "JA", "ANNULEER", "NEE", Application.Icon, False)
-		Wait For msgBox_result(result As Int)
-		If result = DialogResponse.POSITIVE Then
-			CreateMqttBaseJson
-			'Update Shared bords
-		Else If result = DialogResponse.CANCEL Then
-			Return
-		Else If result = DialogResponse.NEGATIVE Then
-			CreateMqttBaseJson
-		End If
-		
+'		Msgbox2Async(msg, Application.LabelName, "JA", "ANNULEER", "NEE", Application.Icon, False)
+'		Wait For msgBox_result(result As Int)
+'		If result = DialogResponse.POSITIVE Then
+'			CreateMqttBaseJson
+'			'Update Shared bords
+'		Else If result = DialogResponse.CANCEL Then
+'			Return
+'		Else If result = DialogResponse.NEGATIVE Then
+'			CreateMqttBaseJson
+'		End If
+		CreateMqttBaseJson
 	End If
 	
 End Sub
