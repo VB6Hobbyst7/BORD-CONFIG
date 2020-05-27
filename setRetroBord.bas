@@ -8,7 +8,7 @@ Sub Class_Globals
 	Private parser As JSONParser
 	Private clsFunc As classFunc
 	Private ipBord As String
-	
+
 	Dim ftp As SFtp
 End Sub
 

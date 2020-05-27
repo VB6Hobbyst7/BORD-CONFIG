@@ -30,6 +30,25 @@ Sub pingBord(ipNumber As String) As ResumableSub
 	End If
 End Sub
 
+'padText e.g. "9", padChar e.g. "0", padSide 0=left 1=right, padCount e.g. 2
+Public Sub padString(padText As String ,padChr As String, padSide As Int, padCount As Int) As String
+	Dim padStr As String
+	
+	If padText.Length = padCount Then
+		Return padText
+	End If
+	
+	For i = 1 To padCount-padText.Length
+		padStr = padStr&padChr
+	Next
+	
+	If padSide = 0 Then
+		Return padStr&padText
+	Else
+		Return padText&padStr
+	End If
+	
+End Sub
 
 
 Sub createCustomToast(txt As String, color As String)
