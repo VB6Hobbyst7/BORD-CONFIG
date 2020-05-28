@@ -6,11 +6,33 @@ Version=9.5
 @EndOfDesignText@
 Sub Class_Globals
 	Dim p As Phone
+	Private serializer As B4XSerializator
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
 Public Sub Initialize
 	
+End Sub
+
+Sub GetBaseName As String
+	Dim baseBytes() As Byte
+	
+	If File.Exists(Starter.hostPath, "base-config") Then
+		baseBytes = File.ReadBytes(Starter.hostPath, "base-config")
+		Return GetBaseNameFromBytes(serializer.ConvertBytesToObject(baseBytes))
+	End If
+End Sub
+
+Sub GetBaseNameFromBytes(baseFile As String) As String
+	If baseFile.Length = 0 Then Return
+	
+	Dim parser As JSONParser
+	parser.Initialize(baseFile)
+	Dim root As Map = parser.NextObject
+	Dim baseJ As List = root.Get("base")
+	For Each colbase As Map In baseJ
+		Return colbase.Get("baseName")
+	Next
 End Sub
 
 Sub pingBord(ipNumber As String) As ResumableSub

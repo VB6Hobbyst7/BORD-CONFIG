@@ -17,7 +17,9 @@ End Sub
 
 Sub Globals
 	Private mqttClient As MqttClient
-	Private subscribeStr as String = "pdeg/code/bord"
+	Private baseName As String
+	Private subscribeStr As String = "pdeg/code/bord"
+	Private mqtt As mqttBase
 	Private func As classFunc
 	Private serializer As B4XSerializator
 	Private sftp As SFtp
@@ -36,6 +38,8 @@ End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("bordSetName")
+	
+	mqtt.Initialize
 	txtColor = p1Name.TextField.TextColor
 	func.Initialize
 	ime.Initialize("IME")
@@ -152,6 +156,14 @@ Sub b4xCombo_SelectedIndexChanged (Index As Int)
 	GetBordIp(b4xCombo.GetItem(Index))
 	SetViewState(Index > 0)
 	ime.ShowKeyboard(p1Name.TextField)
+	If Index > 0 Then
+		GetPlayerData(b4xCombo.GetItem(Index))
+	End If
+End Sub
+
+Private Sub GetPlayerData(bordName As String)
+	subscribeStr = $"pdeg/getdata/${bordName}"$
+	
 End Sub
 
 Private Sub CreateMqttBaseJson(pStart As Int)
@@ -191,7 +203,7 @@ Private Sub CreateMqttBaseJson(pStart As Int)
 	baseMap.Put("player", mqttMap)
 				
 	jsonGen.Initialize(baseMap)
-	Log(jsonGen.ToString)
+'	Log(jsonGen.ToString)
 	File.WriteBytes(Starter.hostPath, "player-config", serializer.ConvertObjectToBytes(jsonGen.ToString))
 	Sleep(300)
 	UploadPlayers

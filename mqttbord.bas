@@ -24,11 +24,12 @@ Sub Globals
 	Private lblDeelCodeInfo As Label
 	Private sftp As SFtp
 	Private func As classFunc
+	Private lblPanel As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	func.Initialize
-	GetBaseName
+	currBaseName = func.GetBaseName
 	Activity.LoadLayout("mqttbord")
 	fltCode.Text = currBaseName
 	GetBord
@@ -102,6 +103,10 @@ Sub fltCode_EnterPressed
 End Sub
 
 Sub fltCode_TextChanged (Old As String, New As String)
+	
+End Sub
+
+Sub lblPanel_Click
 	
 End Sub
 
@@ -239,3 +244,6 @@ End Sub
 Sub sftp_PromptYesNo (Message As String)
 	sftp.SetPromptResult(True)
 End Sub
+
+
+
