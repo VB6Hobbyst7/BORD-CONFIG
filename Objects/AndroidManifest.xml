@@ -34,30 +34,9 @@
 			
 		</activity>
 		<activity
-			android:windowSoftInputMode="adjustResize|stateHidden"
-			android:launchMode="singleTop"
-			android:name=".conf_scrsav_sv"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
-			android:name=".mirror_bord"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:windowSoftInputMode="stateHidden"
-			android:launchMode="singleTop"
-			android:name=".delen_aktief"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:windowSoftInputMode="stateHidden"
-			android:launchMode="singleTop"
-			android:name=".tsbordconfig"
+			android:name=".mqttbord"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
@@ -78,6 +57,13 @@
 		<activity
 			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
+			android:name=".conf_scrsav_sv"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
+			android:windowSoftInputMode="adjustResize|stateHidden"
+			android:launchMode="singleTop"
 			android:name=".confscreensaver"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
@@ -85,7 +71,14 @@
 		<activity
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
-			android:name=".mqttbord"
+			android:name=".delen_aktief"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
+			android:name=".mirror_bord"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
@@ -93,6 +86,13 @@
 		</service>
 		<receiver android:name=".starter$starter_BR">
 		</receiver>
+		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
+			android:name=".tsbordconfig"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
 		<activity
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"

@@ -70,6 +70,7 @@ Library14=reflection
 Library15=ime
 Library16=xui
 Library17=randomaccessfile
+Library18=jmqtt
 Library2=jsch
 Library3=runtimepermissions
 Library4=json
@@ -103,7 +104,7 @@ Module7=classGetLatestVersion
 Module8=classMqtt
 Module9=classSetConfig
 NumberOfFiles=30
-NumberOfLibraries=17
+NumberOfLibraries=18
 NumberOfModules=23
 Version=9.801
 @EndOfDesignText@

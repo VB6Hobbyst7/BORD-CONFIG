@@ -16,6 +16,8 @@ Sub Process_Globals
 End Sub
 
 Sub Globals
+	Private mqttClient As MqttClient
+	Private subscribeStr as String = "pdeg/code/bord"
 	Private func As classFunc
 	Private serializer As B4XSerializator
 	Private sftp As SFtp
