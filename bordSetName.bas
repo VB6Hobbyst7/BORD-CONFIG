@@ -34,11 +34,11 @@ Sub Globals
 	Private b4xCombo As B4XComboBox
 	Private pnlClearFields As Panel
 	Private txtColor As Long
+	
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("bordSetName")
-	
 	mqtt.Initialize
 	txtColor = p1Name.TextField.TextColor
 	func.Initialize
