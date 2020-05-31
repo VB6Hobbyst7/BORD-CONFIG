@@ -121,6 +121,19 @@ Sub addBord
 	End If
 	
 	If Starter.edtUnit = True Then
+		If gnDb.bordNameExists(edt_description.Text) = True And Starter.edtUnit = True Then
+			'MsgboxAsync("Omschrijving bestaat reeds",Starter.AppName)
+			Msgbox2Async("Omschrijving bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+			Wait For Msgbox_Result (Result As Int)
+			Return
+		End If
+		If gnDb.bordIpExists(edt_ip.Text) = True And Starter.edtUnit = True Then
+			'MsgboxAsync("Ip nummer bestaat reeds",Starter.AppName)
+			Msgbox2Async("Ip nummer bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+			Wait For Msgbox_Result (Result As Int)
+			Return
+		End If
+		
 		gnDb.updateBord(edt_description.Text, edt_ip.Text)
 		Starter.newUnitName = edt_description.Text
 		IME.HideKeyboard

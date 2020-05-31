@@ -16,23 +16,30 @@ End Sub
 
 Sub GetBaseName As String
 	Dim baseBytes() As Byte
+	Dim baseName As String
 	
 	If File.Exists(Starter.hostPath, "base-config") Then
 		baseBytes = File.ReadBytes(Starter.hostPath, "base-config")
-		Return GetBaseNameFromBytes(serializer.ConvertBytesToObject(baseBytes))
+		baseName = GetBaseNameFromBytes(serializer.ConvertBytesToObject(baseBytes))
 	End If
+	Return baseName
 End Sub
 
 Sub GetBaseNameFromBytes(baseFile As String) As String
-	If baseFile.Length = 0 Then Return
+	Dim baseName As String
+	If baseFile.Length = 0 Then 
+		Return baseName
+	End If
 	
 	Dim parser As JSONParser
 	parser.Initialize(baseFile)
 	Dim root As Map = parser.NextObject
 	Dim baseJ As List = root.Get("base")
 	For Each colbase As Map In baseJ
-		Return colbase.Get("baseName")
+		baseName = colbase.Get("baseName")
 	Next
+	
+	Return baseName
 End Sub
 
 Sub pingBord(ipNumber As String) As ResumableSub
@@ -135,6 +142,19 @@ Sub IsValidIp(ip As String) As Boolean
 	Return True
 End Sub
 
+Sub CompareIp(ipNumber As String) As Boolean
+	Dim deviceIp, passedIp As List
+	
+	deviceIp = Regex.Split("_", Starter.deviceIp.Replace(".", "_"))
+	passedIp = Regex.Split("_", ipNumber.Replace(".", "_"))
+	
+	For i = 0 To 2
+	If deviceIp.Get(i) <> passedIp.Get(i) Then
+			Return False
+		End If
+	Next
+	Return True
+End Sub
 
 Sub SetLabelColor(labels As List, bgColor As Long, fgColor As Long)
 	Dim lbl As Label
@@ -146,3 +166,29 @@ Sub SetLabelColor(labels As List, bgColor As Long, fgColor As Long)
 	Next
 End Sub
 
+Sub NameToCamelCase(name As String) As String
+	Dim nameList() As String = Regex.Split(" ", name)
+	If nameList.Length = 2 Then
+		nameList(0) = SetFirstLetterUpperCase(nameList(0))
+		nameList(1) = SetFirstLetterUpperCase(nameList(1))
+		Return $"${nameList(0)} ${nameList(1)}"$
+	End If
+	If nameList.Length = 3 Then
+		nameList(0) = SetFirstLetterUpperCase(nameList(0))
+		nameList(2) = SetFirstLetterUpperCase(nameList(2))
+		Return $"${nameList(0)} ${nameList(1).ToLowerCase} ${nameList(2)}"$
+	End If
+
+	Return name
+End Sub
+
+Private Sub SetFirstLetterUpperCase(str As String) As String
+	str = str.ToLowerCase
+	Dim m As Matcher = Regex.Matcher("\b(\w)", str)
+	Do While m.Find
+		Dim i As Int = m.GetStart(1)
+		str = str.SubString2(0, i) & str.SubString2(i, i + 1).ToUpperCase & str.SubString(i + 1)
+	Loop
+	
+	Return str
+End Sub

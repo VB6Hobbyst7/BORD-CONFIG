@@ -54,6 +54,7 @@ Sub bordAlive(clv As CustomListView)
 			
 			If v.Tag = "ip" Then
 				lbl = v
+				if clsFunc.CompareIp(lbl.Text) = false then Continue
 				wait for (clsFunc.pingBord(lbl.Text)) Complete (result As Boolean)
 				CallSub2(config, "SetReloadBordName", p.Tag)
 				CallSub2(config, "UpdateProgress", pValue*i)

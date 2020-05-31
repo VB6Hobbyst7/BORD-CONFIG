@@ -88,8 +88,8 @@ Module13=delen_aktief
 Module14=gnDb
 Module15=KvsMqtt
 Module16=mirror_bord
-Module17=mqttBase
-Module18=mqttbord
+Module17=mqttbord
+Module18=|relative|..\shared_classes\MqttConnector
 Module19=SetMqtt
 Module2=bordSetName
 Module20=setRetroBord
@@ -130,7 +130,7 @@ Version=9.801
 
 
 Sub Process_Globals
-	
+	Type Message(From as String, Body as String)
 End Sub
 
 Sub Globals

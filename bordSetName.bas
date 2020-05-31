@@ -16,10 +16,10 @@ Sub Process_Globals
 End Sub
 
 Sub Globals
-	Private mqttClient As MqttClient
+	Private mqttClient As MqttConnector
 	Private baseName As String
 	Private subscribeStr As String = "pdeg/code/bord"
-	Private mqtt As mqttBase
+	'Private mqtt As mqttBase
 	Private func As classFunc
 	Private serializer As B4XSerializator
 	Private sftp As SFtp
@@ -34,12 +34,18 @@ Sub Globals
 	Private b4xCombo As B4XComboBox
 	Private pnlClearFields As Panel
 	Private txtColor As Long
-	
+	Private baseName, currBordName As String
+	Private pnlUpdateNames As Panel
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("bordSetName")
-	mqtt.Initialize
+	baseName = "pdeg" 'func.GetBaseName
+
+	If baseName <> "" Then
+		mqttClient.Initialize("tcp://pdeg3005.mynetgear.com", 1883, baseName&"/", "", "", Me, "UpdateBordWhenClient")
+	End If
+
 	txtColor = p1Name.TextField.TextColor
 	func.Initialize
 	ime.Initialize("IME")
@@ -153,17 +159,30 @@ Private Sub SetViewState(state As Boolean)
 End Sub
 
 Sub b4xCombo_SelectedIndexChanged (Index As Int)
+	If b4xCombo.GetItem(Index) = "" Then
+		currBordName = ""
+		pnlClearFields_Click
+		Return
+	End If
 	GetBordIp(b4xCombo.GetItem(Index))
 	SetViewState(Index > 0)
 	ime.ShowKeyboard(p1Name.TextField)
+	currBordName = b4xCombo.GetItem(Index)
 	If Index > 0 Then
 		GetPlayerData(b4xCombo.GetItem(Index))
 	End If
 End Sub
 
 Private Sub GetPlayerData(bordName As String)
-	subscribeStr = $"pdeg/getdata/${bordName}"$
-	
+	if currBordName = "" then Return
+	subscribeStr = $"pdeg/${baseName}/recvdata_${bordName.Replace(" ", "")}"$
+	mqttClient.SetSubcribe( $"pdeg/${baseName}/recvdata_${bordName.Replace(" ", "")}"$)
+	mqttClient.Connect
+	Sleep(200)
+	mqttClient.SendMessage("players please")
+	'pdeg/pdeg/recvdata_vantafel41
+	'pdeg/pdeg/recvdata_pdegtafel19
+	'pdeg/pdeg/recvdata_vantafel41
 End Sub
 
 Private Sub CreateMqttBaseJson(pStart As Int)
@@ -275,4 +294,48 @@ Private Sub ValidateFields As String
 	End If
 	
 	Return "valid"
+End Sub
+
+public Sub UpdateBordWhenClient(data As String)
+	If data = "players please" Then Return
+	mqttClient.Disconnect
+	Dim parser As JSONParser
+	
+	parser.Initialize(data)
+	Dim root As Map = parser.NextObject
+	Dim score As Map = root.Get("score")
+	Dim p1 As Map = score.Get("p1")
+	Dim p2 As Map = score.Get("p2")
+	
+	p1Name.TextField.Text = func.NameToCamelCase(p1.Get("naam"))
+	p1Make.TextField.Text = p1.Get("maken")
+	p2Name.TextField.Text = func.NameToCamelCase(p2.Get("naam"))
+	p2Make.TextField.Text = p2.Get("maken")
+	FormatText
+End Sub
+
+Private Sub FormatText
+	Dim make As Int
+	
+	p1Name.TextField.Text = p1Name.TextField.Text.Replace(CRLF, "")
+	p2Name.TextField.Text = p2Name.TextField.Text.Replace(CRLF, "")
+	
+	make = p1Make.TextField.Text
+	If make < 100 Then
+		p1Make.TextField.Text = p1Make.TextField.Text.SubString(1)
+	End If
+	If make < 10 Then
+		p1Make.TextField.Text = p1Make.TextField.Text.SubString(1)
+	End If
+	make = p2Make.TextField.Text
+	If make < 100 Then
+		p2Make.TextField.Text = p2Make.TextField.Text.SubString(1)
+	End If
+	If make < 10 Then
+		p2Make.TextField.Text = p2Make.TextField.Text.SubString(1)
+	End If
+End Sub
+
+Sub pnlUpdateNames_Click
+	GetPlayerData(currBordName)
 End Sub
