@@ -66,12 +66,7 @@ Sub Globals
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
-	If Starter.darkTheme Then
-		Activity.LoadLayout("main_config_dark")
-	Else
-		'Activity.LoadLayout("main_config")
-		Activity.LoadLayout("main_bord")
-	End If
+	Activity.LoadLayout("main_bord")
 	kvs.Initialize
 	clsFunc.Initialize
 	clsJson.Initialize
@@ -84,7 +79,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	ShowMirror
 	getUnits
 	If clv_borden.Size > 0 Then
-''		PingBord
+		''		PingBord
 	End If
 	'Starter.SetViewColor(Activity, True)
 End Sub
@@ -159,6 +154,8 @@ Sub getUnits
 	
 	For i = 0 To curs.RowCount - 1
 		curs.Position = i
+		If clsFunc.CompareIp(curs.GetString("ip_number")) = False Then Continue
+		
 		clv_borden.Add(genUnitList(curs.GetString("description"), curs.GetString("ip_number"), viewWidth), "")
 	Next
 	
@@ -315,6 +312,8 @@ Sub lblMIrror_Click
 End Sub
 
 Sub lblRefresh_Click
+	getUnits
+	Return
 	clsMqtt.CheckMqttExists
 '	lblBordName.Text = ""
 	

@@ -10,8 +10,7 @@ Version=9.801
 #End Region
 #Extends: android.support.v7.app.AppCompatActivity
 Sub Process_Globals
-	'These global variables will be declared once when the application starts.
-	'These variables can be accessed from all modules.
+	Dim mqttTimeOut As Timer
 
 End Sub
 
@@ -36,6 +35,9 @@ Sub Globals
 	Private txtColor As Long
 	Private baseName, currBordName As String
 	Private pnlUpdateNames As Panel
+	Private B4XLoadingIndicator1 As B4XLoadingIndicator
+	Private B4XLoadingIndicator2 As B4XLoadingIndicator
+	Private pnlNobords As Panel
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -53,6 +55,7 @@ Sub Activity_Create(FirstTime As Boolean)
 	IME_HeightChanged(100%y, 0)
 	GetBorden
 	SetViewState(False)
+	mqttTimeOut.Initialize("mqttTimeOut", 6000)
 	'https://www.b4x.com/android/forum/threads/programmatically-open-a-b4xcombobox.117765/#post-736803
 	Dim jo As JavaObject = b4xCombo.cmbBox
 	jo.RunMethod("performClick", Null)
@@ -65,6 +68,14 @@ End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
 
+End Sub
+
+Private Sub mqttTimeOut_Tick
+	mqttTimeOut.Enabled = False
+	mqttClient.Disconnect
+	SetGetPlayerData(False)
+	SetViewState(False)
+	Msgbox2Async("Kan spelers namen niet ophalen", Application.LabelName, "OKE", "", "", Application.Icon, False)
 End Sub
 
 Private Sub GetBorden
@@ -159,9 +170,9 @@ Private Sub SetViewState(state As Boolean)
 End Sub
 
 Sub b4xCombo_SelectedIndexChanged (Index As Int)
+	pnlClearFields_Click
 	If b4xCombo.GetItem(Index) = "" Then
 		currBordName = ""
-		pnlClearFields_Click
 		Return
 	End If
 	GetBordIp(b4xCombo.GetItem(Index))
@@ -174,15 +185,27 @@ Sub b4xCombo_SelectedIndexChanged (Index As Int)
 End Sub
 
 Private Sub GetPlayerData(bordName As String)
-	if currBordName = "" then Return
-	subscribeStr = $"pdeg/${baseName}/recvdata_${bordName.Replace(" ", "")}"$
-	mqttClient.SetSubcribe( $"pdeg/${baseName}/recvdata_${bordName.Replace(" ", "")}"$)
+	SetGetPlayerData(True)
+	If currBordName = "" Then Return
+	subscribeStr = $"pdeg/${baseName}/recvdata_${bordName.Replace(" ", "").ToLowerCase}"$
+'	mqttClient.SetSubcribe( $"pdeg/${baseName}/recvdata_${bordName.Replace(" ", "").ToLowerCase}"$)
+Log(subscribeStr)
+	mqttClient.SetSubcribe(subscribeStr)
 	mqttClient.Connect
-	Sleep(200)
-	mqttClient.SendMessage("players please")
-	'pdeg/pdeg/recvdata_vantafel41
-	'pdeg/pdeg/recvdata_pdegtafel19
-	'pdeg/pdeg/recvdata_vantafel41
+	Sleep(400)
+	
+'	mqttClient.SendMessage("players please")
+	
+	
+End Sub
+
+Private Sub SetGetPlayerData(status As Boolean)
+	ime.HideKeyboard
+	mqttTimeOut.Enabled = status
+	B4XLoadingIndicator1.Show
+	B4XLoadingIndicator2.Show
+	pnlNobords.SetVisibleAnimated(1000, status)
+	Sleep(1750)
 End Sub
 
 Private Sub CreateMqttBaseJson(pStart As Int)
@@ -297,7 +320,11 @@ Private Sub ValidateFields As String
 End Sub
 
 public Sub UpdateBordWhenClient(data As String)
-	If data = "players please" Then Return
+'	Log(data)
+	If data = "players please" Or data = "data please" Then Return
+
+	SetGetPlayerData(False)
+	SetViewState(True)
 	mqttClient.Disconnect
 	Dim parser As JSONParser
 	
@@ -312,6 +339,7 @@ public Sub UpdateBordWhenClient(data As String)
 	p2Name.TextField.Text = func.NameToCamelCase(p2.Get("naam"))
 	p2Make.TextField.Text = p2.Get("maken")
 	FormatText
+	ime.ShowKeyboard(p1Name.TextField)
 End Sub
 
 Private Sub FormatText

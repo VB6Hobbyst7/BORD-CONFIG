@@ -25,6 +25,7 @@ Sub Globals
 	Private sftp As SFtp
 	Private func As classFunc
 	Private lblPanel As Label
+	Private lblIpNumber As Label
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -55,6 +56,8 @@ Sub GetBord
 	
 	For i = 0 To curs.RowCount - 1
 		curs.Position = i
+		If func.CompareIp(curs.GetString("ip_number")) = False Then Continue
+		
 		clvMqtt.Add(genUnit(curs.GetString("description"), curs.GetString("ip_number"), curs.GetString("version"), viewWidth), "")
 	Next
 End Sub
@@ -62,9 +65,10 @@ End Sub
 Sub genUnit(description As String, ip As String, mqtt As String, width As Int) As Panel
 	Dim p As Panel
 	p.Initialize(Me)
-	p.SetLayout(0dip, 0dip, width, 70dip)
+	p.SetLayout(0dip, 0dip, width, 80dip)
 	p.LoadLayout("clvMqttBord")
 	
+	lblIpNumber.Text = ip
 	lblBordName.Text = description
 	p.Tag = ip
 	swMqtt.Tag = "switch"
@@ -220,6 +224,8 @@ Private Sub UpdateBordMqtt(enable As Boolean, ip As String, name As String)
 End Sub
 
 Private Sub SetMqttToBord(ip As String, bordName As String, enable As String)
+	gnDb.updateMqttStatus(bordName, enable)
+	
 	sftp.Initialize("sftp", "pi", "0", ip, 22)
 	sftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
 	

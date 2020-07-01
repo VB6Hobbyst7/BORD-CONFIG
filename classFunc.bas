@@ -168,18 +168,29 @@ End Sub
 
 Sub NameToCamelCase(name As String) As String
 	Dim nameList() As String = Regex.Split(" ", name)
+	
+	If nameList.Length = 1 Then
+		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
+		Return $"${nameList(0)}"$
+	End If
+	
 	If nameList.Length = 2 Then
-		nameList(0) = SetFirstLetterUpperCase(nameList(0))
-		nameList(1) = SetFirstLetterUpperCase(nameList(1))
+		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
+		nameList(1) = SetFirstLetterUpperCase(ReplaceCLF(nameList(1)))
 		Return $"${nameList(0)} ${nameList(1)}"$
 	End If
 	If nameList.Length = 3 Then
-		nameList(0) = SetFirstLetterUpperCase(nameList(0))
-		nameList(2) = SetFirstLetterUpperCase(nameList(2))
-		Return $"${nameList(0)} ${nameList(1).ToLowerCase} ${nameList(2)}"$
+		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
+		nameList(2) = SetFirstLetterUpperCase(ReplaceCLF(nameList(2)))
+		Return $"${nameList(0)} ${ReplaceCLF(nameList(1)).ToLowerCase} ${nameList(2)}"$
 	End If
 
 	Return name
+End Sub
+
+Private Sub ReplaceCLF(name As String) As String
+	Return name.Replace(CRLF, " ")
+	
 End Sub
 
 Private Sub SetFirstLetterUpperCase(str As String) As String

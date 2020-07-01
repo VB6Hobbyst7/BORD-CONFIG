@@ -11,7 +11,7 @@ End Sub
 
 
 Sub RetieveBoards As Cursor
-	qry = "SELECT * FROM unit ORDER BY description COLLATE NOCASE"
+	qry = "SELECT * FROM unit ORDER BY LOWER(description) asc, ip_number asc"
 	
 	Return Starter.sql.ExecQuery(qry)	
 End Sub
@@ -32,7 +32,7 @@ Sub addBord(description As String, ipNumber As String)
 '	Dim curs As Cursor
 	Dim id As String = GUID
 	
-	qry = "INSERT INTO unit (unit_id,description, ip_number) VALUES(?,?,?)"
+	qry = "INSERT INTO unit (unit_id, description, ip_number) VALUES(?,?,?)"
 	Starter.sql.ExecNonQuery2(qry, Array As String(id, description, ipNumber))
 		
 End Sub
@@ -48,21 +48,7 @@ Sub updateMqttStatus(name As String, status As String)
 	Starter.sql.ExecNonQuery2(qry, Array As String(status, name))
 End Sub
 
-Sub bordNameExists(name As String) As Boolean
-	Dim curs As Cursor
-	Dim count As Int
-	
-	qry = "SELECT COUNT(*) as cnt FROM unit WHERE description = ? COLLATE NOCASE"
-	curs = Starter.sql.ExecQuery2(qry, Array As String(name))
-	curs.Position = 0
-	count = curs.GetInt("cnt")
-	curs.Close
-	
-	If count > 0 Then
-		Return True
-	End If
-	Return False
-End Sub
+
 
 
 Sub getUnit(ip As String) As List
@@ -86,13 +72,41 @@ Sub getUnit(ip As String) As List
 	
 End Sub
 
-
-Sub bordIpExists(ip As String) As Boolean
+Sub bordNameExists(name As String, unitId As String) As Boolean
 	Dim curs As Cursor
 	Dim count As Int
 	
-	qry = "SELECT COUNT(*) cnt FROM unit WHERE ip_number = ? COLLATE NOCASE"
-	curs = Starter.sql.ExecQuery2(qry, Array As String(ip))
+	If unitId <> "" Then
+		qry = "SELECT COUNT(*) as cnt FROM unit WHERE description = ? and unit_id <> ? COLLATE NOCASE"
+		curs = Starter.sql.ExecQuery2(qry, Array As String(name, unitId))
+	Else
+		qry = "SELECT COUNT(*) as cnt FROM unit WHERE description = ? COLLATE NOCASE"
+		curs = Starter.sql.ExecQuery2(qry, Array As String(name))
+	End If
+	
+	curs.Position = 0
+	count = curs.GetInt("cnt")
+	curs.Close
+	
+	If count > 0 Then
+		Return True
+	End If
+	
+	Return False
+End Sub
+
+Sub bordIpExists(ip As String, unitId As String) As Boolean
+	Dim curs As Cursor
+	Dim count As Int
+
+	If unitId <> "" Then
+		qry = "SELECT COUNT(*) cnt FROM unit WHERE ip_number = ? and unit_id <> ? COLLATE NOCASE"
+		curs = Starter.sql.ExecQuery2(qry, Array As String(ip, unitId))
+	Else
+		qry = "SELECT COUNT(*) as cnt FROM unit WHERE description = ? COLLATE NOCASE"
+		curs = Starter.sql.ExecQuery2(qry, Array As String(ip))
+	End If
+		
 	curs.Position = 0
 	count  = curs.GetInt("cnt")
 	curs.Close
@@ -100,8 +114,8 @@ Sub bordIpExists(ip As String) As Boolean
 	If count > 0 Then
 		Return True
 	End If
-	Return False
 	
+	Return False
 End Sub
 
 Sub deleteBord(ip As String)

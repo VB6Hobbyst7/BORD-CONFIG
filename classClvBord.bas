@@ -41,6 +41,7 @@ Sub bordAlive(clv As CustomListView)
 	End If
 	
 	ResetBordLabels(clv)
+	
 	countActiveBord = 0
 	For i = 0 To itemCount
 		p = clv.GetPanel(i)
@@ -54,7 +55,12 @@ Sub bordAlive(clv As CustomListView)
 			
 			If v.Tag = "ip" Then
 				lbl = v
-				if clsFunc.CompareIp(lbl.Text) = false then Continue
+				If clsFunc.CompareIp(lbl.Text) = False Then 
+					DisableButtons(p)
+					Continue
+				End If
+				
+				
 				wait for (clsFunc.pingBord(lbl.Text)) Complete (result As Boolean)
 				CallSub2(config, "SetReloadBordName", p.Tag)
 				CallSub2(config, "UpdateProgress", pValue*i)
@@ -160,14 +166,11 @@ End Sub
 Sub DisableButtons(p As Panel)
 	Dim lbl As Label
 	For Each v As View In p.GetAllViewsRecursive
-		If v Is Label And v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Then
+'	If v Is Label And v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Or v.Tag = "edit" Or v.Tag = "delete" Or v.Tag = "bordondroid" Then
+	If v Is Label And v.Tag = "config" Or v.Tag = "retro" Or v.Tag = "mirror" Or v.Tag = "bordondroid" Then
 			lbl = v
 			lbl.Enabled = False
-			If Starter.darkTheme Then
-				lbl.TextColor = Starter.darkLabelDisabledColor
-			Else
 			lbl.TextColor =  0xFFE4E4E4
-			End If
 		End If
 	Next
 End Sub

@@ -71,6 +71,7 @@ Library15=ime
 Library16=xui
 Library17=randomaccessfile
 Library18=jmqtt
+Library19=b4xloadingindicatorpdeg
 Library2=jsch
 Library3=runtimepermissions
 Library4=json
@@ -105,14 +106,14 @@ Module7=classGetLatestVersion
 Module8=classMqtt
 Module9=classSetConfig
 NumberOfFiles=30
-NumberOfLibraries=18
+NumberOfLibraries=19
 NumberOfModules=24
-Version=9.801
+Version=9.9
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: BiljartBord Instellingen
 	#VersionCode: 1
-	#VersionName: 0.9.5
+	#VersionName: 0.9.6
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: False
@@ -120,6 +121,7 @@ Version=9.801
 #End Region
  ' #IgnoreWarnings: 10, 16, 20
 #Extends: android.support.v7.app.AppCompatActivity
+'#AdditionalJar: sqlite-jdbc-3.7.2
  
 #Region  Activity Attributes 
 	#FullScreen: False
@@ -130,12 +132,12 @@ Version=9.801
 
 
 Sub Process_Globals
-	Type Message(From as String, Body as String)
+	Type Message(From As String, Body As String)
 End Sub
 
 Sub Globals
 	Private baseMqttConfig As Base
-	Private toolbar As ACToolBarDark
+'	Private toolbar As ACToolBarDark
 	Private lbl_bord_img As Label
 	Private lbl_bord_info As Label
 	Private lbl_laden As Label

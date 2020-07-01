@@ -26,6 +26,8 @@ Sub Globals
 	Private btnAddUnit As Label
 	Private btnTerug As Label
 	Private LoadingIndicator As B4XLoadingIndicator
+	Private edtBordName, edtBordIp As String
+	Private B4XLoadingIndicatorBiljartBall1 As B4XLoadingIndicatorBiljartBall
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
@@ -86,74 +88,99 @@ End Sub
 Sub pingBord
 	btnAddUnit.Enabled = False
 	If Not(clsFunc.IsValidIp(edt_ip.Text)) Then
-		MsgboxAsync("Ip nummer niet geldig", Starter.AppName)
+		Msgbox2Async("Ip nummer niet geldig", Starter.AppName, "OKE", "","", Application.Icon, False)
 		btnAddUnit.Enabled = False
 		Return
 	End If
 	
-	LoadingIndicator.Show
+	B4XLoadingIndicatorBiljartBall1.Show
 	Sleep(0)
 	wait for (clsFunc.pingBord(edt_ip.Text)) Complete (result As Boolean)
 	If result Then
-		LoadingIndicator.Hide
+		B4XLoadingIndicatorBiljartBall1.Hide
 		btnAddUnit.Enabled = True
-		MsgboxAsync("Ip nummer bereikbaar", Starter.AppName)
+		Msgbox2Async("Ip nummer bereikbaar", Starter.AppName, "OKE", "","", Application.Icon, False)
 	Else
-		LoadingIndicator.Hide
+		B4XLoadingIndicatorBiljartBall1.Hide
 		btnAddUnit.Enabled = False
-		MsgboxAsync("Kan ip nummer niet bereiken", Starter.AppName)
+		Msgbox2Async("Kan ip nummer niet bereiken", Starter.AppName, "OKE", "","", Application.Icon, False)
 	End If
 End Sub
 
 Sub addBord
-	If gnDb.bordNameExists(edt_description.Text) = True And Starter.edtUnit = False Then
-		'MsgboxAsync("Omschrijving bestaat reeds",Starter.AppName)
+	If edtBordName = edt_description.Text And edtBordIp = edt_ip.Text Then
+		Msgbox2Async("Geen veranderingen", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Wait For Msgbox_Result (Result As Int)
+		Return
+	End If
+	
+	If Starter.edtUnit Then
+		checkWhenEdited
+		Return
+	Else
+		checkWhenNew	
+	End If
+	
+	
+''	If gnDb.bordNameExists(edt_description.Text) = True And Starter.edtUnit = False Then
+''		Msgbox2Async("Omschrijving bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+''		Wait For Msgbox_Result (Result As Int)
+''		Return
+''	End If
+	
+''	If gnDb.bordIpExists(edt_ip.Text) = True And Starter.edtUnit = False Then
+''		Msgbox2Async("Ip nummer bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+''		Wait For Msgbox_Result (Result As Int)
+''		Return
+''	End If
+	
+End Sub
+
+Private Sub checkWhenNew
+	If gnDb.bordNameExists(edt_description.Text, "") = True Then
 		Msgbox2Async("Omschrijving bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
 		Wait For Msgbox_Result (Result As Int)
 		Return
 	End If
 	
-	If gnDb.bordIpExists(edt_ip.Text) = True And Starter.edtUnit = False Then
-		'MsgboxAsync("Ip nummer bestaat reeds",Starter.AppName)
+	If gnDb.bordIpExists(edt_ip.Text, "") = True Then
 		Msgbox2Async("Ip nummer bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
 		Wait For Msgbox_Result (Result As Int)
 		Return
 	End If
+	gnDb.addBord(edt_description.Text, edt_ip.Text)
+	Starter.bordAdded = True
+	Msgbox2Async("Bord opgeslagen", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+End Sub
+
+
+Private Sub checkWhenEdited
+	Dim unitId As String = Starter.unitId
 	
-	If Starter.edtUnit = True Then
-		If gnDb.bordNameExists(edt_description.Text) = True And Starter.edtUnit = True Then
-			'MsgboxAsync("Omschrijving bestaat reeds",Starter.AppName)
-			Msgbox2Async("Omschrijving bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
-			Wait For Msgbox_Result (Result As Int)
-			Return
-		End If
-		If gnDb.bordIpExists(edt_ip.Text) = True And Starter.edtUnit = True Then
-			'MsgboxAsync("Ip nummer bestaat reeds",Starter.AppName)
-			Msgbox2Async("Ip nummer bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
-			Wait For Msgbox_Result (Result As Int)
-			Return
-		End If
-		
-		gnDb.updateBord(edt_description.Text, edt_ip.Text)
-		Starter.newUnitName = edt_description.Text
-		IME.HideKeyboard
-		Sleep(500)
-		'MsgboxAsync("Bord opgeslagen",Starter.AppName)
-		Msgbox2Async("Bord opgeslagen", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
-		Wait For Msgbox_Result (Result As Int)
-	Else
-		gnDb.addBord(edt_description.Text, edt_ip.Text)
-		Starter.bordAdded = True
-		'MsgboxAsync("Bord opgeslagen",Starter.AppName)
-		Msgbox2Async("Bord opgeslagen", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
-		Wait For Msgbox_Result (Result As Int)
+	If gnDb.bordNameExists(edt_description.Text, unitId) = True Then
+		Msgbox2Async("Omschrijving bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Return
 	End If
 	
+	If gnDb.bordIpExists(edt_ip.Text, unitId) = True Then
+		Msgbox2Async("Ip nummer bestaat reeds", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+		Return
+	End If
+		
+	gnDb.updateBord(edt_description.Text, edt_ip.Text)
+	Starter.newUnitName = edt_description.Text
+	IME.HideKeyboard
+	Msgbox2Async("Bord opgeslagen", Starter.AppName, "OKE", "", "", Starter.appIcon, False)
+	
+	Return
 End Sub
+
 
 Sub setFieldsEdt(lst As List)
 	edt_description.Text = lst.Get(0)
 	edt_ip.Text = lst.Get(1)
+	edtBordName = lst.Get(0)
+	edtBordIp = lst.Get(1)
 End Sub
 
 Sub btn_back_Click
