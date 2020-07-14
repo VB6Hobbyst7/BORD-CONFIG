@@ -113,7 +113,7 @@ Version=9.9
 #Region  Project Attributes 
 	#ApplicationLabel: BiljartBord Instellingen
 	#VersionCode: 1
-	#VersionName: 0.9.6
+	#VersionName: 0.9.7
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: portrait
 	#CanInstallToExternalStorage: False
