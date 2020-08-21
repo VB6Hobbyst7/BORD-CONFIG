@@ -20,7 +20,9 @@ Sub GetBaseName As String
 	
 	If File.Exists(Starter.hostPath, "base-config") Then
 		baseBytes = File.ReadBytes(Starter.hostPath, "base-config")
+'		Log(serializer.ConvertBytesToObject(baseBytes))
 		baseName = GetBaseNameFromBytes(serializer.ConvertBytesToObject(baseBytes))
+		Log(baseName)
 	End If
 	Return baseName
 End Sub
@@ -167,29 +169,54 @@ Sub SetLabelColor(labels As List, bgColor As Long, fgColor As Long)
 End Sub
 
 Sub NameToCamelCase(name As String) As String
+	name = ReplaceCLF(name)
 	Dim nameList() As String = Regex.Split(" ", name)
+	Dim nameLst As List
+	Dim middleName As String
 	
-	If nameList.Length = 1 Then
-		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
-		Return $"${nameList(0)}"$
+	
+	nameLst.Initialize
+	
+	For i = 0 To nameList.Length - 1
+		If nameList(i) <> "" Then
+			nameLst.Add(nameList(i))
+		End If
+	Next
+	
+	If nameLst.Size = 1 Then
+		Return SetFirstLetterUpperCase(nameLst.Get(0))
 	End If
 	
-	If nameList.Length = 2 Then
-		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
-		nameList(1) = SetFirstLetterUpperCase(ReplaceCLF(nameList(1)))
-		Return $"${nameList(0)} ${nameList(1)}"$
+	If nameLst.Size = 2 Then
+		Return $"${SetFirstLetterUpperCase(nameLst.Get(0))} ${SetFirstLetterUpperCase(nameLst.Get(1))}"$
 	End If
-	If nameList.Length = 3 Then
-		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
-		nameList(2) = SetFirstLetterUpperCase(ReplaceCLF(nameList(2)))
-		Return $"${nameList(0)} ${ReplaceCLF(nameList(1)).ToLowerCase} ${nameList(2)}"$
+	
+	If nameLst.Size = 3 Then
+		middleName = nameLst.Get(1)
+		Return $"${SetFirstLetterUpperCase(nameLst.Get(0))} ${middleName.ToLowerCase} ${SetFirstLetterUpperCase(nameLst.Get(2))}"$
 	End If
+	
+'	If nameList.Length = 1 Then
+'		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
+'		Return $"${nameList(0)}"$
+'	End If
+'	
+'	If nameList.Length = 2 Then
+'		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
+'		nameList(1) = SetFirstLetterUpperCase(ReplaceCLF(nameList(1)))
+'		Return $"${nameList(0)} ${nameList(1)}"$
+'	End If
+'	If nameList.Length = 3 Then
+'		nameList(0) = SetFirstLetterUpperCase(ReplaceCLF(nameList(0)))
+'		nameList(2) = SetFirstLetterUpperCase(ReplaceCLF(nameList(2)))
+'		Return $"${nameList(0)} ${ReplaceCLF(nameList(1)).ToLowerCase} ${nameList(2)}"$
+'	End If
 
 	Return name
 End Sub
 
 Private Sub ReplaceCLF(name As String) As String
-	Return name.Replace(CRLF, " ")
+	Return name.Replace(CRLF, "")
 	
 End Sub
 

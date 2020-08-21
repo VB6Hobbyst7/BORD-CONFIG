@@ -41,15 +41,18 @@ Sub Globals
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
+'	Dim x As String = func.GetBaseName
 	Activity.LoadLayout("bordSetName")
-	baseName = "pdeg" 'func.GetBaseName
-
+	func.Initialize
+'	baseName = "pdeg" 'func.GetBaseName
+	baseName = func.GetBaseName
+	Log(baseName)
 	If baseName <> "" Then
 		mqttClient.Initialize("tcp://pdeg3005.mynetgear.com", 1883, baseName&"/", "", "", Me, "UpdateBordWhenClient")
 	End If
 
 	txtColor = p1Name.TextField.TextColor
-	func.Initialize
+	'func.Initialize
 	ime.Initialize("IME")
 	ime.AddHeightChangedEvent
 	IME_HeightChanged(100%y, 0)
