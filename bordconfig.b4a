@@ -73,6 +73,7 @@ Library17=randomaccessfile
 Library18=jmqtt
 Library19=b4xloadingindicatorpdeg
 Library2=jsch
+Library20=accessibility
 Library3=runtimepermissions
 Library4=json
 Library5=sql
@@ -106,7 +107,7 @@ Module7=classGetLatestVersion
 Module8=classMqtt
 Module9=classSetConfig
 NumberOfFiles=30
-NumberOfLibraries=19
+NumberOfLibraries=20
 NumberOfModules=24
 Version=10
 @EndOfDesignText@

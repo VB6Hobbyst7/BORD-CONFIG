@@ -22,6 +22,8 @@ Sub Globals
 	Private func As classFunc
 	Private serializer As B4XSerializator
 	Private sftp As SFtp
+	Private access As Accessibility
+	
 	Private bordIp As String
 	Private p1Make As B4XFloatTextField
 	Private p1Name As B4XFloatTextField
@@ -35,14 +37,21 @@ Sub Globals
 	Private txtColor As Long
 	Private baseName, currBordName As String
 	Private pnlUpdateNames As Panel
-	Private B4XLoadingIndicator1 As B4XLoadingIndicator
-	Private B4XLoadingIndicator2 As B4XLoadingIndicator
+	Private B4XLoadingIndicator1 As B4XLoadingIndicatorBiljartBall
+	Private B4XLoadingIndicator2 As B4XLoadingIndicatorBiljartBall
 	Private pnlNobords As Panel
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 '	Dim x As String = func.GetBaseName
 	Activity.LoadLayout("bordSetName")
+'	Log(access.GetUserFontScale)
+	p1Name.TextField.TextSize = p1Name.TextField.TextSize / access.GetUserFontScale
+	p2Name.TextField.TextSize = p2Name.TextField.TextSize / access.GetUserFontScale
+	p2Make.TextField.TextSize = p2Make.TextField.TextSize / access.GetUserFontScale
+	p1Make.TextField.TextSize = p1Make.TextField.TextSize / access.GetUserFontScale
+	
+	ResetUserFontScale(Activity)
 	func.Initialize
 '	baseName = "pdeg" 'func.GetBaseName
 	baseName = func.GetBaseName
@@ -63,6 +72,23 @@ Sub Activity_Create(FirstTime As Boolean)
 	Dim jo As JavaObject = b4xCombo.cmbBox
 	jo.RunMethod("performClick", Null)
 	
+End Sub
+
+Sub ResetUserFontScale(p As Panel)
+	For Each v As View In p
+		If v Is Panel Then
+			ResetUserFontScale(v)
+		Else If v Is Label Then
+			Dim lbl As Label = v
+			lbl.TextSize = lbl.TextSize / access.GetUserFontScale
+		Else If v Is Spinner Then
+			Dim s As Spinner = v
+			s.TextSize = s.TextSize / access.GetUserFontScale
+		'Else If v Is B4XFloatTextField Then
+			'Dim ftf As B4XFloatTextField = v
+			'ftf.TextField.TextSize = ftf.TextField.TextSize / access.GetUserFontScale
+		End If
+	Next
 End Sub
 
 Sub Activity_Resume
