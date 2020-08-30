@@ -48,16 +48,27 @@
 			android:screenOrientation="portrait">
 		</activity>
 		<activity
-			android:windowSoftInputMode="adjustResize|stateHidden"
+			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
-			android:name=".config"
+			android:name=".mqttbord"
+			android:label="BiljartBord Instellingen"
+			android:screenOrientation="portrait">
+		</activity>
+		<service android:name=".starter">
+		</service>
+		<receiver android:name=".starter$starter_BR">
+		</receiver>
+		<activity
+			android:windowSoftInputMode="stateHidden"
+			android:launchMode="singleTop"
+			android:name=".delen_aktief"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
 		<activity
-			android:windowSoftInputMode="stateHidden"
+			android:windowSoftInputMode="adjustResize|stateHidden"
 			android:launchMode="singleTop"
-			android:name=".mqttbord"
+			android:name=".config"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
@@ -78,21 +89,10 @@
 		<activity
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"
-			android:name=".delen_aktief"
-			android:label="BiljartBord Instellingen"
-			android:screenOrientation="portrait">
-		</activity>
-		<activity
-			android:windowSoftInputMode="stateHidden"
-			android:launchMode="singleTop"
 			android:name=".mirror_bord"
 			android:label="BiljartBord Instellingen"
 			android:screenOrientation="portrait">
 		</activity>
-		<service android:name=".starter">
-		</service>
-		<receiver android:name=".starter$starter_BR">
-		</receiver>
 		<activity
 			android:windowSoftInputMode="stateHidden"
 			android:launchMode="singleTop"

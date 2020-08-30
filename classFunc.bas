@@ -22,7 +22,7 @@ Sub GetBaseName As String
 		baseBytes = File.ReadBytes(Starter.hostPath, "base-config")
 '		Log(serializer.ConvertBytesToObject(baseBytes))
 		baseName = GetBaseNameFromBytes(serializer.ConvertBytesToObject(baseBytes))
-		Log(baseName)
+'		Log(baseName)
 	End If
 	Return baseName
 End Sub
