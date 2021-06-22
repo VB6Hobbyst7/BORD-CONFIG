@@ -154,7 +154,7 @@ Sub getUnits
 	
 	For i = 0 To curs.RowCount - 1
 		curs.Position = i
-		If clsFunc.CompareIp(curs.GetString("ip_number")) = False Then Continue
+'		If clsFunc.CompareIp(curs.GetString("ip_number")) = False Then Continue
 		
 		clv_borden.Add(genUnitList(curs.GetString("description"), curs.GetString("ip_number"), viewWidth), "")
 	Next

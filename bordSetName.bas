@@ -283,7 +283,6 @@ End Sub
 Private Sub UploadPlayers
 	sftp.Initialize("sftp", "pi", "0", bordIp, 22)
 	sftp.SetKnownHostsStore(Starter.hostPath, "hosts.txt")
-	
 	sftp.UploadFile(Starter.hostPath, "player-config", "/home/pi/44/player-config")
 	
 	Wait For sftp_UploadCompleted (ServerPath As String, Success As Boolean)

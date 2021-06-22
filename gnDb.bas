@@ -11,9 +11,15 @@ End Sub
 
 
 Sub RetieveBoards As Cursor
-	qry = "SELECT * FROM unit ORDER BY LOWER(description) asc, ip_number asc"
+	Dim ipFirst3Pos, deviceIp As String
 	
-	Return Starter.sql.ExecQuery(qry)	
+	deviceIp = Starter.deviceIp
+	Dim ipCompare() As String = Regex.Split("\.", deviceIp)
+	ipFirst3Pos = $"${ipCompare(0)}.${ipCompare(1)}.${ipCompare(2)}%"$
+	
+	qry = "SELECT * FROM unit WHERE ip_number LIKE ? ORDER BY LOWER(description) asc, ip_number asc"
+	
+	Return Starter.sql.ExecQuery2(qry, Array As String(ipFirst3Pos))	
 End Sub
 
 Sub RetrieveBordIp(ip As String) As Cursor
